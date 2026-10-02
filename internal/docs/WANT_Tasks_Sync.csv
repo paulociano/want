@@ -1,0 +1,31 @@
+﻿ID,Task,Phase,Owner,Priority,Start,Due,Status,Progress,Dependencies,Milestone,Gate,Next Action
+T-001,Fechar geografia piloto,0 • Fundamentos,Founder/Product,Critical,2026-10-01,2026-10-02,In Progress,60,,M0 Fundamentos,BR-01 fechado,Definir cidade e bairros do piloto
+T-002,Definir 3–5 categorias iniciais,0 • Fundamentos,Founder/Product,Critical,2026-10-01,2026-10-03,In Progress,50,,M0 Fundamentos,BR-02 fechado,Selecionar categorias com demanda local recorrente
+T-003,Definir ICP B2B inicial,0 • Fundamentos,Founder/Commercial,Critical,2026-10-01,2026-10-04,Ready,10,T-002,M0 Fundamentos,BR-03 fechado,Escolher comprador e job inicial
+T-004,Fechar taxonomia de demanda,0 • Fundamentos,Product,High,2026-10-02,2026-10-04,Ready,0,T-002,M0 Fundamentos,Instrumentos prontos,Definir campos mínimos de uma demanda válida
+T-005,Preparar landing de criação de demanda,1 • Demanda,Product/Growth,Critical,2026-10-05,2026-10-07,Backlog,0,"T-001,T-002,T-004",M1 Demanda,E01 pronto,Construir formulário e página pública de cluster
+T-006,Configurar tracking de E01–E03,1 • Demanda,Product/Data,High,2026-10-05,2026-10-07,Backlog,0,T-004,M1 Demanda,Métricas observáveis,"Eventos: criar, apoiar, qualificar, compartilhar"
+T-007,Rodar experimento E01: declaração de demanda,1 • Demanda,Research/Growth,Critical,2026-10-08,2026-10-12,Backlog,0,"T-005,T-006",M1 Demanda,E01 concluído,Atrair usuários qualificados e medir criação
+T-008,Rodar E02: compartilhamento de clusters,1 • Demanda,Growth,High,2026-10-09,2026-10-14,Backlog,0,"T-005,T-006",M1 Demanda,E02 concluído,Medir compartilhamento por criadores/apoiadores
+T-009,Rodar E03: qualificação de intenção,1 • Demanda,Product/Research,Critical,2026-10-09,2026-10-15,Backlog,0,"T-005,T-006",M1 Demanda,E03 concluído,"Coletar preço, frequência, raio e opt-in"
+T-010,Consolidar evidence ledger consumidor,1 • Demanda,Product/Research,High,2026-10-15,2026-10-16,Backlog,0,"T-007,T-008,T-009",M1 Demanda,Gate Demanda,Decidir manter/ajustar wedge
+T-011,Preparar mock do painel B2B,2 • B2B,Product/Design,High,2026-10-12,2026-10-14,Backlog,0,T-003,M2 B2B,Material comercial,"Mostrar cluster, ticket, frequência, raio e confiança"
+T-012,Selecionar 10–15 empresas alvo,2 • B2B,Commercial,Critical,2026-10-12,2026-10-14,Backlog,0,T-003,M2 B2B,Lista de prospects,Qualificar empresas por fit com categorias
+T-013,Rodar E04: entrevistas e WTP B2B,2 • B2B,Commercial/Research,Critical,2026-10-15,2026-10-22,Backlog,0,"T-011,T-012",M2 B2B,E04 concluído,"Buscar compromisso concreto, não elogio"
+T-014,Fechar design partner inicial,2 • B2B,Founder/Commercial,Critical,2026-10-20,2026-10-23,Backlog,0,T-013,M2 B2B,Gate B2B,"Obter piloto, segunda reunião ou LOI"
+T-015,Escolher cluster para concierge,3 • Concierge,Product/Ops,Critical,2026-10-19,2026-10-21,Backlog,0,T-010,M3 Concierge,Cluster selecionado,Escolher um cluster com sinal + empresa plausível
+T-016,Executar Reality Check manual,3 • Concierge,Research/Ops,High,2026-10-22,2026-10-27,Backlog,0,T-015,M3 Concierge,Reality Checked,Confirmar/contestar oferta local e contexto
+T-017,Montar ficha de oportunidade B2B,3 • Concierge,Product/Data,High,2026-10-27,2026-10-29,Backlog,0,T-016,M3 Concierge,Opportunity Ready,Consolidar demanda + checks + dados agregados
+T-018,Rodar E05: publicar Demand Drop,3 • Concierge,Sales/Product,Critical,2026-10-30,2026-11-05,Backlog,0,"T-014,T-017",M3 Concierge,Offer Live,Empresa publica oferta real para o cluster
+T-019,Venture Gate pré-MVP,3 • Concierge,Founder,Critical,2026-11-06,2026-11-06,Backlog,0,T-018,M3 Concierge,Go / Iterate / Pause,Autorizar ou bloquear construção do MVP
+T-020,Especificar MVP funcional,4 • MVP,Product/Tech,Critical,2026-11-02,2026-11-07,Backlog,0,T-019,M4 MVP,Spec aprovada,Converter fluxo validado em tickets verticais
+T-021,Construir criação e clusterização de demanda,4 • MVP,Tech,Critical,2026-11-09,2026-11-14,Backlog,0,T-020,M4 MVP,Consumer core,Fluxo criar/apoiar/qualificar/compartilhar
+T-022,Construir painel B2B básico,4 • MVP,Tech,Critical,2026-11-12,2026-11-20,Backlog,0,T-020,M4 MVP,B2B core,Mapa/lista + dados agregados + filtros
+T-023,Construir Demand Drop e commitments,4 • MVP,Tech/Product,Critical,2026-11-18,2026-11-25,Backlog,0,"T-021,T-022",M4 MVP,Loop ponta a ponta,Oferta + condição + prazo + adesão
+T-024,"QA, analytics e go-live piloto",4 • MVP,Tech/Product,High,2026-11-24,2026-11-27,Backlog,0,T-023,M4 MVP,Pilot ready,Validar runtime e instrumentação
+T-025,Lançar piloto local,5 • Piloto,Growth/Ops,Critical,2026-11-30,2026-12-02,Backlog,0,T-024,M5 Piloto,Piloto ativo,Ativar região e categorias
+T-026,Operar clusters e empresas reais,5 • Piloto,Growth/Ops/Sales,Critical,2026-12-02,2026-12-11,Backlog,0,T-025,M5 Piloto,Uso repetido,Acompanhar criação → oferta → commitment
+T-027,Fechar pacote B2B pago,6 • Monetização,Commercial/Finance,Critical,2026-12-07,2026-12-12,Backlog,0,"T-013,T-026",M6 Monetização,BR-04 fechado,Definir público vs pago e value metric
+T-028,Definir contrato de success fee,6 • Monetização,Commercial/Legal,Critical,2026-12-08,2026-12-14,Backlog,0,T-026,M6 Monetização,BR-05 fechado,Definir evento inequívoco de atribuição
+T-029,Rodar E07/E08 monetização,6 • Monetização,Commercial,Critical,2026-12-14,2026-12-18,Backlog,0,"T-027,T-028",M6 Monetização,WTP + fee evidenciado,Testar pagamento/LOI e fee em deal real
+T-030,Venture Review e plano Q1,7 • Review,Founder,Critical,2026-12-21,2026-12-23,Backlog,0,"T-010,T-014,T-019,T-024,T-026,T-029",M7 Review,Decisão de próximo investimento,Persevere / iterate / pivot / pause

@@ -1,0 +1,51 @@
+{
+  "version": "1.1",
+  "master": "brand/logo/source/want-logomark-master.svg",
+  "source_of_truth": "brand/brand-model.json",
+  "variants": [
+    "brand/logo/source/want-logomark-master.svg",
+    "brand/logo/screen/logomark/want-logomark-color-dark.svg",
+    "brand/logo/screen/logomark/want-logomark-color-light.svg",
+    "brand/logo/screen/logomark/want-logomark-mono-dark.svg",
+    "brand/logo/screen/logomark/want-logomark-mono-light.svg",
+    "brand/logo/screen/lockup/want-lockup-color-light-bg.svg",
+    "brand/logo/screen/lockup/want-lockup-reversed-dark-bg.svg",
+    "favicon.svg",
+    "brand/app-icon/want-app-icon-512.png",
+    "brand/app-icon/want-app-icon-192.png",
+    "brand/app-icon/want-app-icon-64.png",
+    "brand/app-icon/want-app-icon-32.png",
+    "brand/app-icon/want-app-icon-16.png",
+    {
+      "path": "brand/logo/screen/wordmark/want-wordmark-color-light-bg.svg",
+      "use": "wordmark on light backgrounds"
+    },
+    {
+      "path": "brand/logo/screen/wordmark/want-wordmark-reversed-dark-bg.svg",
+      "use": "wordmark on dark backgrounds"
+    },
+    {
+      "path": "brand/logo/screen/wordmark/want-wordmark-mono-dark.svg",
+      "use": "single-color dark wordmark"
+    },
+    {
+      "path": "brand/logo/screen/wordmark/want-wordmark-mono-light.svg",
+      "use": "single-color light wordmark"
+    },
+    {
+      "path": "brand/logo/screen/lockup/want-lockup-horizontal-color-light-bg.svg",
+      "use": "primary horizontal lockup"
+    },
+    {
+      "path": "brand/logo/screen/lockup/want-lockup-horizontal-reversed-dark-bg.svg",
+      "use": "primary reversed lockup"
+    },
+    {
+      "path": "brand/logo/screen/lockup/want-lockup-stacked-color-light-bg.svg",
+      "use": "stacked applications"
+    }
+  ],
+  "wordmark_master": "brand/logo/source/want-wordmark-master.svg",
+  "lockup_horizontal_master": "brand/logo/source/want-lockup-horizontal-master.svg",
+  "lockup_stacked_master": "brand/logo/source/want-lockup-stacked-master.svg"
+}

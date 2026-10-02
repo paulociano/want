@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 470" role="img" aria-labelledby="title">
+<title>WANT Signal Map stacked lockup</title>
+<g transform="translate(252 22)">
+  <rect width="256" height="256" rx="56" fill="#0B0F14"/>
+  <path d="M58 174 L111 75 Q128 45 145 75 L198 174" fill="none" stroke="#F7F5F0" stroke-width="24" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="128" cy="166" r="14" fill="#FF7A5C"/>
+</g>
+<g transform="translate(30 275)">
+  <g fill="none" stroke="#0B0F14" stroke-width="18" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M30 45 L62 130 L98 72 L134 130 L166 45"/>
+    <path d="M210 130 L254 45 L298 130"/>
+    <path d="M350 130 L350 45 L432 130 L432 45"/>
+    <path d="M486 45 H646 M566 45 V130"/>
+  </g>
+  <circle cx="254" cy="111" r="11" fill="#FF7A5C"/>
+</g>
+<text x="250" y="442" fill="#7B8493" font-size="16" font-weight="700"
+      font-family="Arial,Helvetica,sans-serif" letter-spacing="7">SIGNAL MAP</text>
+</svg>

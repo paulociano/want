@@ -1,0 +1,91 @@
+{
+  "brand": "WANT",
+  "version": "1.7",
+  "status": "consumer-public-landing",
+  "anchor": "um sinal local ficando visível",
+  "dominant_direction": "Signal Map",
+  "secondary_influence": "Civic Pulse",
+  "colors": {
+    "graphite": "#0B0F14",
+    "indigo": "#1B2A4B",
+    "mint": "#22D3A0",
+    "coral": "#FF7A5C",
+    "cream": "#F7F5F0",
+    "stone": "#E5E7EB"
+  },
+  "logo": {
+    "master": "brand/logo/source/want-logomark-master.svg",
+    "wordmark_master": "brand/logo/source/want-wordmark-master.svg",
+    "lockup_horizontal_master": "brand/logo/source/want-lockup-horizontal-master.svg",
+    "lockup_stacked_master": "brand/logo/source/want-lockup-stacked-master.svg",
+    "construction": "custom vector geometry; no font dependency for the wordmark"
+  },
+  "principles": [
+    "signal before decoration",
+    "territory without literal map UI",
+    "human warmth as accent",
+    "data clarity before flourish",
+    "logo survives monochrome and small sizes"
+  ],
+  "logo_rules": {
+    "clear_space": "1x, where x = diameter of the coral pulse point in the wordmark",
+    "minimum_sizes": {
+      "logomark_screen": "24px",
+      "wordmark_screen": "96px width",
+      "horizontal_lockup_screen": "180px width"
+    },
+    "small_size": "use logomark only below 96px wordmark width",
+    "forbidden": [
+      "stretch or condense",
+      "change pulse point position",
+      "replace pulse point with a map pin",
+      "add gradients or glow inside the master",
+      "outline or shadow the master",
+      "re-typeset the wordmark with a font"
+    ]
+  },
+  "application": {
+    "stylesheet": "brand/application.css",
+    "surfaces": [
+      "landing",
+      "b2b",
+      "pilot",
+      "control"
+    ],
+    "palette_role_mapping": {
+      "graphite": "primary ink / dark brand surfaces",
+      "indigo": "territory / structural accent",
+      "mint": "signal / live data / positive momentum",
+      "coral": "human pulse / high-attention CTA",
+      "cream": "primary canvas"
+    },
+    "direction": "Signal Map dominant, Civic Pulse controlled",
+    "runtime": {
+      "landing": "6.7.0",
+      "b2b": "6.5.0-b2b",
+      "pilot": "6.5.0-pilot",
+      "control": "6.5.0-control"
+    },
+    "experience": "dark landing + refined system surfaces + signal map visuals",
+    "correction": "Removed applied imagery from landing/system pages; interim mode uses only logo assets and brand gradients. New generated concept images stay outside runtime for later curated application.",
+    "public_navigation": {
+      "landing_exposes": [
+        "create demand",
+        "browse demand clusters",
+        "how it works",
+        "why participate"
+      ],
+      "landing_hides": [
+        "B2B Intelligence",
+        "Pilot Lab",
+        "Project Control"
+      ]
+    },
+    "cluster_detail_theme": {
+      "surface": "light",
+      "title": "#0B0F14",
+      "body": "#647081",
+      "support_panel": "graphite/indigo dark"
+    }
+  }
+}

@@ -1,0 +1,460 @@
+{
+  "T-001": {
+    "objective": "Definir a geografia exata do piloto para concentrar oferta e demanda e reduzir o risco de cold start.",
+    "context": "O MVP não deve começar amplo. A região precisa ser pequena o suficiente para gerar densidade e grande o suficiente para conter demanda real e empresas plausíveis.",
+    "steps": [
+      "Escolher a cidade do piloto.",
+      "Selecionar bairros ou raio operacional inicial.",
+      "Registrar critérios usados: densidade, perfil econômico, acesso a empresas, logística e capacidade de aquisição.",
+      "Explicitar o que fica fora do piloto.",
+      "Documentar rationale e premissas que deverão ser revisadas."
+    ],
+    "acceptance": "Cidade e bairros/raio estão nomeados, o racional está documentado e a escolha pode orientar campanhas, categorias e abordagem B2B.",
+    "evidence": "Nota ou documento com mapa/área escolhida, critérios e rationale.",
+    "knowledge": "geografia piloto",
+    "gate": "BR-01"
+  },
+  "T-002": {
+    "objective": "Escolher as 3–5 categorias iniciais em que o WANT tentará provar demanda concentrada.",
+    "context": "Categorias demais diluem aquisição e tornam o aprendizado inconclusivo. A seleção deve privilegiar frequência, dor local, clareza do serviço e possibilidade de resposta empresarial.",
+    "steps": [
+      "Listar categorias candidatas.",
+      "Comparar recorrência, ticket, dor, densidade local e facilidade de oferta.",
+      "Eliminar categorias com baixa frequência ou dependência regulatória excessiva.",
+      "Selecionar 3–5 categorias.",
+      "Registrar critérios e hipóteses por categoria."
+    ],
+    "acceptance": "Existe uma lista priorizada de 3–5 categorias com rationale e taxonomia inicial suficiente para criar demandas consistentes.",
+    "evidence": "Matriz de seleção ou nota com categorias escolhidas e critérios.",
+    "knowledge": "categorias iniciais",
+    "gate": "BR-02"
+  },
+  "T-003": {
+    "objective": "Definir quem é o primeiro comprador B2B do sinal de demanda do WANT e qual problema ele está tentando resolver.",
+    "context": "Sem ICP claro, entrevistas e oferta B2B viram conversas genéricas. O objetivo é escolher o comprador e o job, não descrever todo o mercado.",
+    "steps": [
+      "Definir tipo de empresa alvo.",
+      "Definir cargo/papel comprador ou influenciador.",
+      "Descrever job principal: expansão, seleção de ponto, validação de demanda, lançamento etc.",
+      "Registrar orçamento ou forma de compra provisória.",
+      "Definir sinais mínimos de fit."
+    ],
+    "acceptance": "Comprador, empresa, job, gatilho de compra e hipótese de orçamento estão explícitos.",
+    "evidence": "Ficha de ICP B2B ou nota estruturada.",
+    "knowledge": "ICP B2B",
+    "gate": "BR-03"
+  },
+  "T-004": {
+    "objective": "Definir o schema mínimo de uma demanda para que sinais possam ser comparados, agrupados e vendidos como inteligência.",
+    "context": "A qualidade do Demand Graph depende de dados consistentes. Campos demais aumentam fricção; campos de menos destroem utilidade.",
+    "steps": [
+      "Definir categoria e necessidade.",
+      "Definir localização/raio.",
+      "Definir frequência.",
+      "Definir faixa de preço ou disposição a pagar.",
+      "Definir timing e força de intenção/opt-in.",
+      "Separar campos obrigatórios dos opcionais."
+    ],
+    "acceptance": "Existe uma taxonomia única e operacional para capturar e qualificar demandas no piloto.",
+    "evidence": "Schema/campos documentados e exemplos de demandas válidas e inválidas.",
+    "knowledge": "taxonomia de demanda",
+    "gate": "Instrumentos prontos"
+  },
+  "T-005": {
+    "objective": "Criar a experiência inicial para uma pessoa declarar, apoiar e entender uma demanda local.",
+    "context": "A landing é o instrumento do experimento E01 e deve priorizar comportamento observável, não acabamento de produto final.",
+    "steps": [
+      "Definir proposta de valor e CTA principal.",
+      "Construir formulário usando a taxonomia aprovada.",
+      "Criar página pública simples do cluster.",
+      "Adicionar confirmação e compartilhamento.",
+      "Garantir tracking dos eventos necessários."
+    ],
+    "acceptance": "Usuário consegue criar uma demanda válida ponta a ponta e existe uma página/estado compartilhável do cluster.",
+    "evidence": "URL funcional, screenshots e checklist do fluxo.",
+    "knowledge": "landing criação de demanda",
+    "gate": "E01 pronto"
+  },
+  "T-006": {
+    "objective": "Instrumentar os eventos que permitem medir E01–E03 sem depender de interpretação manual.",
+    "context": "Experimentos sem eventos definidos antes do lançamento produzem métricas frágeis e decisões retroativas.",
+    "steps": [
+      "Definir evento de criação de demanda.",
+      "Definir evento de apoio.",
+      "Definir evento de qualificação.",
+      "Definir evento de compartilhamento.",
+      "Definir propriedades mínimas e convenção de nomes.",
+      "Validar eventos em um fluxo real."
+    ],
+    "acceptance": "Os eventos críticos são observáveis, têm definição estável e conseguem alimentar as métricas primárias dos experimentos.",
+    "evidence": "Plano de tracking e captura dos eventos em execução.",
+    "knowledge": "tracking E01 E03",
+    "gate": "Métricas observáveis"
+  },
+  "T-007": {
+    "objective": "Testar se pessoas realmente declaram uma demanda local usando o fluxo do WANT.",
+    "context": "O teste deve medir comportamento real em tráfego qualificado, não opinião sobre a ideia.",
+    "steps": [
+      "Definir threshold antes do teste.",
+      "Atrair usuários do recorte do piloto.",
+      "Medir visitantes qualificados e demandas válidas.",
+      "Registrar fricções e abandonos.",
+      "Comparar resultado com a regra de decisão."
+    ],
+    "acceptance": "Resultado do E01, métrica primária, amostra, limitações e decisão estão registrados.",
+    "evidence": "Export/relatório do teste, métricas e observações.",
+    "knowledge": "E01 declaração de demanda",
+    "gate": "E01 concluído"
+  },
+  "T-008": {
+    "objective": "Testar se criadores e apoiadores distribuem organicamente um cluster para outras pessoas.",
+    "context": "Compartilhamento é uma hipótese de aquisição e densidade. O teste precisa distinguir impressão positiva de ação real.",
+    "steps": [
+      "Definir threshold.",
+      "Expor CTA de compartilhamento.",
+      "Medir criadores/apoiadores elegíveis.",
+      "Medir compartilhamentos efetivos.",
+      "Registrar canais e motivos de não compartilhar."
+    ],
+    "acceptance": "Taxa de compartilhamento e decisão do E02 estão documentadas.",
+    "evidence": "Métricas do CTA e exemplos de compartilhamento.",
+    "knowledge": "E02 compartilhamento clusters",
+    "gate": "E02 concluído"
+  },
+  "T-009": {
+    "objective": "Testar se usuários fornecem sinais mais fortes que um like, como preço, frequência e raio.",
+    "context": "A monetização B2B depende de intenção utilizável, não apenas contagem de apoiadores.",
+    "steps": [
+      "Definir perguntas de qualificação.",
+      "Definir threshold de completude.",
+      "Aplicar após criação/apoio.",
+      "Medir conclusão por campo.",
+      "Analisar abandono e inconsistências."
+    ],
+    "acceptance": "O E03 demonstra se existe profundidade de intenção suficiente para compor uma oportunidade.",
+    "evidence": "Dataset/resultados de qualificação e decisão.",
+    "knowledge": "E03 qualificação intenção",
+    "gate": "E03 concluído"
+  },
+  "T-010": {
+    "objective": "Consolidar a evidência do lado consumidor e decidir se o wedge inicial deve ser mantido, ajustado ou descartado.",
+    "context": "O gate evita seguir para B2B com base em sinais isolados.",
+    "steps": [
+      "Reunir resultados E01–E03.",
+      "Separar evidência favorável, contrária e inconclusiva.",
+      "Analisar por categoria/geografia.",
+      "Registrar principais aprendizados.",
+      "Tomar decisão explícita sobre o wedge."
+    ],
+    "acceptance": "Existe um evidence ledger com decisão e rationale rastreável.",
+    "evidence": "Evidence ledger com E01–E03 e decisão.",
+    "knowledge": "evidence ledger consumidor",
+    "gate": "Gate Demanda"
+  },
+  "T-011": {
+    "objective": "Materializar como a empresa enxergaria e utilizaria uma oportunidade no WANT antes de construir o produto.",
+    "context": "O mock serve para testar valor e linguagem comercial, não para antecipar desenvolvimento.",
+    "steps": [
+      "Mostrar localização/cluster.",
+      "Mostrar volume e qualidade da demanda.",
+      "Mostrar ticket, frequência, raio e confiança.",
+      "Adicionar filtros essenciais.",
+      "Preparar narrativa do job B2B."
+    ],
+    "acceptance": "Mock é suficiente para uma empresa avaliar utilidade, objeções e disposição a avançar.",
+    "evidence": "Link ou arquivo do mock e roteiro de demonstração.",
+    "knowledge": "painel B2B",
+    "gate": "Material comercial"
+  },
+  "T-012": {
+    "objective": "Montar a lista inicial de empresas com maior probabilidade de aprender e agir sobre os clusters selecionados.",
+    "context": "A lista deve priorizar fit com o problema, não volume de prospecção.",
+    "steps": [
+      "Definir critérios de fit.",
+      "Encontrar 10–15 empresas compatíveis.",
+      "Identificar contato/papel relevante.",
+      "Registrar evidência de expansão ou decisão de localização quando houver.",
+      "Ordenar por fit e facilidade de acesso."
+    ],
+    "acceptance": "Há 10–15 prospects priorizados com rationale individual.",
+    "evidence": "Lista de prospects com critérios de fit.",
+    "knowledge": "empresas alvo B2B",
+    "gate": "Lista de prospects"
+  },
+  "T-013": {
+    "objective": "Testar utilidade, willingness-to-pay e compromisso B2B usando cluster real ou muito próximo da realidade.",
+    "context": "Elogios não contam como validação. O resultado buscado é comportamento: segunda reunião, piloto, LOI, orçamento ou pagamento.",
+    "steps": [
+      "Apresentar problema e cluster.",
+      "Explorar processo atual e custo da decisão.",
+      "Mostrar mock/dados.",
+      "Perguntar como comprariam/usariam.",
+      "Buscar compromisso concreto.",
+      "Registrar objeções e WTP."
+    ],
+    "acceptance": "E04 possui entrevistas, compromissos observáveis, objeções, WTP e decisão.",
+    "evidence": "Notas/transcrições, follow-ups e compromissos registrados.",
+    "knowledge": "E04 WTP B2B",
+    "gate": "E04 concluído"
+  },
+  "T-014": {
+    "objective": "Converter interesse B2B em um design partner que participe do concierge e ajude a validar o fluxo real.",
+    "context": "Design partner precisa aceitar esforço e próximo passo concreto, não apenas dizer que a ideia é interessante.",
+    "steps": [
+      "Escolher prospect com melhor fit.",
+      "Definir escopo do piloto.",
+      "Alinhar o que a empresa fornece e recebe.",
+      "Definir próxima reunião e responsabilidade.",
+      "Registrar compromisso ou LOI quando adequado."
+    ],
+    "acceptance": "Existe um parceiro com compromisso explícito para participar do próximo ciclo.",
+    "evidence": "E-mail, mensagem, ata ou LOI do compromisso.",
+    "knowledge": "design partner",
+    "gate": "Gate B2B"
+  },
+  "T-015": {
+    "objective": "Selecionar um cluster que tenha sinal de demanda suficiente e uma empresa plausível para executar o concierge.",
+    "context": "O concierge deve testar o loop completo em uma oportunidade específica, não em um portfólio amplo.",
+    "steps": [
+      "Comparar clusters por intenção e concentração.",
+      "Verificar presença de empresa plausível.",
+      "Checar riscos e qualidade dos dados.",
+      "Selecionar um cluster.",
+      "Registrar por que ele é o melhor caso para o teste."
+    ],
+    "acceptance": "Um cluster está escolhido com rationale e empresa(s) plausível(is).",
+    "evidence": "Ficha do cluster selecionado.",
+    "knowledge": "cluster concierge",
+    "gate": "Cluster selecionado"
+  },
+  "T-016": {
+    "objective": "Verificar manualmente se a lacuna percebida é real e se existem contradições relevantes na oferta local.",
+    "context": "O Reality Check aumenta confiança antes de apresentar a oportunidade como dado acionável.",
+    "steps": [
+      "Pesquisar oferta local existente.",
+      "Validar distância, preços, horários e disponibilidade relevantes.",
+      "Registrar alternativas que contradizem a demanda.",
+      "Resolver divergências importantes.",
+      "Classificar confiança do cluster."
+    ],
+    "acceptance": "A oportunidade tem contexto verificado e contradições materiais registradas/resolvidas.",
+    "evidence": "Checklist de reality check, fontes e observações.",
+    "knowledge": "Reality Check",
+    "gate": "Reality Checked"
+  },
+  "T-017": {
+    "objective": "Transformar o cluster validado em uma ficha comercial clara e acionável.",
+    "context": "A empresa precisa entender rapidamente tamanho, qualidade, perfil e condições da oportunidade.",
+    "steps": [
+      "Consolidar volume de demanda.",
+      "Resumir ticket, frequência, raio e timing.",
+      "Adicionar nível de confiança e checks.",
+      "Remover PII desnecessária.",
+      "Definir CTA/ação proposta para empresa."
+    ],
+    "acceptance": "Ficha pode ser apresentada comercialmente sem explicações adicionais críticas.",
+    "evidence": "Ficha de oportunidade B2B.",
+    "knowledge": "ficha oportunidade B2B",
+    "gate": "Opportunity Ready"
+  },
+  "T-018": {
+    "objective": "Fazer uma empresa publicar uma oferta real para um cluster específico.",
+    "context": "O Demand Drop prova a transição de inteligência para ação do lado da oferta.",
+    "steps": [
+      "Definir oferta e condição.",
+      "Definir público/cluster elegível.",
+      "Definir prazo e capacidade.",
+      "Publicar/comunicar a oferta.",
+      "Medir adesões e objeções."
+    ],
+    "acceptance": "Existe uma oferta real, com condição e prazo, publicada para o cluster.",
+    "evidence": "Oferta publicada, mensagem/landing e métricas iniciais.",
+    "knowledge": "E05 Demand Drop",
+    "gate": "Offer Live"
+  },
+  "T-019": {
+    "objective": "Decidir se há evidência suficiente para investir na construção do MVP.",
+    "context": "O gate protege contra automatizar um fluxo ainda não validado.",
+    "steps": [
+      "Revisar evidência consumidor.",
+      "Revisar compromisso B2B.",
+      "Revisar concierge e oferta.",
+      "Listar riscos ainda abertos.",
+      "Decidir Go, Iterate ou Pause com rationale."
+    ],
+    "acceptance": "Decisão de investimento está registrada e sustentada por evidência.",
+    "evidence": "Memorando do Venture Gate.",
+    "knowledge": "Venture Gate pré MVP",
+    "gate": "Go / Iterate / Pause"
+  },
+  "T-020": {
+    "objective": "Converter o fluxo validado em uma especificação de MVP com comportamento e critérios de aceite.",
+    "context": "A spec deve automatizar somente o que foi validado e preservar o aprendizado manual relevante.",
+    "steps": [
+      "Mapear fluxo consumidor.",
+      "Mapear fluxo B2B.",
+      "Mapear Demand Drop/commitment.",
+      "Definir dados e permissões.",
+      "Definir analytics e eventos.",
+      "Quebrar em tickets verticais."
+    ],
+    "acceptance": "Spec cobre o loop crítico, edge cases essenciais, eventos e critérios de aceite.",
+    "evidence": "Documento de especificação e tickets.",
+    "knowledge": "MVP funcional",
+    "gate": "Spec aprovada"
+  },
+  "T-021": {
+    "objective": "Construir o core consumidor para criar, apoiar, qualificar e compartilhar demandas.",
+    "context": "Este é o primeiro componente automatizado do Demand Graph.",
+    "steps": [
+      "Implementar criação.",
+      "Implementar clusterização inicial.",
+      "Implementar apoio.",
+      "Implementar qualificação.",
+      "Implementar compartilhamento.",
+      "Instrumentar eventos e QA."
+    ],
+    "acceptance": "Fluxo consumidor crítico funciona em produção/piloto com dados persistidos.",
+    "evidence": "Build, QA e evidência de eventos.",
+    "knowledge": "criação clusterização demanda",
+    "gate": "Consumer core"
+  },
+  "T-022": {
+    "objective": "Construir a visão B2B mínima para explorar oportunidades agregadas sem expor dados pessoais indevidos.",
+    "context": "O painel deve reproduzir a utilidade validada no mock e concierge, sem escopo analítico excessivo.",
+    "steps": [
+      "Implementar lista/mapa de clusters.",
+      "Exibir sinais agregados.",
+      "Adicionar filtros essenciais.",
+      "Adicionar ficha da oportunidade.",
+      "Aplicar regras de privacidade e acesso."
+    ],
+    "acceptance": "Empresa consegue localizar e compreender oportunidades relevantes com dados agregados.",
+    "evidence": "Build, screenshots e QA de acesso/privacidade.",
+    "knowledge": "painel B2B básico",
+    "gate": "B2B core"
+  },
+  "T-023": {
+    "objective": "Automatizar publicação de oferta e registro de commitments do cluster.",
+    "context": "Este componente fecha o loop entre demanda detectada e resposta empresarial.",
+    "steps": [
+      "Criar modelo de oferta.",
+      "Definir condição, prazo e capacidade.",
+      "Publicar para cluster elegível.",
+      "Registrar adesão/commitment.",
+      "Registrar estado da oferta e resultado."
+    ],
+    "acceptance": "Oferta e commitment funcionam ponta a ponta e são rastreáveis.",
+    "evidence": "Fluxo funcional, QA e eventos.",
+    "knowledge": "Demand Drop commitments",
+    "gate": "Loop ponta a ponta"
+  },
+  "T-024": {
+    "objective": "Validar estabilidade, tracking e segurança suficientes para liberar o piloto real.",
+    "context": "Go-live exige evidência do runtime, não apenas código concluído.",
+    "steps": [
+      "Executar QA dos fluxos críticos.",
+      "Validar analytics.",
+      "Testar permissões e privacidade.",
+      "Testar erros e estados vazios.",
+      "Validar deploy e monitoramento.",
+      "Registrar issues residuais."
+    ],
+    "acceptance": "Fluxos críticos passam, telemetria funciona e não há blocker conhecido para o piloto.",
+    "evidence": "Checklist de QA/go-live e resultados.",
+    "knowledge": "QA analytics go-live",
+    "gate": "Pilot ready"
+  },
+  "T-025": {
+    "objective": "Ativar o produto para usuários reais dentro da geografia e categorias do piloto.",
+    "context": "O lançamento deve preservar concentração e permitir suporte próximo.",
+    "steps": [
+      "Confirmar geografia/categorias.",
+      "Configurar aquisição inicial.",
+      "Ativar empresas/operadores necessários.",
+      "Publicar ambiente piloto.",
+      "Monitorar primeiras sessões e incidentes."
+    ],
+    "acceptance": "Piloto está acessível ao público definido e eventos básicos estão chegando.",
+    "evidence": "URL ativa, plano de lançamento e primeiros eventos.",
+    "knowledge": "piloto local",
+    "gate": "Piloto ativo"
+  },
+  "T-026": {
+    "objective": "Operar clusters e empresas reais tempo suficiente para observar repetição e gargalos do loop.",
+    "context": "O foco é comportamento recorrente e execução real, não volume superficial.",
+    "steps": [
+      "Acompanhar criação e apoio.",
+      "Qualificar clusters.",
+      "Engajar empresas.",
+      "Acompanhar ofertas e commitments.",
+      "Registrar gargalos e intervenções manuais.",
+      "Medir repetição."
+    ],
+    "acceptance": "Existe evidência de uso real do loop e entendimento dos principais gargalos operacionais.",
+    "evidence": "Relatório operacional do piloto e métricas.",
+    "knowledge": "operar clusters empresas reais",
+    "gate": "Uso repetido"
+  },
+  "T-027": {
+    "objective": "Definir o pacote B2B pago e a unidade de valor que sustenta preço.",
+    "context": "O pacote deve refletir o valor observado no piloto, não uma tabela de features abstrata.",
+    "steps": [
+      "Separar acesso público e pago.",
+      "Definir unidade de valor.",
+      "Definir limites/tiers se necessários.",
+      "Testar linguagem e preço com empresas.",
+      "Documentar hipótese de cobrança."
+    ],
+    "acceptance": "Pacote, value metric e hipótese de preço estão explícitos e testáveis.",
+    "evidence": "One-pager comercial/pricing e feedback B2B.",
+    "knowledge": "pacote B2B pago",
+    "gate": "BR-04"
+  },
+  "T-028": {
+    "objective": "Definir quando um resultado pode ser atribuído ao WANT e gerar success fee.",
+    "context": "A cobrança por sucesso exige evento inequívoco, auditável e contratualmente compreensível.",
+    "steps": [
+      "Definir evento de conversão.",
+      "Definir janela de atribuição.",
+      "Definir prova necessária.",
+      "Tratar conflitos/duplicidades.",
+      "Validar implicações legais e comerciais."
+    ],
+    "acceptance": "Evento de success fee é claro, mensurável e aplicável em um deal real.",
+    "evidence": "Regra de atribuição e minuta/termos comerciais.",
+    "knowledge": "success fee",
+    "gate": "BR-05"
+  },
+  "T-029": {
+    "objective": "Testar se empresas aceitam pagar pelo acesso e/ou success fee em condições reais.",
+    "context": "O objetivo é evidência de disposição a pagar, preferencialmente pagamento, contrato, LOI ou compromisso comercial concreto.",
+    "steps": [
+      "Apresentar pacote e preço.",
+      "Pedir compra/piloto pago/LOI.",
+      "Testar success fee em oportunidade real.",
+      "Registrar objeções.",
+      "Comparar com regra de decisão."
+    ],
+    "acceptance": "E07/E08 têm resultado comercial observável e decisão sobre monetização.",
+    "evidence": "Propostas, LOIs, pagamentos ou registros de negociação.",
+    "knowledge": "E07 E08 monetização",
+    "gate": "WTP + fee evidenciado"
+  },
+  "T-030": {
+    "objective": "Revisar a venture como um todo e definir a próxima alocação de capital, produto e time.",
+    "context": "A revisão fecha o ciclo com evidência acumulada e evita continuar por inércia.",
+    "steps": [
+      "Revisar demanda e retenção.",
+      "Revisar B2B e monetização.",
+      "Revisar operação e riscos.",
+      "Comparar aprendizados com tese original.",
+      "Definir persevere, iterate, pivot ou pause.",
+      "Traduzir decisão em plano Q1."
+    ],
+    "acceptance": "Existe uma decisão explícita, rationale, principais riscos e plano de Q1 compatível.",
+    "evidence": "Venture Review e plano Q1.",
+    "knowledge": "Venture Review Q1",
+    "gate": "Decisão de próximo investimento"
+  }
+}

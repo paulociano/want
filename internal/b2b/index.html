@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta name="theme-color" content="#08131D">
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="want-build" content="6.5.0-b2b"/>
+<title>WANT Business · Demand Intelligence</title>
+<meta name="description" content="Mock B2B do WANT para leitura de demanda local qualificada."/>
+<style>
+:root{
+  --ink:#101522;--muted:#697386;--soft:#f6f7f3;--panel:#fff;--line:#dde2dc;
+  --brand:#5367ff;--brand-soft:#eef0ff;--signal:#0f795d;--signal-soft:#e8f5ef;
+  --warm:#f3ead8;--warn:#9a6400;--warn-soft:#fff4d9;--danger:#9a3b31;--danger-soft:#ffebe7;
+  --shadow:0 24px 60px rgba(16,21,34,.09);--shadow-sm:0 9px 28px rgba(16,21,34,.06);
+  --radius:22px;--max:1440px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+  linear-gradient(rgba(16,21,34,.024) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(16,21,34,.024) 1px,transparent 1px),
+  var(--soft);background-size:40px 40px;color:var(--ink);
+  font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;letter-spacing:-.012em}
+button,select{font:inherit}
+button{cursor:pointer}
+.shell{max-width:var(--max);margin:auto;padding:0 28px}
+.topbar{position:sticky;top:0;z-index:20;height:70px;background:rgba(246,247,243,.88);backdrop-filter:blur(16px);border-bottom:1px solid rgba(16,21,34,.08)}
+.nav{height:100%;display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:-.04em}
+.mark{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:#111827;color:white;position:relative}
+.mark:before,.mark:after{content:"";position:absolute;inset:-5px;border:1px solid rgba(83,103,255,.18);border-radius:50%}.mark:after{inset:-10px;border-color:rgba(83,103,255,.07)}
+.brand-copy small{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:#7d8796;margin-top:2px}
+.nav-actions{display:flex;align-items:center;gap:9px}
+.status{display:flex;align-items:center;gap:7px;padding:7px 10px;background:#fff;border:1px solid var(--line);border-radius:999px;font-size:10px;font-weight:800;color:#5d6878}
+.status i{width:7px;height:7px;border-radius:50%;background:var(--signal);box-shadow:0 0 0 5px rgba(15,121,93,.08)}
+.btn{border:1px solid var(--line);background:white;color:var(--ink);border-radius:11px;padding:10px 13px;font-weight:800;font-size:12px;transition:.16s ease}
+.btn:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+.btn.primary{background:#111827;color:white;border-color:#111827}
+.btn:focus-visible,select:focus-visible{outline:3px solid rgba(83,103,255,.20);outline-offset:2px}
+
+.hero{padding:42px 0 24px;display:grid;grid-template-columns:1.1fr .9fr;gap:26px;align-items:end}
+.eyebrow{font-size:10px;font-weight:900;letter-spacing:.13em;text-transform:uppercase;color:#687386;margin-bottom:12px}
+.hero h1{margin:0;font-size:clamp(38px,5vw,64px);line-height:.98;letter-spacing:-.055em;max-width:850px}
+.hero h1 span{color:var(--brand)}
+.hero p{font-size:15px;line-height:1.6;color:#697386;max-width:700px;margin:18px 0 0}
+.hero-side{justify-self:end;text-align:right}
+.hero-side small{display:block;color:#7b8494;font-size:10px;text-transform:uppercase;letter-spacing:.11em}
+.hero-side b{display:block;font-size:14px;margin-top:5px}
+.disclaimer{margin-top:8px;color:#8992a1;font-size:10px;max-width:360px;line-height:1.4}
+
+.controls{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px;background:rgba(255,255,255,.76);border:1px solid var(--line);border-radius:16px;backdrop-filter:blur(10px)}
+.filters{display:flex;gap:8px;flex-wrap:wrap}
+select{border:1px solid var(--line);background:white;border-radius:10px;padding:10px 12px;font-size:12px;color:#364152}
+.refresh{display:flex;align-items:center;gap:8px;color:#778091;font-size:10px}
+
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:16px 0}
+.kpi{background:white;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 4px 18px rgba(16,21,34,.035)}
+.kpi small{display:block;color:#788294;font-size:10px;text-transform:uppercase;letter-spacing:.08em;font-weight:850}
+.kpi b{display:block;font-size:30px;letter-spacing:-.045em;margin-top:7px}
+.kpi span{display:block;color:#87909f;font-size:10px;margin-top:4px}
+
+.workspace{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(390px,.95fr);gap:16px;padding-bottom:48px}
+.panel{background:white;border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow-sm);overflow:hidden}
+.panel-head{padding:18px 20px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;gap:12px}
+.panel-head h2{font-size:16px;margin:0;letter-spacing:-.025em}
+.panel-head p{margin:4px 0 0;color:#7a8494;font-size:10px}
+.list{padding:8px}
+.opp{width:100%;display:grid;grid-template-columns:minmax(0,1.4fr) .8fr .7fr .7fr auto;gap:12px;align-items:center;text-align:left;background:white;border:1px solid transparent;border-radius:14px;padding:14px 12px;color:inherit;transition:.16s ease}
+.opp:hover{background:#fafbf8;border-color:#e7eae4}
+.opp.active{background:#f4f5ff;border-color:#dfe3ff}
+.opp-title{min-width:0}
+.opp-title b{display:block;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.opp-title span{display:block;color:#7d8797;font-size:10px;margin-top:4px}
+.cell small{display:block;color:#8a93a2;font-size:9px;text-transform:uppercase;letter-spacing:.06em}
+.cell b{display:block;font-size:12px;margin-top:3px}
+.conf{display:inline-flex;align-items:center;gap:6px;font-size:10px;font-weight:850;padding:6px 8px;border-radius:999px;white-space:nowrap}
+.conf:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.conf.strong{background:var(--signal-soft);color:var(--signal)}
+.conf.medium{background:var(--warn-soft);color:var(--warn)}
+.conf.initial{background:#f0f2f5;color:#657083}
+.conf.unknown{background:var(--danger-soft);color:var(--danger)}
+
+.detail{padding:22px}
+.detail-top{display:flex;justify-content:space-between;gap:12px;align-items:flex-start}
+.detail-top .pill{display:inline-block;background:var(--warm);color:#725b2f;border-radius:999px;padding:6px 8px;font-size:9px;font-weight:850}
+.detail h2{font-size:27px;line-height:1.06;letter-spacing:-.04em;margin:13px 0 8px}
+.detail .desc{margin:0;color:#6e7888;font-size:12px;line-height:1.55}
+.signal-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:18px 0}
+.signal-cell{border:1px solid var(--line);border-radius:14px;padding:13px;background:#fafbf8}
+.signal-cell small{display:block;color:#84909f;font-size:9px;text-transform:uppercase;letter-spacing:.07em}
+.signal-cell b{display:block;font-size:16px;margin-top:5px}
+.section-title{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:#788294;font-weight:900;margin:22px 0 10px}
+.conf-card{border-radius:16px;padding:15px;background:#111827;color:white}
+.conf-row{display:flex;justify-content:space-between;gap:14px;align-items:center}
+.conf-card small{color:#9aa6b9;font-size:9px;text-transform:uppercase;letter-spacing:.09em}
+.conf-card h3{font-size:21px;margin:5px 0 0}
+.conf-card p{margin:10px 0 0;color:#abb5c6;font-size:11px;line-height:1.5}
+.mini-bars{margin-top:14px;display:grid;gap:8px}
+.bar-row{display:grid;grid-template-columns:100px 1fr 42px;gap:8px;align-items:center;font-size:10px;color:#9eabc0}
+.bar{height:6px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden}
+.bar i{display:block;height:100%;background:#7181ff;border-radius:inherit}
+.readout{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.read-item{border:1px solid var(--line);border-radius:13px;padding:12px}
+.read-item small{display:block;color:#87909f;font-size:9px;text-transform:uppercase;letter-spacing:.07em}
+.read-item b{display:block;font-size:12px;margin-top:5px}
+.musthave{background:#f8f9f6;border:1px solid var(--line);border-radius:14px;padding:14px;color:#536070;font-size:11px;line-height:1.55}
+.actions{display:flex;gap:8px;margin-top:18px}
+.actions .btn{flex:1}
+.empty{padding:36px;text-align:center;color:#7f8998;font-size:12px}
+.loading{padding:24px;color:#768091;font-size:12px}
+
+@media(max-width:1080px){.workspace{grid-template-columns:1fr}.detail-panel{position:static}.hero{grid-template-columns:1fr}.hero-side{text-align:left;justify-self:start}.kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.shell{padding:0 14px}.topbar{height:62px}.brand-copy small,.status{display:none}.hero{padding-top:28px}.hero h1{font-size:42px}.controls{align-items:stretch;flex-direction:column}.filters{display:grid;grid-template-columns:1fr 1fr}.kpis{gap:8px}.kpi{padding:14px}.kpi b{font-size:25px}.opp{grid-template-columns:1fr auto}.opp .cell:nth-child(2),.opp .cell:nth-child(3),.opp .cell:nth-child(4){display:none}.signal-grid{grid-template-columns:1fr 1fr}.readout{grid-template-columns:1fr}.nav-actions .btn:not(.primary){display:none}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+
+/* WANT Brand System v1 */
+:root{--brand-graphite:#0B0F14;--brand-indigo:#1B2A4B;--brand-mint:#22D3A0;--brand-coral:#FF7A5C;--brand-cream:#F7F5F0;}
+.want-brandmark{width:34px;height:34px;display:block;flex:0 0 auto}
+
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="stylesheet" href="/brand/application.css"/>
+</head>
+<body data-want-build="6.5.0-b2b" data-want-surface="b2b">
+<header class="topbar">
+  <div class="shell nav">
+    <div class="brand"><img class="want-brandmark" src="/brand/logo/screen/logomark/want-logomark-color-light.svg" alt=""><div class="brand-copy"><img src="/brand/logo/screen/wordmark/want-wordmark-reversed-dark-bg.svg" alt="WANT" style="width:86px;height:auto"><small>Business Intelligence</small></div></div>
+    <div class="nav-actions"><span class="status"><i></i>Dados compartilhados</span><a class="btn" href="/">Project Control</a><a class="btn primary" href="/landing/">Ver experiência consumidor</a></div>
+  </div>
+</header>
+
+<main class="shell">
+  <section class="hero">
+    <div>
+      <div class="eyebrow">T-011 · Mock comercial B2B</div>
+      <h1>Onde existe demanda antes de existir <span>oferta.</span></h1>
+      <p>Transforme sinais locais agregados em uma conversa comercial: tamanho do cluster, ticket, frequência, raio e força de intenção em uma única leitura.</p>
+    </div>
+    <div class="hero-side">
+      <small>Geografia piloto</small><b>Setor Bueno + Setor Marista · Goiânia</b>
+      <div class="disclaimer">Confiança é uma leitura operacional do sinal disponível no MVP. Não representa pesquisa estatística da população.</div>
+    </div>
+  </section>
+
+  <section class="controls">
+    <div class="filters">
+      <select id="categoryFilter" aria-label="Filtrar por categoria"><option value="">Todas as categorias</option></select>
+      <select id="neighborhoodFilter" aria-label="Filtrar por bairro"><option value="">Todos os bairros</option></select>
+    </div>
+    <div class="refresh"><span id="updatedLabel">Carregando dados…</span><button class="btn" id="refreshBtn">Atualizar</button></div>
+  </section>
+
+  <section class="kpis">
+    <article class="kpi"><small>Sinais ativos</small><b id="kpiSignals">—</b><span>clusters disponíveis</span></article>
+    <article class="kpi"><small>Pessoas declaradas</small><b id="kpiPeople">—</b><span>soma dos apoios</span></article>
+    <article class="kpi"><small>Seriam clientes</small><b id="kpiClients">—</b><span>intenção explícita agregada</span></article>
+    <article class="kpi"><small>Territórios</small><b id="kpiAreas">—</b><span>bairros com sinal</span></article>
+  </section>
+
+  <section class="workspace">
+    <article class="panel">
+      <div class="panel-head"><div><h2>Mapa de oportunidades</h2><p>Selecione um sinal para abrir a leitura comercial.</p></div><span id="resultCount" class="conf initial">—</span></div>
+      <div id="opportunityList" class="list"><div class="loading">Carregando clusters reais…</div></div>
+    </article>
+
+    <aside class="panel detail-panel">
+      <div id="detail" class="detail"><div class="empty">Selecione uma oportunidade.</div></div>
+    </aside>
+  </section>
+</main>
+
+<script src="/b2b/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,1096 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B0F14">
+<title>WANT — Operating System</title>
+<style>
+:root{
+  --bg:#0a0d14;--bg-2:#0d111b;--panel:#111725;--panel-2:#151d2c;--panel-3:#1a2334;
+  --line:#273247;--line-soft:#202b3e;--text:#f4f7fb;--muted:#8f9bad;--muted-2:#667286;
+  --accent:#21c7ab;--accent-2:#77e2cf;--accent-soft:rgba(33,199,171,.12);
+  --blue:#6e9df7;--amber:#e3a84b;--red:#ea6969;--green:#55c994;
+  --shadow:0 18px 48px rgba(0,0,0,.28);
+  --radius-xl:22px;--radius-lg:16px;--radius-md:12px;--radius-sm:9px;
+  --sidebar:248px;--topbar:72px;
+}
+*{box-sizing:border-box}
+html{background:var(--bg);color-scheme:dark;scrollbar-color:#2b3850 #0a0d14}
+body{margin:0;font:14px/1.45 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:
+radial-gradient(circle at 92% -5%,rgba(33,199,171,.10),transparent 28rem),var(--bg);color:var(--text)}
+button,input,select{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent-2);outline-offset:2px}
+::selection{background:rgba(33,199,171,.28)}
+.app{min-height:100dvh;display:grid;grid-template-columns:var(--sidebar) minmax(0,1fr)}
+.sidebar{position:sticky;top:0;height:100dvh;padding:22px 16px;border-right:1px solid var(--line-soft);background:rgba(10,13,20,.9);backdrop-filter:blur(18px);z-index:20}
+.brand{display:flex;align-items:center;gap:11px;padding:3px 6px 21px}
+.brandmark{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:
+linear-gradient(135deg,#2be0bf,#15947f);box-shadow:0 10px 26px rgba(33,199,171,.18);color:#06120f;font-weight:950;letter-spacing:-.06em}
+.brandname{font-size:15px;font-weight:800;letter-spacing:-.01em}.brandsub{color:var(--muted);font-size:11px;margin-top:1px}
+.navgroup{margin-top:12px}.navlabel{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted-2);padding:0 10px 7px;font-weight:800}
+.navlink{text-decoration:none}.navbtn{width:100%;border:0;background:transparent;color:var(--muted);display:flex;align-items:center;gap:10px;padding:10px 11px;border-radius:11px;text-align:left;margin:2px 0;transition:.18s ease}
+.navbtn:hover{background:#111827;color:#dbe6f4}.navbtn.active{background:linear-gradient(90deg,rgba(33,199,171,.13),rgba(33,199,171,.045));color:#eafffb;box-shadow:inset 3px 0 0 var(--accent)}
+.navbtn svg{width:17px;height:17px;opacity:.9}.navbtn .count{margin-left:auto;font-size:10px;color:var(--muted-2);background:#0c111b;padding:2px 6px;border-radius:999px}
+.sidebar-bottom{position:absolute;left:16px;right:16px;bottom:16px}
+.sync-card{padding:13px;border:1px solid var(--line-soft);background:linear-gradient(180deg,#111827,#0e1420);border-radius:14px}
+.sync-top{display:flex;align-items:center;justify-content:space-between;gap:8px}.status-inline{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:700}
+.dot{width:8px;height:8px;border-radius:50%;background:#657287;box-shadow:0 0 0 3px rgba(101,114,135,.12)}
+.dot.ok{background:var(--green);box-shadow:0 0 0 3px rgba(85,201,148,.12)}.dot.err{background:var(--red);box-shadow:0 0 0 3px rgba(234,105,105,.12)}
+.sync-note{font-size:11px;color:var(--muted);margin:8px 0 0;line-height:1.45}
+.iconbtn{width:30px;height:30px;border:1px solid var(--line);background:#111826;color:#c7d3e4;border-radius:9px;display:grid;place-items:center}
+.main{min-width:0}
+.topbar{height:var(--topbar);position:sticky;top:0;z-index:15;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 26px;border-bottom:1px solid var(--line-soft);background:rgba(10,13,20,.78);backdrop-filter:blur(18px)}
+.crumb{display:flex;align-items:center;gap:9px;min-width:0}.crumb small{color:var(--muted-2)}.crumb b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.topactions{display:flex;align-items:center;gap:8px}.shortcut{color:var(--muted-2);font-size:10px;border:1px solid var(--line);border-bottom-color:#35445e;background:#0e1420;padding:2px 6px;border-radius:6px}
+.btn{border:1px solid var(--line);background:#131b29;color:#dbe6f4;padding:9px 12px;border-radius:10px;display:inline-flex;align-items:center;gap:8px;transition:.18s ease}
+.btn:hover{border-color:#3b4b67;background:#182235}.btn.primary{background:var(--accent);border-color:var(--accent);color:#04110e;font-weight:850}.btn.primary:hover{filter:brightness(1.05)}
+.btn.ghost{background:transparent}.btn.danger{color:#ffbaba;border-color:#573238}.btn svg{width:15px;height:15px}
+.content{padding:26px;max-width:1800px;margin:0 auto}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:24px;align-items:end;margin-bottom:20px}
+.eyebrow{font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--accent-2);font-weight:850;margin-bottom:5px}
+h1{font-size:31px;line-height:1.05;letter-spacing:-.04em;margin:0}.lede{color:var(--muted);margin:7px 0 0;max-width:760px}
+.phase-chip{display:flex;align-items:center;gap:10px;padding:12px 14px;border:1px solid rgba(33,199,171,.2);background:rgba(33,199,171,.07);border-radius:14px}.phase-chip small{display:block;color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.1em}.phase-chip b{font-size:12px}
+.alertbar{border:1px solid #3a2e1e;background:linear-gradient(90deg,rgba(227,168,75,.10),rgba(227,168,75,.03));border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:11px;margin-bottom:16px}
+.alertbar .alerticon{width:30px;height:30px;border-radius:9px;background:rgba(227,168,75,.12);display:grid;place-items:center;color:#f4c46f;flex:0 0 auto}.alertbar b{font-size:12px}.alertbar p{margin:2px 0 0;color:var(--muted);font-size:11px}.alertbar .right{margin-left:auto;color:#f4c46f;font-size:11px}
+.kpis{display:grid;grid-template-columns:repeat(5,minmax(140px,1fr));gap:12px;margin-bottom:18px}
+.kpi{position:relative;overflow:hidden;border:1px solid var(--line-soft);background:linear-gradient(180deg,#121a28,#0e1521);border-radius:16px;padding:15px 15px 14px}.kpi:after{content:"";position:absolute;inset:auto -15px -28px auto;width:74px;height:74px;border-radius:50%;background:rgba(255,255,255,.018)}
+.kpi-label{font-size:10px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted-2);font-weight:800}.kpi-value{font-size:26px;font-weight:820;letter-spacing:-.04em;margin-top:7px}.kpi-foot{display:flex;gap:6px;align-items:center;font-size:10px;color:var(--muted);margin-top:4px}.mini-dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}
+.controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:4px 0 16px}.filters{display:flex;gap:8px;flex-wrap:wrap}
+.searchbox{position:relative;min-width:280px}.searchbox svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:15px;height:15px;color:#718096}.searchbox input{padding-left:34px!important}
+.control{height:38px;border:1px solid var(--line);background:#101724;color:#dbe6f4;padding:0 11px;border-radius:10px}.control:hover{border-color:#3a4a66}
+.view{display:none}.view.active{display:block}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:2px 0 10px}.section-head h3{font-size:13px;margin:0}.section-head small{color:var(--muted)}
+.board{display:grid;grid-template-columns:repeat(6,minmax(250px,1fr));gap:12px;overflow:auto;padding:2px 2px 12px}
+.column{border:1px solid var(--line-soft);background:#0e1420;border-radius:16px;min-height:540px;padding:10px}.column.drop-target{border-color:rgba(33,199,171,.55);background:rgba(33,199,171,.035)}
+.colhead{display:flex;align-items:center;justify-content:space-between;padding:4px 4px 8px}.col-title{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800}.state-dot{width:7px;height:7px;border-radius:50%}.state-dot.backlog{background:#7b8799}.state-dot.ready{background:var(--blue)}.state-dot.inprogress{background:var(--accent)}.state-dot.blocked{background:var(--red)}.state-dot.review{background:var(--amber)}.state-dot.done{background:var(--green)}
+.countpill{font-size:10px;color:var(--muted);padding:3px 7px;background:#111a28;border-radius:999px}
+.card{position:relative;border:1px solid #28354a;background:linear-gradient(180deg,#172132,#131c2b);border-radius:13px;padding:12px;margin:8px 0;box-shadow:0 8px 20px rgba(0,0,0,.12);cursor:grab;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}.card:hover{transform:translateY(-1px);border-color:#3a4b67;box-shadow:0 12px 30px rgba(0,0,0,.20)}.card.dragging{opacity:.45;transform:rotate(1deg)}
+.card-top{display:flex;align-items:center;justify-content:space-between;gap:9px}.task-id{font-size:10px;color:var(--accent-2);font-weight:850}.more{width:26px;height:26px;border:0;background:transparent;color:#748198;border-radius:7px}.more:hover{background:#202b3d;color:#c9d4e3}
+.card h4{font-size:13px;line-height:1.4;letter-spacing:-.01em;margin:7px 0 10px}.tags{display:flex;gap:5px;flex-wrap:wrap}.tag{font-size:9px;line-height:1;padding:5px 7px;border-radius:999px;background:#0d1522;border:1px solid #253247;color:#8f9bad}.tag.critical{color:#ffbaba;border-color:#56333a;background:rgba(234,105,105,.06)}.tag.high{color:#f1ce8c;border-color:#504328;background:rgba(227,168,75,.05)}
+.card-owner{display:flex;align-items:center;gap:7px;margin-top:11px;color:#a8b5c7;font-size:10px}.avatar{width:22px;height:22px;border-radius:7px;display:grid;place-items:center;background:#22314a;color:#cbd8e8;font-weight:800;font-size:9px}
+.card-bottom{display:flex;align-items:center;justify-content:space-between;margin-top:10px;color:var(--muted);font-size:10px}.due.over{color:#ff9d9d}.progress{height:4px;border-radius:99px;background:#0b111c;overflow:hidden;margin-top:8px}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-2));border-radius:99px}
+.empty{padding:26px 12px;text-align:center;color:#59667a;font-size:11px;border:1px dashed #253147;border-radius:12px;margin-top:8px}
+.tablewrap,.ganttwrap,.overview-grid>.panel{border:1px solid var(--line-soft);background:#0e1420;border-radius:16px;overflow:hidden}
+table{width:100%;border-collapse:collapse;min-width:1250px}th,td{padding:11px 12px;border-bottom:1px solid var(--line-soft);text-align:left;font-size:11px;vertical-align:top}th{position:sticky;top:0;background:#121a28;color:#8090a6;text-transform:uppercase;letter-spacing:.06em;font-size:9px;z-index:3}tbody tr{transition:.14s}tbody tr:hover{background:#121b29}.td-main{font-weight:700;color:#dbe5f2}
+.statuspill{display:inline-flex;align-items:center;gap:5px;padding:4px 7px;border-radius:999px;background:#111b2a;border:1px solid #253349;color:#a9b6c8}
+.ganttwrap{overflow:auto}.gantt{display:grid;grid-template-columns:330px repeat(13,118px);min-width:1864px}.gantt>div{min-height:44px;padding:8px;border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);position:relative;font-size:10px}.gantt .ghead{position:sticky;top:0;background:#121a28;color:#8795aa;font-weight:750;z-index:4}.gantt .taskname{position:sticky;left:0;background:#0f1623;z-index:3}.gantt .ghead.taskname{z-index:5}.bar{position:absolute;top:12px;left:8px;right:8px;height:18px;border-radius:7px;background:linear-gradient(90deg,#1aa78f,#34d3b8);box-shadow:0 5px 16px rgba(33,199,171,.16)}.bar.blocked{background:linear-gradient(90deg,#b94e54,#ea6969)}
+.overview-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:12px}.panel{padding:16px}.panel h3{font-size:12px;margin:0 0 12px}.gate-list{display:grid;gap:8px}.gate-row{display:grid;grid-template-columns:90px 1fr auto;gap:10px;align-items:center;padding:10px 11px;background:#111a28;border-radius:11px}.gate-code{font-size:10px;color:var(--accent-2);font-weight:850}.gate-row small{color:var(--muted)}.gate-state{font-size:9px;color:#93a2b6;border:1px solid #2a384e;padding:4px 6px;border-radius:999px}
+.phase-list{display:grid;gap:8px}.phase-row{padding:10px 11px;background:#111a28;border-radius:11px}.phase-meta{display:flex;justify-content:space-between;gap:10px;font-size:10px;color:var(--muted)}.phase-name{font-size:11px;font-weight:750;margin-bottom:7px}.phase-progress{height:5px;background:#0a111b;border-radius:999px;overflow:hidden}.phase-progress i{display:block;height:100%;background:#2e8f82}
+.overlay{position:fixed;inset:0;background:rgba(2,4,8,.65);backdrop-filter:blur(6px);display:flex;justify-content:flex-end;z-index:50}.hidden{display:none!important}
+.drawer{width:min(560px,100%);height:100%;overflow:auto;background:#0f1521;border-left:1px solid var(--line);padding:22px;box-shadow:-24px 0 60px rgba(0,0,0,.35);animation:slidein .18s ease}
+@keyframes slidein{from{transform:translateX(16px);opacity:.55}to{transform:none;opacity:1}}
+.drawer-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}.drawer-head h3{margin:0;font-size:18px;letter-spacing:-.02em}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field label{display:block;margin-bottom:6px;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:#738198;font-weight:750}.field input,.field select{width:100%;height:40px;border:1px solid var(--line);background:#0b111b;color:#e9eff7;padding:0 10px;border-radius:10px}.span2{grid-column:1/-1}.drawer-actions{position:sticky;bottom:-22px;background:linear-gradient(180deg,transparent,#0f1521 16%);padding:26px 0 2px;display:flex;justify-content:space-between;gap:10px}.drawer-actions .right{display:flex;gap:8px}
+.settingsbox{max-width:660px;margin:auto}.settingsbox .drawer{width:min(640px,100%);height:auto;max-height:88vh;border:1px solid var(--line);border-radius:18px;margin:auto;animation:none}
+.command{position:fixed;inset:0;background:rgba(2,4,8,.65);backdrop-filter:blur(5px);z-index:70;display:grid;place-items:start center;padding-top:12vh}.commandbox{width:min(620px,calc(100% - 28px));background:#111827;border:1px solid #2d3a51;border-radius:16px;box-shadow:var(--shadow);overflow:hidden}.commandbox input{width:100%;height:54px;border:0;border-bottom:1px solid var(--line);background:#0f1623;color:white;padding:0 16px;font-size:15px;outline:0}.commanditems{padding:7px;max-height:50vh;overflow:auto}.cmd{width:100%;border:0;background:transparent;color:#cfd9e7;padding:10px;border-radius:9px;text-align:left;display:flex;justify-content:space-between}.cmd:hover,.cmd.active{background:#192336}.cmd small{color:#6f7d91}
+.toast{position:fixed;right:18px;bottom:18px;z-index:90;min-width:260px;max-width:420px;padding:11px 13px;border:1px solid #2c3b52;background:#111a28;color:#dce6f2;border-radius:12px;box-shadow:var(--shadow);animation:toast .2s ease}.toast.good{border-color:rgba(85,201,148,.4)}.toast.bad{border-color:rgba(234,105,105,.45)}@keyframes toast{from{transform:translateY(8px);opacity:0}to{transform:none;opacity:1}}
+@media(max-width:1100px){:root{--sidebar:78px}.brandcopy,.navbtn span:not(.count),.navlabel,.sidebar-bottom{display:none}.sidebar{padding:18px 12px}.brand{justify-content:center}.navbtn{justify-content:center}.content{padding:20px}.kpis{grid-template-columns:repeat(3,1fr)}.overview-grid{grid-template-columns:1fr}.hero{grid-template-columns:1fr}}
+@media(max-width:720px){.app{grid-template-columns:1fr}.sidebar{position:fixed;left:0;right:0;bottom:0;top:auto;height:64px;border:0;border-top:1px solid var(--line);padding:7px 10px;background:#0a0e16;z-index:45}.brand,.navlabel,.sidebar-bottom{display:none}.navgroup{margin:0}.sidebar nav{display:flex}.navbtn{padding:10px;margin:0;flex:1;justify-content:center}.navbtn .count{display:none}.main{padding-bottom:70px}.topbar{padding:0 14px;height:62px}.topbar .shortcut{display:none}.content{padding:16px}.hero{align-items:start}.hero h1{font-size:25px}.phase-chip{display:none}.kpis{grid-template-columns:repeat(2,1fr)}.controls{align-items:stretch;flex-direction:column}.filters{display:grid;grid-template-columns:1fr 1fr}.searchbox{grid-column:1/-1;min-width:0}.control{width:100%}.board{grid-template-columns:repeat(6,82vw)}.formgrid{grid-template-columns:1fr}.span2{grid-column:auto}.drawer{padding:18px}.alertbar .right{display:none}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+
+/* === WANT Startup Modern v4 === */
+:root{
+  --bg:#f7f8fc;--bg-2:#eef2ff;--panel:#ffffff;--panel-2:#fbfcff;--panel-3:#f4f6fb;
+  --line:#e4e8f2;--line-soft:#edf0f6;--text:#161b2b;--muted:#6f7890;--muted-2:#9299aa;
+  --accent:#6c5cff;--accent-2:#14c7a7;--accent-3:#ff7f50;--accent-4:#ff5f8f;
+  --accent-soft:rgba(108,92,255,.10);--blue:#4d87ff;--amber:#f5a524;--red:#f05672;--green:#17b98a;
+  --shadow:0 18px 45px rgba(52,61,92,.10);--shadow-sm:0 8px 24px rgba(52,61,92,.08);
+  --radius-xl:24px;--radius-lg:18px;--radius-md:14px;--radius-sm:10px;
+}
+html{background:var(--bg);color-scheme:light;scrollbar-color:#c6cdea #f4f6fb}
+body{color:var(--text);background:
+radial-gradient(circle at 4% 0%,rgba(108,92,255,.13),transparent 24rem),
+radial-gradient(circle at 92% 5%,rgba(20,199,167,.10),transparent 24rem),
+linear-gradient(180deg,#fbfbfe 0%,#f6f7fb 100%)}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background-image:radial-gradient(rgba(82,91,128,.055) .7px,transparent .7px);background-size:18px 18px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.55),transparent 42%);z-index:-1}
+::selection{background:rgba(108,92,255,.17)}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid rgba(108,92,255,.18);outline-offset:2px}
+.sidebar{background:rgba(255,255,255,.82);border-right:1px solid rgba(228,232,242,.95);box-shadow:8px 0 30px rgba(74,82,112,.035)}
+.brandmark{width:42px;height:42px;border-radius:14px;background:linear-gradient(145deg,#6c5cff 0%,#8b6cff 48%,#ff6f91 100%);color:#fff;box-shadow:0 12px 24px rgba(108,92,255,.23);position:relative}
+.brandmark:after{content:"";position:absolute;inset:5px;border:1px solid rgba(255,255,255,.28);border-radius:10px}
+.brandname{font-size:16px;color:#171d2e;letter-spacing:-.025em}.brandsub{color:#8a92a5}.navlabel{color:#a0a6b4}
+.navbtn{color:#737c92;border:1px solid transparent;transition:background .18s ease,color .18s ease,border-color .18s ease,transform .18s ease}
+.navbtn:hover{background:#f7f8fd;color:#252d42;border-color:#eceffa;transform:translateX(1px)}
+.navbtn.active{background:linear-gradient(90deg,rgba(108,92,255,.12),rgba(20,199,167,.055));color:#242c42;box-shadow:inset 3px 0 0 var(--accent);border-color:rgba(108,92,255,.08)}
+.navbtn .count{background:#eef1ff;color:#6d75a1}
+.sync-card{background:linear-gradient(160deg,#fff,#f7f8ff 65%,#f2fffb 130%);border:1px solid #e7eaf5;box-shadow:var(--shadow-sm)}
+.iconbtn{background:white;color:#6d7590;border-color:#e1e5f0}.dot.ok{background:var(--green);box-shadow:0 0 0 4px rgba(23,185,138,.12)}
+.topbar{background:rgba(250,251,254,.82);border-bottom:1px solid rgba(230,233,242,.94);box-shadow:0 8px 24px rgba(56,64,92,.03)}
+.crumb small{color:#9299aa}.crumb b{color:#242b40}.shortcut{background:#fff;border-color:#e4e8f2;color:#8a92a7}
+.btn{background:white;color:#293149;border:1px solid #e1e6f0;box-shadow:0 5px 16px rgba(78,88,120,.06);transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease,background .16s ease}
+.btn:hover{background:#fbfcff;border-color:#d5dbea;box-shadow:0 8px 22px rgba(78,88,120,.09);transform:translateY(-1px)}
+.btn:active{transform:translateY(0) scale(.985)}
+.btn.primary{background:linear-gradient(135deg,#6c5cff 0%,#765eff 40%,#ff6f91 100%);border:0;color:white;box-shadow:0 14px 28px rgba(108,92,255,.24)}
+.btn.primary:hover{box-shadow:0 17px 34px rgba(108,92,255,.29)}.btn.ghost{background:white}
+.content{max-width:1880px}.hero{padding:6px 0 4px}
+.eyebrow{color:#6c5cff;background:rgba(108,92,255,.08);display:inline-flex;align-items:center;padding:5px 8px;border-radius:999px;margin-bottom:10px}
+h1{font-size:clamp(30px,3vw,42px);color:#141a2b;letter-spacing:-.055em}
+.lede{color:#70798f;max-width:720px;font-size:14px}
+.phase-chip{background:linear-gradient(135deg,rgba(108,92,255,.09),rgba(20,199,167,.08));border:1px solid rgba(108,92,255,.12);box-shadow:0 8px 24px rgba(108,92,255,.06)}
+.phase-chip small{color:#828aa0}.phase-chip b{color:#273149}
+.alertbar{background:linear-gradient(90deg,#fff9ec 0%,#fff 70%);border:1px solid #f5dfb4;box-shadow:0 6px 18px rgba(214,151,35,.05)}
+.alertbar .alerticon{background:linear-gradient(145deg,#fff1cc,#ffe3a0);color:#ae7200}.alertbar p{color:#71788a}.alertbar .right{color:#a9720d}
+.kpis{gap:14px}
+.kpi{background:rgba(255,255,255,.92);border:1px solid #e8ebf3;box-shadow:var(--shadow-sm);border-radius:20px;padding:17px 17px 16px;transition:transform .16s ease,box-shadow .16s ease}
+.kpi:hover{transform:translateY(-2px);box-shadow:0 15px 32px rgba(68,77,106,.11)}
+.kpi:before{content:"";position:absolute;left:14px;right:14px;top:0;height:3px;border-radius:0 0 999px 999px;background:linear-gradient(90deg,#6c5cff,#4d87ff,#14c7a7,#ff7f50,#ff5f8f);opacity:.9}
+.kpi:nth-child(2):before{background:linear-gradient(90deg,#14c7a7,#5bdfc1)}.kpi:nth-child(3):before{background:linear-gradient(90deg,#ff7f50,#f5a524)}.kpi:nth-child(4):before{background:linear-gradient(90deg,#ff5f8f,#ff8a65)}.kpi:nth-child(5):before{background:linear-gradient(90deg,#4d87ff,#6c5cff)}
+.kpi-label{color:#8b93a6}.kpi-value{color:#1c2337;font-size:29px}.kpi-foot{color:#7c8499}
+.control{background:#fff;color:#273149;border-color:#e1e6f0;box-shadow:0 4px 14px rgba(71,81,113,.05)}
+.control:hover{border-color:#cfd6e7}.searchbox input:focus,.control:focus{box-shadow:0 0 0 4px rgba(108,92,255,.08)}
+.tablewrap,.ganttwrap,.overview-grid>.panel{background:rgba(255,255,255,.94);border:1px solid #e7eaf2;box-shadow:var(--shadow);border-radius:20px}
+.panel{padding:18px}.panel h3,.section-head h3{color:#252d43}.section-head small{color:#8a93a8}
+.gate-list,.phase-list{gap:10px}
+.gate-row,.phase-row{background:linear-gradient(180deg,#fff,#fafbff);border:1px solid #e9ecf4;border-radius:14px;transition:transform .15s ease,border-color .15s ease,box-shadow .15s ease}
+.gate-row:hover,.phase-row:hover{transform:translateY(-1px);border-color:#dce1ef;box-shadow:0 8px 20px rgba(77,88,120,.06)}
+.gate-code{color:#6c5cff;background:#f0eeff;padding:5px 7px;border-radius:8px;justify-self:start}
+.gate-state{background:#f6f7fb;color:#6f7890;border-color:#e2e6f0}.phase-progress{background:#edf0f7}.phase-progress i{background:linear-gradient(90deg,#6c5cff,#14c7a7)}
+.board{gap:14px;padding-bottom:18px}
+.column{background:linear-gradient(180deg,rgba(255,255,255,.95),rgba(248,249,253,.98));border:1px solid #e7eaf2;box-shadow:0 12px 28px rgba(66,75,103,.07);border-radius:20px;padding:11px}
+.column.drop-target{border-color:rgba(108,92,255,.42);background:linear-gradient(180deg,rgba(108,92,255,.05),rgba(20,199,167,.035))}
+.colhead{padding:5px 5px 10px}.col-title{color:#2b3348}.countpill{background:#f1f3f8;color:#7b8399}
+.card{background:#fff;border:1px solid #e8ebf3;box-shadow:0 8px 22px rgba(69,79,111,.08);border-radius:16px;padding:13px;transition:transform .18s cubic-bezier(.2,.8,.2,1),box-shadow .18s ease,border-color .18s ease}
+.card:hover{transform:translateY(-3px);border-color:#dce1ee;box-shadow:0 16px 34px rgba(66,76,109,.13)}
+.card:active{transform:translateY(-1px) scale(.995)}
+.task-id{color:#6c5cff;background:#f1efff;padding:4px 6px;border-radius:7px}.card h4{color:#20283c;font-size:13.5px}
+.tag{background:#f7f8fb;border-color:#e5e9f2;color:#727b91}.tag.critical{background:#fff2f6;color:#d94d70;border-color:#f7ced9}.tag.high{background:#fff8e8;color:#b77b11;border-color:#f4dfad}
+.card-owner{color:#70798d}.avatar{background:linear-gradient(145deg,#eef0ff,#e7fbf6);color:#536283}.progress{background:#edf0f6}.progress i{background:linear-gradient(90deg,#6c5cff 0%,#4d87ff 42%,#14c7a7 100%)}
+.more:hover{background:#f2f4f9;color:#566079}.empty{background:#fafbfe;border-color:#e2e6ef;color:#8a93a6}
+th{background:#f9faff;color:#838ca2;border-bottom-color:#e9ecf3}td{border-bottom-color:#eef1f6;color:#38445c}tbody tr:hover{background:#fbfcff}.td-main{color:#232c42}.statuspill{background:#f7f8fb;border-color:#e3e7ef;color:#68738a}
+.gantt .ghead{background:#fafbff;color:#818aa0}.gantt .taskname{background:#fff}.gantt>div{border-color:#eef1f6;color:#536078}
+.bar{background:linear-gradient(90deg,#6c5cff 0%,#4d87ff 48%,#14c7a7 100%);box-shadow:0 7px 18px rgba(108,92,255,.18)}.bar.blocked{background:linear-gradient(90deg,#ff5f8f,#ff7f50)}
+.overlay,.command{background:rgba(45,52,76,.18);backdrop-filter:blur(12px)}
+.drawer,.settingsbox .drawer,.commandbox{background:rgba(255,255,255,.98);border-color:#e5e9f2;box-shadow:0 28px 80px rgba(53,62,93,.18)}
+.drawer{border-radius:22px 0 0 22px}.drawer-head h3{color:#20273a}.field label{color:#81899d}
+.field input,.field select{background:#fff;color:#20283b;border-color:#dfe4ef;transition:border-color .15s ease,box-shadow .15s ease}
+.field input:focus,.field select:focus{border-color:#b9b1ff;box-shadow:0 0 0 4px rgba(108,92,255,.08)}
+.drawer-actions{background:linear-gradient(180deg,transparent,rgba(255,255,255,.97) 20%)}.commandbox input{background:#fff;color:#20273a;border-bottom-color:#e7eaf2}
+.cmd{color:#293149}.cmd:hover,.cmd.active{background:#f4f6fc}
+.toast{background:#fff;color:#293149;border-color:#e3e7f0;box-shadow:0 18px 46px rgba(58,66,94,.15);border-radius:14px}
+.toast.good{border-left:4px solid var(--green)}.toast.bad{border-left:4px solid var(--red)}
+@media(max-width:720px){.sidebar{background:rgba(255,255,255,.95);border-top:1px solid #e5e9f2}.navbtn.active{box-shadow:inset 0 -3px 0 var(--accent)}.kpis{gap:10px}.kpi{padding:14px}}
+@media(prefers-reduced-motion:reduce){.card,.kpi,.btn,.navbtn,.gate-row,.phase-row{transform:none!important}}
+
+
+/* === v5: collapsible navigation, knowledge base and richer kanban === */
+:root{--sidebar-collapsed:82px}
+.app{transition:grid-template-columns .22s cubic-bezier(.2,.8,.2,1)}
+.app.sidebar-collapsed{grid-template-columns:var(--sidebar-collapsed) minmax(0,1fr)}
+.sidebar{transition:width .22s ease,padding .22s ease}
+.sidebar-toggle{
+  position:absolute;right:-13px;top:28px;width:27px;height:27px;border-radius:10px;
+  border:1px solid #e0e5f1;background:#fff;color:#66718c;display:grid;place-items:center;
+  box-shadow:0 7px 18px rgba(52,61,92,.10);z-index:3;transition:transform .18s ease,background .18s ease
+}
+.sidebar-toggle:hover{background:#f6f7fd;transform:scale(1.04)}
+.sidebar-toggle svg{width:14px;height:14px;transition:transform .2s ease}
+.sidebar-collapsed .sidebar-toggle svg{transform:rotate(180deg)}
+.sidebar-collapsed .sidebar{padding-left:12px;padding-right:12px}
+.sidebar-collapsed .brand{justify-content:center}
+.sidebar-collapsed .brandcopy,
+.sidebar-collapsed .navlabel,
+.sidebar-collapsed .navbtn span,
+.sidebar-collapsed .navbtn .count,
+.sidebar-collapsed .sidebar-bottom{display:none}
+.sidebar-collapsed .navbtn{justify-content:center;padding-left:10px;padding-right:10px}
+.sidebar-collapsed .navbtn.active{box-shadow:inset 0 -3px 0 var(--accent)}
+.sidebar-collapsed .brandmark{width:40px;height:40px}
+
+/* Kanban semantic colors */
+.column[data-status="Backlog"]{--status:#7c6cff;--status-bg:#f2f0ff;--status-line:#ddd8ff}
+.column[data-status="Ready"]{--status:#3f8cff;--status-bg:#edf5ff;--status-line:#d4e6ff}
+.column[data-status="In Progress"]{--status:#00a98f;--status-bg:#eafaf6;--status-line:#caeee5}
+.column[data-status="Blocked"]{--status:#ef5572;--status-bg:#fff0f4;--status-line:#f7d2dc}
+.column[data-status="Review"]{--status:#d79518;--status-bg:#fff7e6;--status-line:#f5dfae}
+.column[data-status="Done"]{--status:#30a96f;--status-bg:#ecf9f1;--status-line:#cfead9}
+.column{
+  border-top:4px solid var(--status,#dfe4ef);
+  background:linear-gradient(180deg,var(--status-bg,#fff) 0,rgba(255,255,255,.96) 96px);
+}
+.column .state-dot{background:var(--status)!important;box-shadow:0 0 0 4px color-mix(in srgb,var(--status) 14%,transparent)}
+.column .countpill{background:var(--status-bg);color:var(--status);border:1px solid var(--status-line)}
+.card{position:relative;overflow:hidden}
+.card:before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--card-status,#a6aec0)
+}
+.card.status-backlog{--card-status:#7c6cff}
+.card.status-ready{--card-status:#3f8cff}
+.card.status-inprogress{--card-status:#00a98f}
+.card.status-blocked{--card-status:#ef5572}
+.card.status-review{--card-status:#d79518}
+.card.status-done{--card-status:#30a96f}
+.status-badge{
+  display:inline-flex;align-items:center;gap:6px;padding:4px 7px;border-radius:999px;
+  font-size:9px;font-weight:850;letter-spacing:.02em;white-space:nowrap;
+  color:var(--card-status);background:color-mix(in srgb,var(--card-status) 10%,white);
+  border:1px solid color-mix(in srgb,var(--card-status) 25%,white)
+}
+.status-badge:before{content:"";width:6px;height:6px;border-radius:50%;background:var(--card-status)}
+.card-top-left{display:flex;align-items:center;gap:6px;min-width:0}
+
+/* Knowledge base */
+.knowledge-shell{display:grid;grid-template-columns:260px minmax(0,1fr);gap:16px;align-items:start}
+.knowledge-index{
+  position:sticky;top:calc(var(--topbar) + 18px);max-height:calc(100vh - var(--topbar) - 40px);
+  overflow:auto;background:rgba(255,255,255,.96);border:1px solid #e7eaf2;border-radius:18px;
+  box-shadow:var(--shadow-sm);padding:12px
+}
+.knowledge-index h4{margin:3px 5px 10px;font-size:11px;color:#8a93a8;text-transform:uppercase;letter-spacing:.08em}
+.kb-index-btn{
+  width:100%;border:0;background:transparent;text-align:left;color:#66718a;padding:8px 9px;
+  border-radius:10px;font-size:11px;line-height:1.3;cursor:pointer;display:flex;gap:7px
+}
+.kb-index-btn:hover,.kb-index-btn.active{background:#f1f0ff;color:#5547d9}
+.kb-index-num{font-weight:850;color:#8b80ee;min-width:27px}
+.knowledge-main{min-width:0}
+.kb-hero{
+  padding:20px;border-radius:22px;background:
+  radial-gradient(circle at 94% 0%,rgba(20,199,167,.13),transparent 18rem),
+  linear-gradient(135deg,#f2f0ff 0%,#fff 52%,#f2fffb 100%);
+  border:1px solid #e5e5f5;box-shadow:var(--shadow-sm);margin-bottom:14px
+}
+.kb-hero h2{margin:0 0 7px;font-size:25px;letter-spacing:-.04em;color:#1e263a}
+.kb-hero p{margin:0;color:#6d768d;max-width:760px}
+.kb-search-wrap{display:flex;gap:9px;margin-top:16px}
+.kb-search{
+  width:100%;border:1px solid #dfe4ef;background:#fff;color:#20283b;border-radius:13px;
+  padding:11px 13px;box-shadow:0 5px 16px rgba(64,74,105,.05)
+}
+.kb-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:16px}
+.kb-source{
+  background:#fff;border:1px solid #e7eaf2;border-radius:16px;padding:14px;box-shadow:0 7px 20px rgba(64,74,105,.05);
+  display:flex;align-items:flex-start;gap:11px;text-decoration:none;color:inherit
+}
+.kb-source:hover{border-color:#d8ddef;transform:translateY(-1px)}
+.kb-file-icon{
+  flex:0 0 38px;height:38px;border-radius:11px;display:grid;place-items:center;
+  background:linear-gradient(145deg,#efedff,#eefcff);color:#6557e8;font-weight:900;font-size:9px
+}
+.kb-source b{display:block;color:#263048;font-size:12px;margin-bottom:3px}
+.kb-source small{display:block;color:#7f889d;line-height:1.45}
+.kb-card{
+  background:#fff;border:1px solid #e7eaf2;border-radius:18px;box-shadow:var(--shadow-sm);
+  margin-bottom:12px;overflow:hidden;scroll-margin-top:calc(var(--topbar) + 18px)
+}
+.kb-card summary{
+  list-style:none;cursor:pointer;padding:15px 17px;display:flex;align-items:center;gap:10px;
+  font-weight:800;color:#263048
+}
+.kb-card summary::-webkit-details-marker{display:none}
+.kb-card summary:after{content:"+";margin-left:auto;color:#8e96aa;font-size:18px;font-weight:500}
+.kb-card[open] summary:after{content:"−"}
+.kb-num{color:#6c5cff;background:#f1efff;padding:4px 7px;border-radius:8px;font-size:10px}
+.kb-content{padding:0 17px 17px;color:#566179;line-height:1.62}
+.kb-content p{margin:8px 0}
+.kb-empty{padding:28px;text-align:center;color:#8b93a7;background:#fff;border:1px dashed #dfe4ee;border-radius:16px}
+.kb-match{background:#fff2a8;border-radius:3px;padding:0 1px}
+
+/* Documentation should get the canvas, not task-only controls */
+body[data-view="docs"] #gateAlert,
+body[data-view="docs"] #kpis,
+body[data-view="docs"] #taskControls{display:none}
+body[data-view="docs"] .hero{margin-bottom:8px}
+body[data-view="docs"] .hero .eyebrow{background:#eefbf7;color:#078d77}
+body[data-view="docs"] .phase-chip{display:none}
+
+@media(max-width:1100px){
+  .sidebar-toggle{display:none}
+  .knowledge-shell{grid-template-columns:1fr}
+  .knowledge-index{position:relative;top:auto;max-height:none}
+  .kb-grid{grid-template-columns:1fr}
+}
+@media(max-width:720px){
+  .knowledge-index{display:none}
+  .kb-hero{padding:16px}
+  .kb-hero h2{font-size:22px}
+}
+
+
+/* === WANT Enterprise v3 === */
+:root{
+  --bg:#f4f6f8;--bg-2:#eef2f6;--panel:#ffffff;--panel-2:#f8fafc;--panel-3:#f1f4f7;
+  --line:#dfe4ea;--line-soft:#e9edf2;--text:#172033;--muted:#657084;--muted-2:#8a94a5;
+  --accent:#2457d6;--accent-2:#0f766e;--accent-soft:rgba(36,87,214,.08);
+  --blue:#2457d6;--amber:#a96712;--red:#b42318;--green:#147d64;
+  --shadow:0 12px 34px rgba(18,31,53,.075);--shadow-sm:0 6px 18px rgba(18,31,53,.055);
+  --radius-xl:16px;--radius-lg:13px;--radius-md:10px;--radius-sm:8px;
+}
+html{background:var(--bg);scrollbar-color:#bcc6d2 #eef2f6}
+body{background:#f4f6f8;color:var(--text)}
+body:before{display:none}
+.sidebar{
+  background:#111827;border-right:1px solid #1f2937;box-shadow:none;color:#d6deea
+}
+.brandmark{
+  width:38px;height:38px;border-radius:9px;background:#2457d6;color:#fff;box-shadow:none
+}
+.brandmark:after{display:none}
+.brandname{color:#f8fafc;font-weight:760}.brandsub,.navlabel{color:#7f8ca2}
+.navbtn{color:#98a5b8;border-radius:8px}
+.navbtn:hover{background:#182234;color:#e8eef7;border-color:transparent;transform:none}
+.navbtn.active{background:#1c2940;color:#fff;box-shadow:inset 3px 0 0 #4f7df0;border-color:transparent}
+.navbtn .count{background:#273449;color:#b9c5d6}
+.sync-card{background:#162033;border:1px solid #26344a;box-shadow:none}
+.sync-note,.status-inline{color:#8996a9}
+.iconbtn{background:#fff;border:1px solid var(--line);color:#59677a}
+.sidebar .iconbtn{background:#182234;border-color:#2c3b52;color:#a8b4c6}
+.sidebar-toggle{background:#182234;border-color:#2c3b52;color:#c5d0df;box-shadow:none}
+.sidebar-toggle:hover{background:#223149}
+.topbar{background:rgba(255,255,255,.94);border-bottom:1px solid #e3e7ec;box-shadow:none}
+.crumb small{color:#8a94a5}.crumb b{color:#1f2937}
+.shortcut{background:#f8fafc;border-color:#dde3ea;color:#7c8797}
+.btn{border-radius:8px;background:#fff;color:#273244;border:1px solid #dbe1e8;box-shadow:none;font-weight:650}
+.btn:hover{background:#f8fafc;border-color:#cdd5df;box-shadow:none;transform:none}
+.btn:active{transform:none}
+.btn.primary{background:#2457d6;color:#fff;border:1px solid #2457d6;box-shadow:none}
+.btn.primary:hover{background:#1d4bbd;border-color:#1d4bbd;box-shadow:none}
+.btn.danger{color:#a61b13;border-color:#e7c8c4;background:#fff}
+.content{max-width:1920px}
+.hero{padding-top:2px}
+.eyebrow{color:#2457d6;background:transparent;padding:0;border-radius:0;font-size:10px;letter-spacing:.11em}
+h1{color:#111827;font-size:clamp(27px,2.4vw,36px);letter-spacing:-.038em}
+.lede{color:#677386}
+.phase-chip{background:#fff;border:1px solid #dfe5eb;box-shadow:none;border-radius:10px}
+.alertbar{background:#fffaf0;border:1px solid #ead8b5;box-shadow:none;border-radius:10px}
+.alertbar .alerticon{background:#f6e8c9;color:#8c5e12}
+.kpi{background:#fff;border:1px solid #e1e6eb;box-shadow:none;border-radius:12px;padding:16px}
+.kpi:hover{transform:none;box-shadow:none}
+.kpi:before{left:0;right:auto;top:0;bottom:0;width:3px;height:auto;border-radius:12px 0 0 12px;background:#2457d6}
+.kpi:nth-child(2):before{background:#147d64}.kpi:nth-child(3):before{background:#b42318}
+.kpi:nth-child(4):before{background:#a96712}.kpi:nth-child(5):before{background:#52627a}
+.kpi-value{font-size:27px;color:#172033}.kpi-label{color:#7b8798}
+.control{background:#fff;border:1px solid #dce2e8;box-shadow:none;border-radius:8px}
+.tablewrap,.ganttwrap,.overview-grid>.panel,.panel{border:1px solid #e1e6eb;background:#fff;box-shadow:none;border-radius:12px}
+.gate-row,.phase-row{background:#fff;border:1px solid #e4e8ed;border-radius:9px;box-shadow:none}
+.gate-row:hover,.phase-row:hover{transform:none;border-color:#ccd4dd;box-shadow:none}
+.gate-code{color:#2457d6;background:#eef3ff;border-radius:6px}
+.gate-state{background:#f5f7f9;color:#5f6b7c;border-color:#dfe4e9}
+.column{box-shadow:none;border-radius:12px;background:#fff}
+.card{border:1px solid #e2e7ec;box-shadow:none;border-radius:10px}
+.card:hover{transform:none;border-color:#bfc8d3;box-shadow:0 7px 18px rgba(18,31,53,.07)}
+.task-id{background:#eef3ff;color:#2457d6;border-radius:5px}
+.avatar{background:#eef2f5;color:#4b596d}
+.status-badge{border-radius:5px;font-weight:760}
+.drawer,.settingsbox .drawer,.commandbox{background:#fff;border-color:#dfe4ea;box-shadow:-18px 0 48px rgba(18,31,53,.12)}
+.drawer{width:min(760px,100%);border-radius:0}
+.field input,.field select,.field textarea{background:#fff;color:#182235;border:1px solid #d9e0e7;border-radius:8px}
+.field textarea{width:100%;min-height:88px;padding:10px;resize:vertical;font:inherit}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:#7fa0ee;box-shadow:0 0 0 3px rgba(36,87,214,.08)}
+.drawer-actions{background:linear-gradient(180deg,transparent,rgba(255,255,255,.98) 18%)}
+.command,.overlay{background:rgba(17,24,39,.34);backdrop-filter:blur(7px)}
+.toast{border-radius:8px;box-shadow:0 12px 34px rgba(18,31,53,.13)}
+.toast.good{border-left:3px solid #147d64}.toast.bad{border-left:3px solid #b42318}
+
+/* Enterprise task operating system */
+.task-tabs{display:flex;gap:4px;border-bottom:1px solid #e3e8ed;margin:0 -4px 16px;padding:0 4px}
+.task-tab{border:0;background:transparent;color:#788496;padding:10px 12px;font-weight:700;font-size:11px;border-bottom:2px solid transparent}
+.task-tab.active{color:#1f4db9;border-bottom-color:#2457d6}
+.task-pane{display:none}.task-pane.active{display:block}
+.brief-card,.dependency-card,.automation-card,.completion-card{
+  border:1px solid #e1e6eb;border-radius:10px;background:#fff;padding:14px;margin-bottom:11px
+}
+.brief-title{font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#8792a2;font-weight:800;margin-bottom:7px}
+.brief-card h4{margin:0 0 7px;font-size:14px;color:#1d2738}
+.brief-card p,.brief-card li,.dependency-card p,.automation-card p{color:#566478;font-size:12px;line-height:1.55}
+.brief-card ul{padding-left:18px;margin:7px 0 0}
+.brief-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.meta-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.meta-pill{font-size:10px;font-weight:750;color:#4c5a70;background:#f3f5f7;border:1px solid #e0e5ea;border-radius:6px;padding:5px 7px}
+.dependency-item{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:8px 0;border-top:1px solid #edf0f3}
+.dependency-item:first-of-type{border-top:0}
+.dep-ok{color:#147d64}.dep-lock{color:#a61b13}
+.lock-banner{display:none;background:#fff6f5;border:1px solid #eccbc7;color:#8f241c;padding:10px 12px;border-radius:8px;margin-bottom:12px;font-size:12px}
+.lock-banner.show{display:block}
+.task-card-lock{margin-top:9px;display:flex;align-items:center;gap:6px;color:#9a2b21;font-size:10px;font-weight:750}
+.task-card-ready{margin-top:9px;color:#147d64;font-size:10px;font-weight:750}
+.link-button{border:0;background:transparent;color:#2457d6;padding:0;font:inherit;font-weight:750;cursor:pointer}
+.link-button:hover{text-decoration:underline}
+.completion-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px}
+.completion-grid .span2{grid-column:1/-1}
+.checkline{display:flex;align-items:flex-start;gap:8px;font-size:12px;color:#526074;padding:8px 0}
+.checkline input{margin-top:2px}
+.complete-btn{width:100%;margin-top:10px}
+.rule-line{display:grid;grid-template-columns:95px minmax(0,1fr);gap:10px;padding:7px 0;border-top:1px solid #edf0f3}
+.rule-line:first-of-type{border-top:0}
+.rule-line b{font-size:10px;color:#7b8798;text-transform:uppercase;letter-spacing:.06em}
+.rule-line span{font-size:12px;color:#4e5c70}
+.automation-event{display:flex;gap:8px;padding:7px 0;font-size:11px;color:#5f6d81}
+.automation-event i{width:7px;height:7px;border-radius:50%;background:#2457d6;margin-top:5px;flex:0 0 auto}
+.knowledge-link-card{display:flex;align-items:center;justify-content:space-between;gap:12px;background:#f7f9fb;border:1px solid #e0e5ea;border-radius:8px;padding:10px 11px}
+.knowledge-link-card span{font-size:11px;color:#657084}
+.knowledge-link-card button{white-space:nowrap}
+.card-lock-overlay{display:flex;align-items:center;gap:6px;margin-top:8px;padding:6px 7px;border-radius:6px;background:#fff5f4;color:#95271f;font-size:10px;font-weight:750}
+.column[data-status="Backlog"]{--status:#667085;--status-bg:#f5f6f7;--status-line:#e3e6e9}
+.column[data-status="Ready"]{--status:#2457d6;--status-bg:#eef3ff;--status-line:#d6e0f8}
+.column[data-status="In Progress"]{--status:#0f766e;--status-bg:#edf8f6;--status-line:#d3ebe6}
+.column[data-status="Blocked"]{--status:#b42318;--status-bg:#fff2f1;--status-line:#f0d0cd}
+.column[data-status="Review"]{--status:#98610c;--status-bg:#fff8e8;--status-line:#ecddb5}
+.column[data-status="Done"]{--status:#147d64;--status-bg:#eef8f3;--status-line:#d5eadf}
+.card.status-backlog{--card-status:#667085}.card.status-ready{--card-status:#2457d6}.card.status-inprogress{--card-status:#0f766e}
+.card.status-blocked{--card-status:#b42318}.card.status-review{--card-status:#98610c}.card.status-done{--card-status:#147d64}
+@media(max-width:760px){
+  .brief-grid,.completion-grid{grid-template-columns:1fr}
+  .drawer{width:100%}
+}
+
+
+/* === v4 Experiment Operating Loop === */
+.experiment-toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}
+.experiment-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:14px}
+.exp-stat{background:#fff;border:1px solid #e1e6eb;border-radius:10px;padding:13px 14px}
+.exp-stat small{display:block;color:#7c8798;font-size:9px;text-transform:uppercase;letter-spacing:.08em;font-weight:800}
+.exp-stat b{display:block;margin-top:6px;font-size:23px;color:#172033}
+.experiment-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.exp-card{background:#fff;border:1px solid #e1e6eb;border-radius:11px;padding:15px;box-shadow:none;cursor:pointer;transition:border-color .15s ease,box-shadow .15s ease}
+.exp-card:hover{border-color:#bcc6d2;box-shadow:0 7px 18px rgba(18,31,53,.06)}
+.exp-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.exp-code{font-size:10px;font-weight:850;color:#2457d6;background:#eef3ff;border-radius:5px;padding:4px 6px}
+.exp-status{font-size:9px;font-weight:800;padding:4px 7px;border-radius:5px;border:1px solid}
+.exp-status.not-started{color:#667085;background:#f6f7f8;border-color:#e0e4e8}
+.exp-status.ready{color:#2457d6;background:#eef3ff;border-color:#d7e1fa}
+.exp-status.running{color:#0f766e;background:#eef8f6;border-color:#d6eae6}
+.exp-status.complete{color:#147d64;background:#eef8f3;border-color:#d4e9df}
+.exp-status.invalidated{color:#b42318;background:#fff3f2;border-color:#f0d0cc}
+.exp-card h4{margin:11px 0 7px;font-size:14px;color:#1d2738;line-height:1.35}
+.exp-card p{margin:0;color:#657084;font-size:11px;line-height:1.5}
+.exp-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.exp-meta span{font-size:9px;font-weight:750;color:#536176;background:#f5f7f9;border:1px solid #e4e8ec;border-radius:5px;padding:4px 6px}
+.exp-metric{margin-top:12px;padding-top:10px;border-top:1px solid #edf0f3}
+.exp-metric small{display:block;color:#8b95a5;font-size:9px;text-transform:uppercase;letter-spacing:.06em;font-weight:800}
+.exp-metric b{display:block;color:#344054;font-size:11px;margin-top:4px;line-height:1.45}
+.exp-result{margin-top:9px;padding:9px 10px;border-radius:7px;background:#f7f9fb;color:#4f5e72;font-size:10px;line-height:1.45}
+.experiment-empty{padding:36px;text-align:center;color:#8a94a5;background:#fff;border:1px dashed #d7dde4;border-radius:11px}
+.exp-form .field textarea{min-height:105px}
+.exp-link-task{display:flex;align-items:center;gap:7px;margin-top:7px;color:#5d697a;font-size:10px}
+.task-experiment-link{margin-top:12px;border-top:1px solid #edf0f3;padding-top:11px}
+.task-experiment-link .btn{width:100%}
+@media(max-width:900px){.experiment-grid{grid-template-columns:1fr}.experiment-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
+
+
+/* WANT Brand System v1 */
+:root{--brand-graphite:#0B0F14;--brand-indigo:#1B2A4B;--brand-mint:#22D3A0;--brand-coral:#FF7A5C;--brand-cream:#F7F5F0;}
+.want-brandmark{width:34px;height:34px;display:block;flex:0 0 auto}
+
+</style>
+<link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<link rel="stylesheet" href="/brand/application.css"/>
+</head>
+<body data-want-build="6.8.0-control" data-want-surface="control">
+<div class="app">
+<aside class="sidebar">
+  <div class="brand"><img class="want-brandmark" src="/brand/logo/screen/logomark/want-logomark-color-dark.svg" alt=""><div class="brandcopy"><div class="brandname">WANT</div><div class="brandsub">Project Control</div></div></div>
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Minimizar barra lateral" title="Minimizar barra lateral">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m14 7-5 5 5 5"/></svg>
+  </button>
+  <nav>
+    <div class="navgroup"><div class="navlabel">Workspace</div>
+      <button class="navbtn active" data-view="overview" aria-label="Visão geral">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="2"/><rect x="14" y="3" width="7" height="7" rx="2"/><rect x="3" y="14" width="7" height="7" rx="2"/><rect x="14" y="14" width="7" height="7" rx="2"/></svg><span>Overview</span>
+      </button>
+      <button class="navbtn" data-view="kanban" aria-label="Kanban">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="5" height="16" rx="2"/><rect x="10" y="4" width="5" height="10" rx="2"/><rect x="17" y="4" width="4" height="13" rx="2"/></svg><span>Kanban</span><b class="count" id="navTaskCount">0</b>
+      </button>
+      <button class="navbtn" data-view="timeline" aria-label="Timeline">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h16M4 12h16M4 18h16"/><path d="M8 4v4M14 10v4M18 16v4"/></svg><span>Timeline</span>
+      </button>
+      <button class="navbtn" data-view="tasks" aria-label="Lista de tarefas">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6h11M9 12h11M9 18h11"/><path d="m3 6 1 1 2-2M3 12l1 1 2-2M3 18l1 1 2-2"/></svg><span>Tarefas</span>
+      </button>
+      <button class="navbtn" data-view="experiments" aria-label="Experimentos">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6M10 3v5l-5 9a2 2 0 0 0 1.7 3h10.6A2 2 0 0 0 19 17l-5-9V3"/><path d="M8 14h8"/></svg><span>Experiments</span><b class="count" id="navExpCount">0</b>
+      </button>
+      <a class="navbtn navlink" href="/b2b/" aria-label="Painel B2B">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V10l8-5 8 5v10"/><path d="M8 20v-5h8v5"/><path d="M9 11h6"/></svg><span>B2B Intelligence</span>
+      </a>
+      <a class="navbtn navlink" href="/pilot/" aria-label="Pilot Lab E01 a E03">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 3h6"/><path d="M10 3v5l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/><path d="M8 14h8"/></svg><span>Pilot Lab</span>
+      </a>
+      <button class="navbtn" data-view="history" aria-label="Histórico de alterações">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v6h6"/><path d="M12 7v5l3 2"/></svg><span>Activity</span>
+      </button>
+      <button class="navbtn" data-view="docs" aria-label="Base do projeto">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h10l4 4v12H5z"/><path d="M15 4v5h5"/><path d="M8 13h8M8 17h6"/></svg><span>Knowledge</span>
+      </button>
+    </div>
+  </nav>
+  <div class="sidebar-bottom">
+    <div class="sync-card">
+      <div class="sync-top"><div class="status-inline"><i id="syncDot" class="dot"></i><span id="syncLabel">Local</span></div><button class="iconbtn" id="settingsBtn" aria-label="Configurar sincronização">⚙</button></div>
+      <p class="sync-note" id="syncHelp">Sincronização protegida pela Vercel.</p>
+    </div>
+  </div>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <div class="crumb"><small>WANT</small><span style="color:#3b4658">/</span><b id="viewLabel">Overview</b></div>
+    <div class="topactions">
+      <button class="btn ghost" id="commandBtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg>Buscar <span class="shortcut">⌘ K</span></button>
+      <button class="btn ghost" id="pullBtn">↓ Sheet</button>
+      <button class="btn ghost" id="pushBtn">↑ Sheet</button>
+      <button class="btn primary" id="newBtn">+ Nova tarefa</button>
+    </div>
+  </header>
+
+  <main class="content">
+    <section class="hero">
+      <div><div class="eyebrow">Project Operations</div><h1>WANT Control Center</h1><p class="lede">Gestão orientada a gates: prazo importa, mas evidência é o que libera o próximo investimento.</p></div>
+      <div class="phase-chip"><div style="width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(33,199,171,.11)"></div><div><small>Fase atual</small><b id="currentPhase">0 • Fundamentos</b></div></div>
+    </section>
+
+    <section class="alertbar" id="gateAlert">
+      <div class="alerticon">!</div><div><b>Gate atual</b><p id="gateText">Fechar BR-01, BR-02 e BR-03 antes de acelerar construção.</p></div><div class="right" id="gateDue">Fundamentos</div>
+    </section>
+
+    <section class="kpis" id="kpis"></section>
+
+    <section class="controls" id="taskControls">
+      <div class="filters">
+        <div class="searchbox"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/></svg><input class="control" id="search" placeholder="Buscar tarefa, owner, gate…"></div>
+        <select class="control" id="phaseFilter"><option value="">Todas as fases</option></select>
+        <select class="control" id="ownerFilter"><option value="">Todos os owners</option></select>
+        <select class="control" id="priorityFilter"><option value="">Prioridade</option><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select>
+      </div>
+      <button class="btn ghost" id="clearFilters">Limpar filtros</button>
+    </section>
+
+    <section id="overview" class="view active">
+      <div class="overview-grid">
+        <article class="panel"><div class="section-head"><h3>Gates críticos</h3><small>o que realmente destrava o projeto</small></div><div class="gate-list" id="gateList"></div></article>
+        <article class="panel"><div class="section-head"><h3>Progresso por fase</h3><small>execução observável</small></div><div class="phase-list" id="phaseList"></div></article>
+      </div>
+    </section>
+
+    <section id="kanban" class="view">
+      <div class="section-head"><h3>Fluxo de trabalho</h3><small>arraste cartões ou abra para editar detalhes</small></div>
+      <div class="board" id="board"></div>
+    </section>
+
+    <section id="timeline" class="view">
+      <div class="section-head"><h3>Timeline</h3><small>13 semanas • out–dez 2026</small></div>
+      <div class="ganttwrap"><div class="gantt" id="gantt"></div></div>
+    </section>
+
+    <section id="tasks" class="view">
+      <div class="section-head"><h3>Lista mestre</h3><small>fonte operacional única</small></div>
+      <div class="tablewrap" style="overflow:auto"><table><thead><tr><th>ID</th><th>Tarefa</th><th>Fase</th><th>Owner</th><th>Prioridade</th><th>Início</th><th>Fim</th><th>Status</th><th>Progresso</th><th>Dependências</th><th>Gate</th><th>Próximo passo</th></tr></thead><tbody id="tbody"></tbody></table></div>
+    </section>
+
+
+    <section id="experiments" class="view">
+      <div class="experiment-toolbar">
+        <div class="section-head" style="margin:0"><div><h3>Experiment Portfolio</h3><small>hipótese → teste → evidência → decisão</small></div></div>
+        <button class="btn primary" id="newExperimentBtn">+ Novo experimento</button>
+      </div>
+      <div class="experiment-summary">
+        <div class="exp-stat"><small>Total</small><b id="expTotal">0</b></div>
+        <div class="exp-stat"><small>Em execução</small><b id="expRunning">0</b></div>
+        <div class="exp-stat"><small>Concluídos</small><b id="expCompleted">0</b></div>
+        <div class="exp-stat"><small>Sem regra de decisão</small><b id="expMissingRule">0</b></div>
+      </div>
+      <div class="experiment-grid" id="experimentGrid"></div>
+    </section>
+
+    <section id="docs" class="view">
+      <div class="knowledge-shell">
+        <aside class="knowledge-index">
+          <h4>Índice do projeto</h4>
+          <div id="kbIndex"></div>
+        </aside>
+        <div class="knowledge-main">
+          <div class="kb-hero">
+            <div class="eyebrow">Project Intelligence</div>
+            <h2>O projeto inteiro, pesquisável.</h2>
+            <p>Consulte o Plano Mestre por capítulo, encontre decisões por palavra-chave e abra os arquivos-fonte sem sair do contexto do WANT.</p>
+            <div class="kb-search-wrap"><input class="kb-search" id="kbSearch" placeholder="Buscar tese, monetização, B2B, MVP, LGPD, experimento…"></div>
+          </div>
+          <div class="section-head"><h3>Fontes e anexos</h3><small>documentos originais e fontes canônicas</small></div>
+          <div class="kb-grid" id="kbSources"></div>
+          <div class="section-head"><h3>Plano Mestre</h3><small id="kbResultCount">índice completo</small></div>
+          <div id="kbSections"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="history" class="view">
+      <div class="section-head"><h3>Activity / Change History</h3><small>auditoria por alteração de campo</small></div>
+      <div class="tablewrap" style="overflow:auto">
+        <table style="min-width:980px"><thead><tr><th>Quando</th><th>Task</th><th>Ação</th><th>Campo</th><th>Anterior</th><th>Novo</th><th>Ator</th><th>Origem</th></tr></thead><tbody id="historyBody"></tbody></table>
+      </div>
+    </section>
+  </main>
+</div>
+</div>
+
+
+<div class="overlay hidden" id="taskOverlay" role="dialog" aria-modal="true" aria-labelledby="drawerTitle">
+  <aside class="drawer">
+    <div class="drawer-head">
+      <div><div class="eyebrow" id="drawerEyebrow">TASK</div><h3 id="drawerTitle">Editar tarefa</h3></div>
+      <button class="iconbtn" id="taskClose" aria-label="Fechar">×</button>
+    </div>
+    <div class="lock-banner" id="taskLockBanner"></div>
+    <div class="task-tabs">
+      <button class="task-tab active" data-task-pane="execution">Execução</button>
+      <button class="task-tab" data-task-pane="brief">Task Brief</button>
+      <button class="task-tab" data-task-pane="completion">Conclusão & Evidências</button>
+      <button class="task-tab" data-task-pane="automation">Automação</button>
+    </div>
+
+    <div class="task-pane active" id="taskPaneExecution">
+      <div class="formgrid">
+        <div class="field"><label>ID</label><input id="f_id"></div><div class="field"><label>Tarefa</label><input id="f_title"></div>
+        <div class="field"><label>Fase</label><input id="f_phase"></div><div class="field"><label>Owner</label><input id="f_owner"></div>
+        <div class="field"><label>Prioridade</label><select id="f_priority"><option>Critical</option><option>High</option><option>Medium</option><option>Low</option></select></div>
+        <div class="field"><label>Status</label><select id="f_status"><option>Backlog</option><option>Ready</option><option>In Progress</option><option>Blocked</option><option>Review</option><option>Done</option></select></div>
+        <div class="field"><label>Início</label><input type="date" id="f_start"></div><div class="field"><label>Fim</label><input type="date" id="f_due"></div>
+        <div class="field"><label>Progresso (%)</label><input type="number" min="0" max="100" id="f_progress"></div><div class="field"><label>Dependências</label><input id="f_depends"></div>
+        <div class="field"><label>Milestone</label><input id="f_milestone"></div><div class="field"><label>Gate</label><input id="f_gate"></div>
+        <div class="field span2"><label>Próximo passo</label><input id="f_next"></div>
+      </div>
+      <div class="dependency-card" style="margin-top:14px">
+        <div class="brief-title">Dependências e elegibilidade</div>
+        <div id="taskDependencies"></div>
+      </div>
+    </div>
+
+    <div class="task-pane" id="taskPaneBrief">
+      <div id="taskBriefContent"></div>
+    </div>
+
+    <div class="task-pane" id="taskPaneCompletion">
+      <div class="completion-card">
+        <div class="brief-title">Registro de conclusão</div>
+        <div class="completion-grid">
+          <div class="field span2"><label>Resultado entregue *</label><textarea id="c_outcome" placeholder="O que mudou concretamente como resultado desta tarefa?"></textarea></div>
+          <div class="field"><label>Título da evidência</label><input id="c_evidence_title" placeholder="Ex.: Estudo de geografia piloto"></div>
+          <div class="field"><label>Link da evidência</label><input id="c_evidence_url" placeholder="https://..."></div>
+          <div class="field span2"><label>Nota / evidência textual</label><textarea id="c_evidence_note" placeholder="Use quando a evidência não estiver em um arquivo ou link externo."></textarea></div>
+          <div class="field span2"><label>Aprendizado</label><textarea id="c_learning" placeholder="O que aprendemos e o que isso altera nas próximas etapas?"></textarea></div>
+          <div class="field span2"><label>Decisão tomada</label><textarea id="c_decision" placeholder="Preencha somente se houver uma decisão que precise entrar no Decision Log."></textarea></div>
+          <div class="field"><label>Gate impactado</label><input id="c_gate" placeholder="BR-01, E01, Gate Demanda..."></div>
+          <div class="field"><label>Próxima ação</label><input id="c_next" placeholder="O que deve acontecer em seguida?"></div>
+          <label class="checkline span2"><input type="checkbox" id="c_acceptance"> <span>Confirmo que o critério de aceite do Task Brief foi verificado com evidência.</span></label>
+          <label class="checkline span2"><input type="checkbox" id="c_close_gate"> <span>Se aplicável, autorizar fechamento do requisito/gate relacionado após esta conclusão.</span></label>
+        </div>
+        <button class="btn primary complete-btn" id="completeTaskBtn">Concluir tarefa com evidência</button>
+      </div>
+    </div>
+
+    <div class="task-pane" id="taskPaneAutomation">
+      <div class="automation-card">
+        <div class="brief-title">Regras ativas para esta tarefa</div>
+        <div id="taskAutomationRules"></div>
+      </div>
+      <div class="automation-card">
+        <div class="brief-title">Eventos automáticos</div>
+        <div id="taskAutomationEvents"></div>
+      </div>
+    </div>
+
+    <div class="drawer-actions">
+      <button class="btn danger" id="deleteBtn">Excluir</button>
+      <div class="right"><button class="btn" id="taskCancel">Cancelar</button><button class="btn primary" id="taskSave">Salvar tarefa</button></div>
+    </div>
+  </aside>
+</div>
+
+
+<div class="overlay hidden" id="experimentOverlay" role="dialog" aria-modal="true" aria-labelledby="experimentTitle">
+  <aside class="drawer exp-form">
+    <div class="drawer-head">
+      <div><div class="eyebrow" id="experimentEyebrow">EXPERIMENT</div><h3 id="experimentTitle">Novo experimento</h3></div>
+      <button class="iconbtn" id="experimentClose" aria-label="Fechar">×</button>
+    </div>
+    <div class="formgrid">
+      <div class="field"><label>ID</label><input id="e_id" placeholder="E06"></div>
+      <div class="field"><label>Status</label><select id="e_status"><option>Not Started</option><option>Ready</option><option>Running</option><option>Complete</option><option>Invalidated</option></select></div>
+      <div class="field span2"><label>Hipótese *</label><textarea id="e_hypothesis" placeholder="Se [causa/mecanismo], então [efeito observável]..."></textarea></div>
+      <div class="field span2"><label>Teste *</label><textarea id="e_test" placeholder="Como a hipótese será colocada em risco?"></textarea></div>
+      <div class="field span2"><label>Métrica primária *</label><input id="e_metric" placeholder="Uma única métrica principal"></div>
+      <div class="field span2"><label>Threshold / Decision rule *</label><textarea id="e_rule" placeholder="Defina antes do teste o que mantém, altera ou invalida a hipótese."></textarea></div>
+      <div class="field"><label>Owner</label><input id="e_owner" placeholder="Founder / Commercial"></div>
+      <div class="field"><label>Task vinculada</label><input id="e_task" placeholder="T-003"></div>
+      <div class="field"><label>Gate</label><input id="e_gate" placeholder="BR-03"></div>
+      <div class="field"><label>Evidência / link</label><input id="e_evidence" placeholder="https://..."></div>
+      <div class="field span2"><label>Resultado</label><textarea id="e_result" placeholder="Preencher depois da execução, sem reinterpretar a regra de decisão."></textarea></div>
+      <div class="field span2"><label>Decisão</label><textarea id="e_decision" placeholder="Manter / adaptar / invalidar / novo teste e por quê."></textarea></div>
+    </div>
+    <div class="drawer-actions">
+      <button class="btn danger" id="deleteExperimentBtn">Excluir</button>
+      <div class="right"><button class="btn" id="experimentCancel">Cancelar</button><button class="btn primary" id="experimentSave">Salvar experimento</button></div>
+    </div>
+  </aside>
+</div>
+
+<div class="overlay hidden settingsbox" id="settingsOverlay" role="dialog" aria-modal="true">
+  <div class="drawer">
+    <div class="drawer-head"><div><div class="eyebrow">INTEGRATION</div><h3>Google Sheets Sync</h3></div><button class="iconbtn" id="settingsClose">×</button></div>
+    
+    <div class="field" style="margin-top:12px"><label>Seu nome / ator no histórico</label><input id="apiActor" placeholder="ex.: Paulo"></div>
+    <p style="color:var(--muted);font-size:11px;line-height:1.55;margin-top:13px">A Google Sheet permanece a fonte operacional canônica. A URL do Apps Script e o token ficam protegidos no servidor da Vercel, fora do navegador.</p>
+    <div class="drawer-actions"><span></span><div class="right"><button class="btn" id="settingsCancel">Cancelar</button><button class="btn primary" id="settingsSave">Salvar configuração</button></div></div>
+  </div>
+</div>
+
+<div class="command hidden" id="commandOverlay">
+  <div class="commandbox"><input id="commandInput" placeholder="Buscar tarefa, gate ou owner…"><div class="commanditems" id="commandItems"></div></div>
+</div>
+<div id="toast" class="toast hidden"></div>
+
+<script>
+const BASE=[{"id": "T-001", "title": "Fechar geografia piloto", "phase": "0 • Fundamentos", "owner": "Founder/Product", "priority": "Critical", "start": "2026-10-01", "due": "2026-10-02", "status": "In Progress", "progress": 60, "depends": "", "milestone": "M0 Fundamentos", "gate": "BR-01 fechado", "next": "Definir cidade e bairros do piloto"}, {"id": "T-002", "title": "Definir 3–5 categorias iniciais", "phase": "0 • Fundamentos", "owner": "Founder/Product", "priority": "Critical", "start": "2026-10-01", "due": "2026-10-03", "status": "In Progress", "progress": 50, "depends": "", "milestone": "M0 Fundamentos", "gate": "BR-02 fechado", "next": "Selecionar categorias com demanda local recorrente"}, {"id": "T-003", "title": "Definir ICP B2B inicial", "phase": "0 • Fundamentos", "owner": "Founder/Commercial", "priority": "Critical", "start": "2026-10-01", "due": "2026-10-04", "status": "Ready", "progress": 10, "depends": "T-002", "milestone": "M0 Fundamentos", "gate": "BR-03 fechado", "next": "Escolher comprador e job inicial"}, {"id": "T-004", "title": "Fechar taxonomia de demanda", "phase": "0 • Fundamentos", "owner": "Product", "priority": "High", "start": "2026-10-02", "due": "2026-10-04", "status": "Ready", "progress": 0, "depends": "T-002", "milestone": "M0 Fundamentos", "gate": "Instrumentos prontos", "next": "Definir campos mínimos de uma demanda válida"}, {"id": "T-005", "title": "Preparar landing de criação de demanda", "phase": "1 • Demanda", "owner": "Product/Growth", "priority": "Critical", "start": "2026-10-05", "due": "2026-10-07", "status": "Backlog", "progress": 0, "depends": "T-001,T-002,T-004", "milestone": "M1 Demanda", "gate": "E01 pronto", "next": "Construir formulário e página pública de cluster"}, {"id": "T-006", "title": "Configurar tracking de E01–E03", "phase": "1 • Demanda", "owner": "Product/Data", "priority": "High", "start": "2026-10-05", "due": "2026-10-07", "status": "Backlog", "progress": 0, "depends": "T-004", "milestone": "M1 Demanda", "gate": "Métricas observáveis", "next": "Eventos: criar, apoiar, qualificar, compartilhar"}, {"id": "T-007", "title": "Rodar experimento E01: declaração de demanda", "phase": "1 • Demanda", "owner": "Research/Growth", "priority": "Critical", "start": "2026-10-08", "due": "2026-10-12", "status": "Backlog", "progress": 0, "depends": "T-005,T-006", "milestone": "M1 Demanda", "gate": "E01 concluído", "next": "Atrair usuários qualificados e medir criação"}, {"id": "T-008", "title": "Rodar E02: compartilhamento de clusters", "phase": "1 • Demanda", "owner": "Growth", "priority": "High", "start": "2026-10-09", "due": "2026-10-14", "status": "Backlog", "progress": 0, "depends": "T-005,T-006", "milestone": "M1 Demanda", "gate": "E02 concluído", "next": "Medir compartilhamento por criadores/apoiadores"}, {"id": "T-009", "title": "Rodar E03: qualificação de intenção", "phase": "1 • Demanda", "owner": "Product/Research", "priority": "Critical", "start": "2026-10-09", "due": "2026-10-15", "status": "Backlog", "progress": 0, "depends": "T-005,T-006", "milestone": "M1 Demanda", "gate": "E03 concluído", "next": "Coletar preço, frequência, raio e opt-in"}, {"id": "T-010", "title": "Consolidar evidence ledger consumidor", "phase": "1 • Demanda", "owner": "Product/Research", "priority": "High", "start": "2026-10-15", "due": "2026-10-16", "status": "Backlog", "progress": 0, "depends": "T-007,T-008,T-009", "milestone": "M1 Demanda", "gate": "Gate Demanda", "next": "Decidir manter/ajustar wedge"}, {"id": "T-011", "title": "Preparar mock do painel B2B", "phase": "2 • B2B", "owner": "Product/Design", "priority": "High", "start": "2026-10-12", "due": "2026-10-14", "status": "Backlog", "progress": 0, "depends": "T-003", "milestone": "M2 B2B", "gate": "Material comercial", "next": "Mostrar cluster, ticket, frequência, raio e confiança"}, {"id": "T-012", "title": "Selecionar 10–15 empresas alvo", "phase": "2 • B2B", "owner": "Commercial", "priority": "Critical", "start": "2026-10-12", "due": "2026-10-14", "status": "Backlog", "progress": 0, "depends": "T-003", "milestone": "M2 B2B", "gate": "Lista de prospects", "next": "Qualificar empresas por fit com categorias"}, {"id": "T-013", "title": "Rodar E04: entrevistas e WTP B2B", "phase": "2 • B2B", "owner": "Commercial/Research", "priority": "Critical", "start": "2026-10-15", "due": "2026-10-22", "status": "Backlog", "progress": 0, "depends": "T-011,T-012", "milestone": "M2 B2B", "gate": "E04 concluído", "next": "Buscar compromisso concreto, não elogio"}, {"id": "T-014", "title": "Fechar design partner inicial", "phase": "2 • B2B", "owner": "Founder/Commercial", "priority": "Critical", "start": "2026-10-20", "due": "2026-10-23", "status": "Backlog", "progress": 0, "depends": "T-013", "milestone": "M2 B2B", "gate": "Gate B2B", "next": "Obter piloto, segunda reunião ou LOI"}, {"id": "T-015", "title": "Escolher cluster para concierge", "phase": "3 • Concierge", "owner": "Product/Ops", "priority": "Critical", "start": "2026-10-19", "due": "2026-10-21", "status": "Backlog", "progress": 0, "depends": "T-010", "milestone": "M3 Concierge", "gate": "Cluster selecionado", "next": "Escolher um cluster com sinal + empresa plausível"}, {"id": "T-016", "title": "Executar Reality Check manual", "phase": "3 • Concierge", "owner": "Research/Ops", "priority": "High", "start": "2026-10-22", "due": "2026-10-27", "status": "Backlog", "progress": 0, "depends": "T-015", "milestone": "M3 Concierge", "gate": "Reality Checked", "next": "Confirmar/contestar oferta local e contexto"}, {"id": "T-017", "title": "Montar ficha de oportunidade B2B", "phase": "3 • Concierge", "owner": "Product/Data", "priority": "High", "start": "2026-10-27", "due": "2026-10-29", "status": "Backlog", "progress": 0, "depends": "T-016", "milestone": "M3 Concierge", "gate": "Opportunity Ready", "next": "Consolidar demanda + checks + dados agregados"}, {"id": "T-018", "title": "Rodar E05: publicar Demand Drop", "phase": "3 • Concierge", "owner": "Sales/Product", "priority": "Critical", "start": "2026-10-30", "due": "2026-11-05", "status": "Backlog", "progress": 0, "depends": "T-014,T-017", "milestone": "M3 Concierge", "gate": "Offer Live", "next": "Empresa publica oferta real para o cluster"}, {"id": "T-019", "title": "Venture Gate pré-MVP", "phase": "3 • Concierge", "owner": "Founder", "priority": "Critical", "start": "2026-11-06", "due": "2026-11-06", "status": "Backlog", "progress": 0, "depends": "T-018", "milestone": "M3 Concierge", "gate": "Go / Iterate / Pause", "next": "Autorizar ou bloquear construção do MVP"}, {"id": "T-020", "title": "Especificar MVP funcional", "phase": "4 • MVP", "owner": "Product/Tech", "priority": "Critical", "start": "2026-11-02", "due": "2026-11-07", "status": "Backlog", "progress": 0, "depends": "T-019", "milestone": "M4 MVP", "gate": "Spec aprovada", "next": "Converter fluxo validado em tickets verticais"}, {"id": "T-021", "title": "Construir criação e clusterização de demanda", "phase": "4 • MVP", "owner": "Tech", "priority": "Critical", "start": "2026-11-09", "due": "2026-11-14", "status": "Backlog", "progress": 0, "depends": "T-020", "milestone": "M4 MVP", "gate": "Consumer core", "next": "Fluxo criar/apoiar/qualificar/compartilhar"}, {"id": "T-022", "title": "Construir painel B2B básico", "phase": "4 • MVP", "owner": "Tech", "priority": "Critical", "start": "2026-11-12", "due": "2026-11-20", "status": "Backlog", "progress": 0, "depends": "T-020", "milestone": "M4 MVP", "gate": "B2B core", "next": "Mapa/lista + dados agregados + filtros"}, {"id": "T-023", "title": "Construir Demand Drop e commitments", "phase": "4 • MVP", "owner": "Tech/Product", "priority": "Critical", "start": "2026-11-18", "due": "2026-11-25", "status": "Backlog", "progress": 0, "depends": "T-021,T-022", "milestone": "M4 MVP", "gate": "Loop ponta a ponta", "next": "Oferta + condição + prazo + adesão"}, {"id": "T-024", "title": "QA, analytics e go-live piloto", "phase": "4 • MVP", "owner": "Tech/Product", "priority": "High", "start": "2026-11-24", "due": "2026-11-27", "status": "Backlog", "progress": 0, "depends": "T-023", "milestone": "M4 MVP", "gate": "Pilot ready", "next": "Validar runtime e instrumentação"}, {"id": "T-025", "title": "Lançar piloto local", "phase": "5 • Piloto", "owner": "Growth/Ops", "priority": "Critical", "start": "2026-11-30", "due": "2026-12-02", "status": "Backlog", "progress": 0, "depends": "T-024", "milestone": "M5 Piloto", "gate": "Piloto ativo", "next": "Ativar região e categorias"}, {"id": "T-026", "title": "Operar clusters e empresas reais", "phase": "5 • Piloto", "owner": "Growth/Ops/Sales", "priority": "Critical", "start": "2026-12-02", "due": "2026-12-11", "status": "Backlog", "progress": 0, "depends": "T-025", "milestone": "M5 Piloto", "gate": "Uso repetido", "next": "Acompanhar criação → oferta → commitment"}, {"id": "T-027", "title": "Fechar pacote B2B pago", "phase": "6 • Monetização", "owner": "Commercial/Finance", "priority": "Critical", "start": "2026-12-07", "due": "2026-12-12", "status": "Backlog", "progress": 0, "depends": "T-013,T-026", "milestone": "M6 Monetização", "gate": "BR-04 fechado", "next": "Definir público vs pago e value metric"}, {"id": "T-028", "title": "Definir contrato de success fee", "phase": "6 • Monetização", "owner": "Commercial/Legal", "priority": "Critical", "start": "2026-12-08", "due": "2026-12-14", "status": "Backlog", "progress": 0, "depends": "T-026", "milestone": "M6 Monetização", "gate": "BR-05 fechado", "next": "Definir evento inequívoco de atribuição"}, {"id": "T-029", "title": "Rodar E07/E08 monetização", "phase": "6 • Monetização", "owner": "Commercial", "priority": "Critical", "start": "2026-12-14", "due": "2026-12-18", "status": "Backlog", "progress": 0, "depends": "T-027,T-028", "milestone": "M6 Monetização", "gate": "WTP + fee evidenciado", "next": "Testar pagamento/LOI e fee em deal real"}, {"id": "T-030", "title": "Venture Review e plano Q1", "phase": "7 • Review", "owner": "Founder", "priority": "Critical", "start": "2026-12-21", "due": "2026-12-23", "status": "Backlog", "progress": 0, "depends": "T-010,T-014,T-019,T-024,T-026,T-029", "milestone": "M7 Review", "gate": "Decisão de próximo investimento", "next": "Persevere / iterate / pivot / pause"}];
+const STATUSES=["Backlog","Ready","In Progress","Blocked","Review","Done"];
+const TASK_BRIEFS={"T-001": {"objective": "Definir a geografia exata do piloto para concentrar oferta e demanda e reduzir o risco de cold start.", "context": "O MVP não deve começar amplo. A região precisa ser pequena o suficiente para gerar densidade e grande o suficiente para conter demanda real e empresas plausíveis.", "steps": ["Escolher a cidade do piloto.", "Selecionar bairros ou raio operacional inicial.", "Registrar critérios usados: densidade, perfil econômico, acesso a empresas, logística e capacidade de aquisição.", "Explicitar o que fica fora do piloto.", "Documentar rationale e premissas que deverão ser revisadas."], "acceptance": "Cidade e bairros/raio estão nomeados, o racional está documentado e a escolha pode orientar campanhas, categorias e abordagem B2B.", "evidence": "Nota ou documento com mapa/área escolhida, critérios e rationale.", "knowledge": "geografia piloto", "gate": "BR-01"}, "T-002": {"objective": "Escolher as 3–5 categorias iniciais em que o WANT tentará provar demanda concentrada.", "context": "Categorias demais diluem aquisição e tornam o aprendizado inconclusivo. A seleção deve privilegiar frequência, dor local, clareza do serviço e possibilidade de resposta empresarial.", "steps": ["Listar categorias candidatas.", "Comparar recorrência, ticket, dor, densidade local e facilidade de oferta.", "Eliminar categorias com baixa frequência ou dependência regulatória excessiva.", "Selecionar 3–5 categorias.", "Registrar critérios e hipóteses por categoria."], "acceptance": "Existe uma lista priorizada de 3–5 categorias com rationale e taxonomia inicial suficiente para criar demandas consistentes.", "evidence": "Matriz de seleção ou nota com categorias escolhidas e critérios.", "knowledge": "categorias iniciais", "gate": "BR-02"}, "T-003": {"objective": "Definir quem é o primeiro comprador B2B do sinal de demanda do WANT e qual problema ele está tentando resolver.", "context": "Sem ICP claro, entrevistas e oferta B2B viram conversas genéricas. O objetivo é escolher o comprador e o job, não descrever todo o mercado.", "steps": ["Definir tipo de empresa alvo.", "Definir cargo/papel comprador ou influenciador.", "Descrever job principal: expansão, seleção de ponto, validação de demanda, lançamento etc.", "Registrar orçamento ou forma de compra provisória.", "Definir sinais mínimos de fit."], "acceptance": "Comprador, empresa, job, gatilho de compra e hipótese de orçamento estão explícitos.", "evidence": "Ficha de ICP B2B ou nota estruturada.", "knowledge": "ICP B2B", "gate": "BR-03"}, "T-004": {"objective": "Definir o schema mínimo de uma demanda para que sinais possam ser comparados, agrupados e vendidos como inteligência.", "context": "A qualidade do Demand Graph depende de dados consistentes. Campos demais aumentam fricção; campos de menos destroem utilidade.", "steps": ["Definir categoria e necessidade.", "Definir localização/raio.", "Definir frequência.", "Definir faixa de preço ou disposição a pagar.", "Definir timing e força de intenção/opt-in.", "Separar campos obrigatórios dos opcionais."], "acceptance": "Existe uma taxonomia única e operacional para capturar e qualificar demandas no piloto.", "evidence": "Schema/campos documentados e exemplos de demandas válidas e inválidas.", "knowledge": "taxonomia de demanda", "gate": "Instrumentos prontos"}, "T-005": {"objective": "Criar a experiência inicial para uma pessoa declarar, apoiar e entender uma demanda local.", "context": "A landing é o instrumento do experimento E01 e deve priorizar comportamento observável, não acabamento de produto final.", "steps": ["Definir proposta de valor e CTA principal.", "Construir formulário usando a taxonomia aprovada.", "Criar página pública simples do cluster.", "Adicionar confirmação e compartilhamento.", "Garantir tracking dos eventos necessários."], "acceptance": "Usuário consegue criar uma demanda válida ponta a ponta e existe uma página/estado compartilhável do cluster.", "evidence": "URL funcional, screenshots e checklist do fluxo.", "knowledge": "landing criação de demanda", "gate": "E01 pronto"}, "T-006": {"objective": "Instrumentar os eventos que permitem medir E01–E03 sem depender de interpretação manual.", "context": "Experimentos sem eventos definidos antes do lançamento produzem métricas frágeis e decisões retroativas.", "steps": ["Definir evento de criação de demanda.", "Definir evento de apoio.", "Definir evento de qualificação.", "Definir evento de compartilhamento.", "Definir propriedades mínimas e convenção de nomes.", "Validar eventos em um fluxo real."], "acceptance": "Os eventos críticos são observáveis, têm definição estável e conseguem alimentar as métricas primárias dos experimentos.", "evidence": "Plano de tracking e captura dos eventos em execução.", "knowledge": "tracking E01 E03", "gate": "Métricas observáveis"}, "T-007": {"objective": "Testar se pessoas realmente declaram uma demanda local usando o fluxo do WANT.", "context": "O teste deve medir comportamento real em tráfego qualificado, não opinião sobre a ideia.", "steps": ["Definir threshold antes do teste.", "Atrair usuários do recorte do piloto.", "Medir visitantes qualificados e demandas válidas.", "Registrar fricções e abandonos.", "Comparar resultado com a regra de decisão."], "acceptance": "Resultado do E01, métrica primária, amostra, limitações e decisão estão registrados.", "evidence": "Export/relatório do teste, métricas e observações.", "knowledge": "E01 declaração de demanda", "gate": "E01 concluído"}, "T-008": {"objective": "Testar se criadores e apoiadores distribuem organicamente um cluster para outras pessoas.", "context": "Compartilhamento é uma hipótese de aquisição e densidade. O teste precisa distinguir impressão positiva de ação real.", "steps": ["Definir threshold.", "Expor CTA de compartilhamento.", "Medir criadores/apoiadores elegíveis.", "Medir compartilhamentos efetivos.", "Registrar canais e motivos de não compartilhar."], "acceptance": "Taxa de compartilhamento e decisão do E02 estão documentadas.", "evidence": "Métricas do CTA e exemplos de compartilhamento.", "knowledge": "E02 compartilhamento clusters", "gate": "E02 concluído"}, "T-009": {"objective": "Testar se usuários fornecem sinais mais fortes que um like, como preço, frequência e raio.", "context": "A monetização B2B depende de intenção utilizável, não apenas contagem de apoiadores.", "steps": ["Definir perguntas de qualificação.", "Definir threshold de completude.", "Aplicar após criação/apoio.", "Medir conclusão por campo.", "Analisar abandono e inconsistências."], "acceptance": "O E03 demonstra se existe profundidade de intenção suficiente para compor uma oportunidade.", "evidence": "Dataset/resultados de qualificação e decisão.", "knowledge": "E03 qualificação intenção", "gate": "E03 concluído"}, "T-010": {"objective": "Consolidar a evidência do lado consumidor e decidir se o wedge inicial deve ser mantido, ajustado ou descartado.", "context": "O gate evita seguir para B2B com base em sinais isolados.", "steps": ["Reunir resultados E01–E03.", "Separar evidência favorável, contrária e inconclusiva.", "Analisar por categoria/geografia.", "Registrar principais aprendizados.", "Tomar decisão explícita sobre o wedge."], "acceptance": "Existe um evidence ledger com decisão e rationale rastreável.", "evidence": "Evidence ledger com E01–E03 e decisão.", "knowledge": "evidence ledger consumidor", "gate": "Gate Demanda"}, "T-011": {"objective": "Materializar como a empresa enxergaria e utilizaria uma oportunidade no WANT antes de construir o produto.", "context": "O mock serve para testar valor e linguagem comercial, não para antecipar desenvolvimento.", "steps": ["Mostrar localização/cluster.", "Mostrar volume e qualidade da demanda.", "Mostrar ticket, frequência, raio e confiança.", "Adicionar filtros essenciais.", "Preparar narrativa do job B2B."], "acceptance": "Mock é suficiente para uma empresa avaliar utilidade, objeções e disposição a avançar.", "evidence": "Link ou arquivo do mock e roteiro de demonstração.", "knowledge": "painel B2B", "gate": "Material comercial"}, "T-012": {"objective": "Montar a lista inicial de empresas com maior probabilidade de aprender e agir sobre os clusters selecionados.", "context": "A lista deve priorizar fit com o problema, não volume de prospecção.", "steps": ["Definir critérios de fit.", "Encontrar 10–15 empresas compatíveis.", "Identificar contato/papel relevante.", "Registrar evidência de expansão ou decisão de localização quando houver.", "Ordenar por fit e facilidade de acesso."], "acceptance": "Há 10–15 prospects priorizados com rationale individual.", "evidence": "Lista de prospects com critérios de fit.", "knowledge": "empresas alvo B2B", "gate": "Lista de prospects"}, "T-013": {"objective": "Testar utilidade, willingness-to-pay e compromisso B2B usando cluster real ou muito próximo da realidade.", "context": "Elogios não contam como validação. O resultado buscado é comportamento: segunda reunião, piloto, LOI, orçamento ou pagamento.", "steps": ["Apresentar problema e cluster.", "Explorar processo atual e custo da decisão.", "Mostrar mock/dados.", "Perguntar como comprariam/usariam.", "Buscar compromisso concreto.", "Registrar objeções e WTP."], "acceptance": "E04 possui entrevistas, compromissos observáveis, objeções, WTP e decisão.", "evidence": "Notas/transcrições, follow-ups e compromissos registrados.", "knowledge": "E04 WTP B2B", "gate": "E04 concluído"}, "T-014": {"objective": "Converter interesse B2B em um design partner que participe do concierge e ajude a validar o fluxo real.", "context": "Design partner precisa aceitar esforço e próximo passo concreto, não apenas dizer que a ideia é interessante.", "steps": ["Escolher prospect com melhor fit.", "Definir escopo do piloto.", "Alinhar o que a empresa fornece e recebe.", "Definir próxima reunião e responsabilidade.", "Registrar compromisso ou LOI quando adequado."], "acceptance": "Existe um parceiro com compromisso explícito para participar do próximo ciclo.", "evidence": "E-mail, mensagem, ata ou LOI do compromisso.", "knowledge": "design partner", "gate": "Gate B2B"}, "T-015": {"objective": "Selecionar um cluster que tenha sinal de demanda suficiente e uma empresa plausível para executar o concierge.", "context": "O concierge deve testar o loop completo em uma oportunidade específica, não em um portfólio amplo.", "steps": ["Comparar clusters por intenção e concentração.", "Verificar presença de empresa plausível.", "Checar riscos e qualidade dos dados.", "Selecionar um cluster.", "Registrar por que ele é o melhor caso para o teste."], "acceptance": "Um cluster está escolhido com rationale e empresa(s) plausível(is).", "evidence": "Ficha do cluster selecionado.", "knowledge": "cluster concierge", "gate": "Cluster selecionado"}, "T-016": {"objective": "Verificar manualmente se a lacuna percebida é real e se existem contradições relevantes na oferta local.", "context": "O Reality Check aumenta confiança antes de apresentar a oportunidade como dado acionável.", "steps": ["Pesquisar oferta local existente.", "Validar distância, preços, horários e disponibilidade relevantes.", "Registrar alternativas que contradizem a demanda.", "Resolver divergências importantes.", "Classificar confiança do cluster."], "acceptance": "A oportunidade tem contexto verificado e contradições materiais registradas/resolvidas.", "evidence": "Checklist de reality check, fontes e observações.", "knowledge": "Reality Check", "gate": "Reality Checked"}, "T-017": {"objective": "Transformar o cluster validado em uma ficha comercial clara e acionável.", "context": "A empresa precisa entender rapidamente tamanho, qualidade, perfil e condições da oportunidade.", "steps": ["Consolidar volume de demanda.", "Resumir ticket, frequência, raio e timing.", "Adicionar nível de confiança e checks.", "Remover PII desnecessária.", "Definir CTA/ação proposta para empresa."], "acceptance": "Ficha pode ser apresentada comercialmente sem explicações adicionais críticas.", "evidence": "Ficha de oportunidade B2B.", "knowledge": "ficha oportunidade B2B", "gate": "Opportunity Ready"}, "T-018": {"objective": "Fazer uma empresa publicar uma oferta real para um cluster específico.", "context": "O Demand Drop prova a transição de inteligência para ação do lado da oferta.", "steps": ["Definir oferta e condição.", "Definir público/cluster elegível.", "Definir prazo e capacidade.", "Publicar/comunicar a oferta.", "Medir adesões e objeções."], "acceptance": "Existe uma oferta real, com condição e prazo, publicada para o cluster.", "evidence": "Oferta publicada, mensagem/landing e métricas iniciais.", "knowledge": "E05 Demand Drop", "gate": "Offer Live"}, "T-019": {"objective": "Decidir se há evidência suficiente para investir na construção do MVP.", "context": "O gate protege contra automatizar um fluxo ainda não validado.", "steps": ["Revisar evidência consumidor.", "Revisar compromisso B2B.", "Revisar concierge e oferta.", "Listar riscos ainda abertos.", "Decidir Go, Iterate ou Pause com rationale."], "acceptance": "Decisão de investimento está registrada e sustentada por evidência.", "evidence": "Memorando do Venture Gate.", "knowledge": "Venture Gate pré MVP", "gate": "Go / Iterate / Pause"}, "T-020": {"objective": "Converter o fluxo validado em uma especificação de MVP com comportamento e critérios de aceite.", "context": "A spec deve automatizar somente o que foi validado e preservar o aprendizado manual relevante.", "steps": ["Mapear fluxo consumidor.", "Mapear fluxo B2B.", "Mapear Demand Drop/commitment.", "Definir dados e permissões.", "Definir analytics e eventos.", "Quebrar em tickets verticais."], "acceptance": "Spec cobre o loop crítico, edge cases essenciais, eventos e critérios de aceite.", "evidence": "Documento de especificação e tickets.", "knowledge": "MVP funcional", "gate": "Spec aprovada"}, "T-021": {"objective": "Construir o core consumidor para criar, apoiar, qualificar e compartilhar demandas.", "context": "Este é o primeiro componente automatizado do Demand Graph.", "steps": ["Implementar criação.", "Implementar clusterização inicial.", "Implementar apoio.", "Implementar qualificação.", "Implementar compartilhamento.", "Instrumentar eventos e QA."], "acceptance": "Fluxo consumidor crítico funciona em produção/piloto com dados persistidos.", "evidence": "Build, QA e evidência de eventos.", "knowledge": "criação clusterização demanda", "gate": "Consumer core"}, "T-022": {"objective": "Construir a visão B2B mínima para explorar oportunidades agregadas sem expor dados pessoais indevidos.", "context": "O painel deve reproduzir a utilidade validada no mock e concierge, sem escopo analítico excessivo.", "steps": ["Implementar lista/mapa de clusters.", "Exibir sinais agregados.", "Adicionar filtros essenciais.", "Adicionar ficha da oportunidade.", "Aplicar regras de privacidade e acesso."], "acceptance": "Empresa consegue localizar e compreender oportunidades relevantes com dados agregados.", "evidence": "Build, screenshots e QA de acesso/privacidade.", "knowledge": "painel B2B básico", "gate": "B2B core"}, "T-023": {"objective": "Automatizar publicação de oferta e registro de commitments do cluster.", "context": "Este componente fecha o loop entre demanda detectada e resposta empresarial.", "steps": ["Criar modelo de oferta.", "Definir condição, prazo e capacidade.", "Publicar para cluster elegível.", "Registrar adesão/commitment.", "Registrar estado da oferta e resultado."], "acceptance": "Oferta e commitment funcionam ponta a ponta e são rastreáveis.", "evidence": "Fluxo funcional, QA e eventos.", "knowledge": "Demand Drop commitments", "gate": "Loop ponta a ponta"}, "T-024": {"objective": "Validar estabilidade, tracking e segurança suficientes para liberar o piloto real.", "context": "Go-live exige evidência do runtime, não apenas código concluído.", "steps": ["Executar QA dos fluxos críticos.", "Validar analytics.", "Testar permissões e privacidade.", "Testar erros e estados vazios.", "Validar deploy e monitoramento.", "Registrar issues residuais."], "acceptance": "Fluxos críticos passam, telemetria funciona e não há blocker conhecido para o piloto.", "evidence": "Checklist de QA/go-live e resultados.", "knowledge": "QA analytics go-live", "gate": "Pilot ready"}, "T-025": {"objective": "Ativar o produto para usuários reais dentro da geografia e categorias do piloto.", "context": "O lançamento deve preservar concentração e permitir suporte próximo.", "steps": ["Confirmar geografia/categorias.", "Configurar aquisição inicial.", "Ativar empresas/operadores necessários.", "Publicar ambiente piloto.", "Monitorar primeiras sessões e incidentes."], "acceptance": "Piloto está acessível ao público definido e eventos básicos estão chegando.", "evidence": "URL ativa, plano de lançamento e primeiros eventos.", "knowledge": "piloto local", "gate": "Piloto ativo"}, "T-026": {"objective": "Operar clusters e empresas reais tempo suficiente para observar repetição e gargalos do loop.", "context": "O foco é comportamento recorrente e execução real, não volume superficial.", "steps": ["Acompanhar criação e apoio.", "Qualificar clusters.", "Engajar empresas.", "Acompanhar ofertas e commitments.", "Registrar gargalos e intervenções manuais.", "Medir repetição."], "acceptance": "Existe evidência de uso real do loop e entendimento dos principais gargalos operacionais.", "evidence": "Relatório operacional do piloto e métricas.", "knowledge": "operar clusters empresas reais", "gate": "Uso repetido"}, "T-027": {"objective": "Definir o pacote B2B pago e a unidade de valor que sustenta preço.", "context": "O pacote deve refletir o valor observado no piloto, não uma tabela de features abstrata.", "steps": ["Separar acesso público e pago.", "Definir unidade de valor.", "Definir limites/tiers se necessários.", "Testar linguagem e preço com empresas.", "Documentar hipótese de cobrança."], "acceptance": "Pacote, value metric e hipótese de preço estão explícitos e testáveis.", "evidence": "One-pager comercial/pricing e feedback B2B.", "knowledge": "pacote B2B pago", "gate": "BR-04"}, "T-028": {"objective": "Definir quando um resultado pode ser atribuído ao WANT e gerar success fee.", "context": "A cobrança por sucesso exige evento inequívoco, auditável e contratualmente compreensível.", "steps": ["Definir evento de conversão.", "Definir janela de atribuição.", "Definir prova necessária.", "Tratar conflitos/duplicidades.", "Validar implicações legais e comerciais."], "acceptance": "Evento de success fee é claro, mensurável e aplicável em um deal real.", "evidence": "Regra de atribuição e minuta/termos comerciais.", "knowledge": "success fee", "gate": "BR-05"}, "T-029": {"objective": "Testar se empresas aceitam pagar pelo acesso e/ou success fee em condições reais.", "context": "O objetivo é evidência de disposição a pagar, preferencialmente pagamento, contrato, LOI ou compromisso comercial concreto.", "steps": ["Apresentar pacote e preço.", "Pedir compra/piloto pago/LOI.", "Testar success fee em oportunidade real.", "Registrar objeções.", "Comparar com regra de decisão."], "acceptance": "E07/E08 têm resultado comercial observável e decisão sobre monetização.", "evidence": "Propostas, LOIs, pagamentos ou registros de negociação.", "knowledge": "E07 E08 monetização", "gate": "WTP + fee evidenciado"}, "T-030": {"objective": "Revisar a venture como um todo e definir a próxima alocação de capital, produto e time.", "context": "A revisão fecha o ciclo com evidência acumulada e evita continuar por inércia.", "steps": ["Revisar demanda e retenção.", "Revisar B2B e monetização.", "Revisar operação e riscos.", "Comparar aprendizados com tese original.", "Definir persevere, iterate, pivot ou pause.", "Traduzir decisão em plano Q1."], "acceptance": "Existe uma decisão explícita, rationale, principais riscos e plano de Q1 compatível.", "evidence": "Venture Review e plano Q1.", "knowledge": "Venture Review Q1", "gate": "Decisão de próximo investimento"}};
+const LS_COMPLETIONS="want_completions_v3";
+const KNOWLEDGE={"project": "WANT", "version": "2026-10-01", "sections": [{"id": "intro", "number": "", "title": "Visão geral", "content": ["WANT", "Plano Mestre do Projeto", "Marketplace de demanda local não atendida", "Tese em uma frase", "Consumidores declaram o que gostariam que existisse em uma região; a plataforma agrega e qualifica essa intenção; empresas pagam para acessar demanda qualificada e a WANT captura valor quando uma oportunidade se converte em negócio.", "Versão 0.1 • 01 de outubro de 2026 • Documento vivo de execução, escopo e validação"]}, {"id": "sec-1", "number": "1", "title": "Resumo executivo", "content": ["A WANT será validada e construída como uma infraestrutura de demanda local, começando por um experimento estreito em uma única cidade/região. O projeto não assume que interesse declarado equivale a compra. Cada fase reduz uma incerteza específica antes de liberar investimento na fase seguinte.", "North Star", "Demandas atendidas: clusters de demanda que resultam em uma nova oferta, expansão, unidade, serviço ou proposta efetivamente disponibilizada ao público-alvo.", "Elemento", "Definição inicial", "Usuário", "Pessoa que declara, apoia ou qualifica algo que gostaria que existisse em determinada região.", "Cliente pagante", "Empresa, franquia, empreendedor, operador ou investidor que deseja acessar e ativar demanda local qualificada.", "Valor para o usuário", "Influenciar o que passa a existir perto dele e receber propostas aderentes à demanda que declarou.", "Valor para a empresa", "Descobrir demanda antes de investir e testar uma oferta diretamente contra um cluster qualificado.", "Monetização", "Assinatura/acesso B2B aos dados de demanda + success fee ou fee de aquisição em negócios convertidos pela plataforma.", "Não monetização", "Usuários e checks comunitários não recebem pagamento. A contribuição serve para elevar confiança e melhorar a informação.", "Wedge inicial", "Uma cidade/área limitada, poucas categorias e experiência web responsiva antes de app nativo."]}, {"id": "sec-2", "number": "2", "title": "Escopo do projeto", "content": ["2.1 Outcome do ciclo inicial", "Demonstrar, com evidência comportamental e comercial, que: (a) consumidores registram e compartilham demandas locais de forma orgânica; (b) é possível qualificar intensidade, preço e frequência da intenção; (c) empresas atribuem valor econômico a esses clusters; e (d) ao menos uma oferta pode ser lançada contra uma demanda qualificada.", "2.2 Dentro do escopo", "Landing/site responsivo com mapa ou visualização geográfica simples.", "Criação e apoio a demandas locais.", "Qualificação de intenção: frequência, faixa de preço, raio/distância e permissão para receber proposta.", "Clusterização básica por categoria e região.", "Página pública compartilhável para cada demanda/cluster.", "Checks comunitários para contestar, confirmar ou adicionar contexto à demanda.", "Painel B2B mínimo com visão agregada de clusters qualificados.", "Fluxo de empresa interessada em uma oportunidade.", "Fluxo de oferta/Demand Drop e captação de compromisso.", "Instrumentação mínima de aquisição, ativação, compartilhamento, qualificação e conversão.", "Processos manuais/concierge quando forem suficientes para validar hipótese antes de automatizar.", "2.3 Fora do escopo do ciclo inicial", "App nativo iOS/Android.", "Cobertura nacional.", "Marketplace genérico de todos os tipos de negócio desde o primeiro dia.", "IA avançada para detectar automaticamente todas as oportunidades da internet.", "Pagamentos a verificadores ou gamificação financeira de checks.", "Modelos sofisticados de location intelligence equivalentes a grandes plataformas estabelecidas.", "Automação completa de cobrança de success fee antes de validar a mecânica comercial.", "Dados pessoais vendidos individualmente; a proposta B2B deve trabalhar com demanda agregada e permissões explícitas para contato/oferta."]}, {"id": "sec-3", "number": "3", "title": "Hipóteses críticas e gates", "content": ["Os thresholds abaixo são metas de experimento, não “leis” de mercado. Eles devem ser definidos antes de cada teste e podem ser revisados quando houver evidência melhor, registrando o motivo da mudança.", "ID", "Hipótese fatal", "Sinal buscado", "Gate inicial proposto", "H1", "Pessoas têm demandas locais suficientemente fortes para declarar e compartilhar.", "Criações, apoios, compartilhamentos e retorno.", "Em um teste local, obter volume suficiente para formar múltiplos clusters sem depender majoritariamente de tráfego pago.", "H2", "A demanda pode ser qualificada além do “eu acho legal”.", "Preço, frequência, raio e opt-in para proposta.", "Parte material dos apoiadores completa qualificação e aceita contato/oferta.", "H3", "Empresas consideram a demanda agregada acionável.", "Reunião, acesso a painel, pedido de detalhe, piloto.", "Conseguir design partners que invistam tempo real e ao menos uma disposição concreta de testar acesso/pagamento.", "H4", "Uma empresa consegue formular oferta para um cluster.", "Demand Drop publicado.", "Ao menos uma empresa publica oferta alinhada a cluster validado.", "H5", "Intenção vira compromisso.", "Reserva, lead qualificado, pré-cadastro ou outro sinal forte.", "Obter compromissos suficientes para a empresa tomar uma decisão comercial real.", "H6", "O modelo de receita não destrói o efeito de rede.", "Conversão B2B e reação de usuários.", "Empresas percebem valor no acesso e usuários continuam contribuindo sem remuneração direta."]}, {"id": "sec-4", "number": "4", "title": "Especificação funcional v0", "content": ["4.1 Jornada do consumidor", "Informar região/bairro ou permitir localização aproximada voluntária.", "Pesquisar se a demanda já existe antes de criar uma nova.", "Criar demanda com categoria, descrição curta e local.", "Apoiar demanda existente.", "Qualificar intenção: frequência, faixa de gasto/preço, distância e urgência.", "Compartilhar página do cluster.", "Adicionar check/contexto: existe alternativa? horário? preço? limitação? evidência?", "Optar por receber proposta quando uma empresa ativar aquela demanda.", "Receber atualização quando a demanda avançar ou for atendida.", "4.2 Jornada da empresa", "Criar conta/solicitar acesso empresarial.", "Explorar mapa/heatmap público com informação limitada.", "Assinar/desbloquear inteligência agregada de clusters.", "Filtrar categoria, região, volume, intensidade, ticket e frequência.", "Abrir ficha de oportunidade com evidências e nível de confiança.", "Manifestar interesse e solicitar ativação.", "Criar Demand Drop com proposta, condição mínima e prazo.", "Acompanhar adesão/compromisso.", "Registrar desfecho: abriu, lançou, expandiu, descartou ou adiou.", "Acionar cobrança de success fee quando houver evento contratualmente definido.", "4.3 Entidades mínimas do domínio", "Entidade", "Campos mínimos", "Demand", "id, categoria, descrição, geografia, autor, status, created_at", "Support", "demand/cluster, usuário, intensidade, frequência, faixa de preço, raio, opt-in", "Cluster", "categoria normalizada, área, volume, qualificação, trend, confidence", "Check", "cluster, tipo, conteúdo, evidência, autor, data, contestado/confirmado", "Company", "id, categoria, região, plano/acesso, status", "Opportunity", "cluster + inteligência agregada + estágio comercial", "Demand Drop", "empresa, oferta, condição, prazo, público elegível, status", "Commitment", "usuário, drop, tipo de compromisso, data, estado", "Deal", "empresa, opportunity/drop, evento de fechamento, base de fee, status"]}, {"id": "sec-5", "number": "5", "title": "Pipeline operacional do negócio", "content": ["Este pipeline acompanha a transformação de um sinal em valor econômico. Cada estágio tem critério de saída observável.", "Estágio", "Entrada", "Critério de saída", "Próximo owner", "P0 • Sinal", "Demanda criada ou sinal identificado.", "Local + categoria + necessidade suficientemente claros.", "Growth/Research", "P1 • Cluster", "Demanda semelhante agregada por geografia/categoria.", "Cluster atingiu massa mínima operacional para qualificação.", "Product/Research", "P2 • Qualificado", "Usuários informam frequência, preço, raio e opt-in.", "Há intenção além de apoio superficial e dados utilizáveis.", "Product", "P3 • Reality Checked", "Comunidade/equipe confirma oferta existente, restrições e contexto.", "Contradições relevantes resolvidas; confiança documentada.", "Research/Ops", "P4 • Opportunity Ready", "Ficha B2B preparada.", "Problema, demanda, contexto e contato permitido estão prontos para venda.", "Sales", "P5 • Matched", "Empresa demonstra interesse.", "Empresa aceita avaliar uma proposta/piloto.", "Sales/Company", "P6 • Offer Live", "Demand Drop publicado.", "Oferta visível ao público elegível com condição clara.", "Company/Product", "P7 • Commitment", "Usuários dão sinal forte.", "Critério acordado de adesão atingido ou teste encerrado.", "Company/Sales", "P8 • Closed", "Empresa toma decisão comercial e evento de fee ocorre.", "Deal registrado e cobrança aplicável definida.", "Finance/Sales", "P9 • Fulfilled", "Oferta efetivamente disponibilizada.", "Demanda marcada como atendida e resultado observado.", "Ops/Product"]}, {"id": "sec-6", "number": "6", "title": "Pipeline de gestão do projeto", "content": ["Status", "Quando entra", "Quando sai", "Backlog", "Item identificado, ainda sem compromisso.", "Priorizado e com owner/resultado claro.", "Ready", "Tem objetivo, dependências e aceite claros.", "Owner inicia execução.", "In Progress", "Trabalho ativo e dentro de WIP.", "Vai para revisão, bloqueio ou espera.", "Waiting", "Depende de resposta/evento externo conhecido.", "Dependência resolvida ou prazo de revisão chegou.", "Blocked", "Impedimento impede progresso.", "Bloqueio removido ou item replanning.", "Review", "Entregável pronto para verificação/decisão.", "Aceito ou devolvido com gap específico.", "Done", "Critério de aceite comprovado.", "Estado terminal para aquele item.", "Limite operacional sugerido", "No máximo 2 itens críticos simultaneamente por owner. “Waiting” e “Blocked” ficam visíveis e não são escondidos dentro de In Progress. O dashboard deve destacar primeiro bloqueios, aging e próximo gate."]}, {"id": "sec-7", "number": "7", "title": "Roadmap de 12 semanas", "content": ["Baseline de planejamento: 01/10/2026 a 23/12/2026. Datas são targets para gestão; gates de evidência prevalecem sobre calendário.", "Fase", "Janela", "Objetivo", "Entregáveis", "Gate", "0 • Fundamentos", "01–04 Out", "Fechar tese, escopo, instrumento e tracking.", "Spec v0, ledger, questionários, métricas, landing conceitual.", "Instrumentos prontos; hipóteses e non-goals explícitos.", "1 • Demanda", "05–16 Out", "Provar comportamento do lado consumidor.", "Landing, formulário, 15–25 entrevistas, clusters manuais, sharing test.", "Decidir se há comportamento suficiente para continuar/ajustar wedge.", "2 • B2B", "12–23 Out", "Provar valor para empresas.", "10–15 conversas, 3–5 design partners alvo, mock do painel.", "Empresas investem tempo e alguma forma de compromisso concreto.", "3 • Concierge", "19 Out–06 Nov", "Executar o loop inteiro manualmente.", "Mapa/board manual, cluster, reality checks, 1 ficha de oportunidade.", "Conseguir levar oportunidade até proposta real.", "4 • MVP", "02–27 Nov", "Automatizar apenas o loop validado.", "Web MVP, auth leve, demanda, apoio, cluster, B2B básico, instrumentação.", "Fluxo crítico funciona ponta a ponta; qualidade mínima aprovada.", "5 • Piloto local", "30 Nov–11 Dez", "Operar em geografia/categorias limitadas.", "Aquisição local, 3–10 clusters relevantes, empresas onboarded, 1+ Demand Drop.", "Sinais de repetição, empresa usando e usuários qualificando demanda.", "6 • Monetização", "07–18 Dez", "Testar acesso pago + fee por fechamento.", "Pacote B2B, contrato piloto, regra de fee, cobrança manual.", "Evidência de WTP e evento comercial rastreável.", "7 • Review", "21–23 Dez", "Decidir próximo investimento.", "Venture review, economics preliminares, backlog Q1.", "Persevere / iterate / pivot / pause por evidência."]}, {"id": "sec-8", "number": "8", "title": "Workstreams e ownership", "content": ["Workstream", "Owner por papel", "Responsabilidade", "Venture/Product", "Founder / Product Lead", "Tese, prioridades, gates, spec, trade-offs e North Star.", "Discovery", "Research Lead", "Entrevistas, evidence ledger, síntese, qualificação de demanda.", "Growth / Community", "Growth Lead", "Aquisição local, compartilhamento, clusters e loop comunitário.", "B2B / Sales", "Commercial Lead", "Design partners, acesso pago, oportunidades, Demand Drops e deals.", "Design", "Product Designer", "Jornadas, protótipos, mapa/cluster, confiança e clareza.", "Engineering", "Tech Lead", "Arquitetura mínima, MVP, instrumentação, segurança e deploy.", "Data", "Product/Data Analyst", "Taxonomia, deduplicação, clusterização, métricas e dashboards.", "Ops/Trust", "Ops Lead", "Checks, moderação, fraude, disputas, evidências e qualidade.", "Legal/Privacy", "Legal/Privacy advisor", "Consentimento, termos, LGPD, uso de localização, contato B2B e regra de fee."]}, {"id": "sec-9", "number": "9", "title": "Experimentos prioritários", "content": ["EXP", "Pergunta", "Teste barato", "Métrica primária", "Decisão", "E01", "Pessoas declaram demanda?", "Landing + formulário por bairro/categoria.", "Demandas válidas por visitante qualificado.", "Refinar mensagem/wedge ou avançar.", "E02", "Elas compartilham?", "Página de cluster com CTA de WhatsApp.", "% de criadores/apoiadores que compartilham.", "Avaliar potencial de loop orgânico.", "E03", "Qualificam intenção?", "Perguntas pós-apoio.", "% que completa preço/frequência/raio.", "Manter, simplificar ou trocar perguntas.", "E04", "Empresas querem ver isso?", "Entrevista + mock com cluster real.", "Compromisso concreto: segunda reunião, dados, piloto ou WTP.", "Avançar para design partner ou reposicionar.", "E05", "Empresa publica oferta?", "Concierge com 1 cluster e 1 empresa.", "Demand Drop publicado.", "Validar operação end-to-end.", "E06", "Usuário assume compromisso?", "Oferta com sinal forte apropriado à categoria.", "Taxa de commitment elegível.", "Avaliar qualidade da demanda e oferta.", "E07", "Empresa paga acesso?", "Piloto B2B com proposta real.", "Pagamento/LOI/aceite comercial verificável.", "Definir pricing e package.", "E08", "Success fee é aceitável?", "Negociar regra em deal real.", "Aceite contratual + clareza do evento de fee.", "Padronizar ou adaptar por vertical."]}, {"id": "sec-10", "number": "10", "title": "Métricas e instrumentação", "content": ["Camada", "Métricas", "Aquisição", "visitantes locais qualificados, origem, custo quando houver mídia.", "Criação", "taxa de criação, duplicidade, tempo até publicar demanda.", "Cluster", "nº de clusters, apoiadores únicos, concentração geográfica, crescimento semanal.", "Qualificação", "% com preço, frequência, raio e opt-in; abandono por pergunta.", "Viralidade", "shares por demanda/cluster, visitas por share, apoio por share.", "B2B", "empresas contatadas, reuniões, design partners, acesso, oportunidades abertas.", "Oferta", "Demand Drops, elegíveis, visualizações, commitments, conversão.", "Negócio", "deals, receita B2B, success fees, tempo cluster→deal, demandas atendidas.", "Qualidade", "checks, contestações, spam/fraude, clusters duplicados, opt-out/privacidade."]}, {"id": "sec-11", "number": "11", "title": "Riscos principais e mitigação", "content": ["Risco", "Impacto", "Sinal precoce", "Mitigação", "Marketplace frio", "Alto", "Mapa vazio; poucos clusters.", "Concentrar geografia/categoria, seed manual transparente, parceria comunitária.", "Likes sem intenção", "Alto", "Apoios altos, baixa qualificação/commitment.", "Escada de intenção e sinais fortes antes de vender “demanda”.", "Empresa não paga", "Alto", "Elogio sem piloto/WTP.", "Testar preço cedo com cluster real e benefício acionável.", "Dados enviesados", "Alto", "Poucos usuários hiperativos dominam região.", "Usuários únicos, confiança, diversidade de fonte e limites de inferência.", "Spam/astroturfing", "Alto", "Empresas criam demanda artificial.", "Detecção, moderação, rate limits, sinalização de conflitos.", "Privacidade/LGPD", "Alto", "Localização excessiva ou contato sem base/consentimento.", "Minimização, agregação, consentimento explícito e revisão jurídica.", "Escopo explode", "Médio", "Pedidos de app, IA, múltiplas cidades e categorias.", "Non-goals e gate formal antes de nova capacidade.", "Success fee ambíguo", "Alto", "Discussão sobre atribuição do fechamento.", "Definir evento contratual rastreável por vertical antes de ativar deal."]}, {"id": "sec-12", "number": "12", "title": "Documento de verificação de escopo", "content": ["Esta seção é o gate obrigatório antes de iniciar desenvolvimento de MVP e antes de qualquer expansão material. Cada item deve ser marcado como CONFIRMADO, ABERTO ou FORA DO ESCOPO. Itens críticos em ABERTO impedem o início da parte que dependem.", "12.1 Requisitos de negócio", "ID", "Requisição necessária", "Estado inicial", "Critério de verificação", "BR-01", "Definir geografia piloto exata.", "ABERTO", "Cidade/bairros documentados e rationale.", "BR-02", "Definir 3–5 categorias iniciais.", "ABERTO", "Taxonomia inicial aprovada; categorias fora do wedge rejeitadas.", "BR-03", "Definir cliente B2B inicial.", "ABERTO", "ICP com papel comprador, orçamento e job.", "BR-04", "Definir pacote B2B inicial.", "ABERTO", "O que é público vs pago, limites e valor metric.", "BR-05", "Definir evento de success fee.", "ABERTO", "Evento inequívoco e rastreável por contrato/piloto.", "BR-06", "Definir regra de “demanda atendida”.", "ABERTO", "Estado terminal observável e auditável.", "12.2 Requisitos do consumidor", "ID", "Requisição necessária", "MVP", "Aceite", "UR-01", "Criar demanda geolocalizada.", "SIM", "Usuário publica categoria+local+descrição.", "UR-02", "Evitar duplicata óbvia.", "SIM", "Busca/sugestão mostra clusters semelhantes antes da criação.", "UR-03", "Apoiar cluster.", "SIM", "Apoio único por usuário/identidade operacional.", "UR-04", "Qualificar intenção.", "SIM", "Preço/faixa, frequência, raio e opt-in persistidos.", "UR-05", "Compartilhar cluster.", "SIM", "URL pública com preview adequado e CTA.", "UR-06", "Reality Check comunitário.", "SIM, simples", "Adicionar confirmação/contestação/contexto sem pagamento.", "UR-07", "Receber proposta.", "SIM", "Opt-in explícito e mecanismo de entrega de oferta.", "UR-08", "Gamificação avançada.", "NÃO", "Fora do ciclo inicial.", "12.3 Requisitos B2B", "ID", "Requisição necessária", "MVP", "Aceite", "B2B-01", "Conta empresarial.", "SIM", "Empresa identificável e aprovada pelo fluxo inicial.", "B2B-02", "Mapa/lista de clusters.", "SIM", "Filtra região/categoria e abre oportunidade.", "B2B-03", "Dados agregados pagos.", "SIM", "Acesso controla volume/intensidade/ticket/frequência sem expor dado individual indevido.", "B2B-04", "Criar Demand Drop.", "SIM", "Oferta com condição, prazo e público elegível.", "B2B-05", "Acompanhar commitments.", "SIM", "Painel/relatório mostra adesão verificável.", "B2B-06", "Cobrança automática de fee.", "NÃO", "Cobrança manual é suficiente até a regra provar estabilidade.", "12.4 Dados, confiança e privacidade", "ID", "Requisição", "Criticidade", "Aceite mínimo", "DP-01", "Minimização de localização.", "Crítica", "Guardar precisão necessária ao cluster, não mais que o necessário.", "DP-02", "Consentimento de contato/oferta.", "Crítica", "Opt-in explícito, rastreável e revogável.", "DP-03", "Agregação B2B.", "Crítica", "Padrão de visualização não identifica indivíduos.", "DP-04", "Exclusão/retificação.", "Crítica", "Processo operacional definido antes do piloto.", "TR-01", "Spam e duplicidade.", "Alta", "Denúncia/moderação e regra de deduplicação.", "TR-02", "Conflito de interesse.", "Alta", "Contribuições de empresas/sócios sinalizadas quando aplicável.", "TR-03", "Confidence de cluster.", "Alta", "Separar apoio, qualificação, checks e compromisso; não usar score opaco único.", "12.5 Requisitos técnicos não funcionais", "ID", "Requisito", "MVP", "NFR-01", "Web responsiva e mobile-first.", "Obrigatório", "NFR-02", "Analytics de eventos definidos no plano.", "Obrigatório", "NFR-03", "Controle de acesso B2B.", "Obrigatório", "NFR-04", "Logs mínimos de alterações relevantes.", "Obrigatório", "NFR-05", "Backups e recuperação proporcionais ao estágio.", "Obrigatório", "NFR-06", "Acessibilidade básica de navegação/formulários.", "Obrigatório", "NFR-07", "Performance suficiente para mapa/lista local sem degradação perceptível.", "Obrigatório", "NFR-08", "Escala nacional/arquitetura multi-região.", "Não otimizar agora"]}, {"id": "sec-13", "number": "13", "title": "Gate de autorização para construir o MVP", "content": ["O desenvolvimento funcional do MVP só deve iniciar quando houver evidência mínima suficiente para justificar automação. Checklist:", "[ ] Geografia e categorias piloto definidas.", "[ ] Instrumento de demanda testado com usuários reais.", "[ ] Ao menos alguns clusters reais formados manualmente.", "[ ] Qualificação de intenção produz informação utilizável.", "[ ] Conversas B2B mostram valor específico, não apenas elogio.", "[ ] Existe pelo menos um design partner plausível para o concierge.", "[ ] Fluxo manual cluster → oportunidade → empresa → oferta foi desenhado.", "[ ] LGPD/consentimento/location data revisados em nível proporcional ao piloto.", "[ ] Eventos de analytics e definições de métricas documentados.", "[ ] Non-goals aceitos e mudança de escopo passa por decision log."]}, {"id": "sec-14", "number": "14", "title": "Governança e cadência", "content": ["Ritual", "Cadência", "Pergunta decisória", "Saída", "Flow check", "2–3x/semana assíncrono", "O que está bloqueado, envelhecendo ou sem owner?", "Board atualizado + desbloqueio.", "Venture review", "Semanal", "Qual incerteza foi reduzida? O que aprendemos?", "Evidence ledger + decisão do próximo teste.", "Product review", "Semanal durante build", "O incremento atende spec e evento de valor?", "Aceite/gaps pequenos.", "B2B pipeline review", "Semanal a partir da fase 2", "Qual oportunidade avançou e por quê?", "Próxima ação por empresa/opportunity.", "Gate review", "Fim de cada fase", "A evidência permite aumentar investimento?", "Persevere/iterate/pivot/pause.", "Scope review", "A cada mudança material", "Mudou requisito, solução ou apenas implementação?", "Spec atualizada antes de novos tickets."]}, {"id": "sec-15", "number": "15", "title": "Definition of Done do ciclo de 12 semanas", "content": ["Existe uma geografia piloto operada com dados reais de demanda.", "O sistema diferencia apoio, intenção qualificada e compromisso.", "Existe pelo menos um workflow completo de oportunidade do consumidor até uma empresa.", "Empresas tiveram acesso a inteligência agregada sob hipótese de monetização testada.", "A regra de success fee foi testada em contexto comercial real ou explicitamente rejeitada com evidência.", "Pelo menos uma Demand Drop foi executada ou existe evidência clara de por que esse estágio não foi alcançado.", "Métricas, riscos e decisões estão registrados em um único sistema operacional.", "Há decisão explícita para Q1/2027: perseverar, iterar, pivotar ou pausar, acompanhada de evidência."]}, {"id": "sec-16", "number": "16", "title": "Próximos 10 dias úteis", "content": ["Data alvo", "Ação", "Saída verificável", "01–02 Out", "Fechar geografia piloto, categorias e ICP B2B provisório.", "Decisões BR-01/02/03 atualizadas.", "01–05 Out", "Construir landing e instrumento de demanda, mesmo que no-code/manual.", "Link testável + analytics básico.", "05–09 Out", "Executar primeira rodada de entrevistas e captar demandas.", "Evidence ledger com comportamento passado e linguagem real.", "05–12 Out", "Rodar sharing test em comunidades locais.", "Primeiros clusters e origem dos apoios.", "08–14 Out", "Montar 2–3 fichas de oportunidade manualmente.", "Mock B2B com dados reais.", "12–16 Out", "Apresentar fichas a empresas/operadores.", "Compromissos, objeções, WTP e próximos passos."]}], "attachments": [{"label": "Plano Mestre", "file": "docs/WANT_Plano_Mestre_e_Verificacao_de_Escopo.docx", "description": "Documento vivo de tese, escopo, gates, roadmap e validação.", "type": "DOCX"}, {"label": "Project Control", "file": "docs/WANT_Project_Control.xlsx", "description": "Workbook de gestão e acompanhamento do projeto.", "type": "XLSX"}, {"label": "Pipeline de Gestão", "file": "docs/WANT_Pipeline_Gestao.xlsx", "description": "Planilha de pipeline e gestão operacional.", "type": "XLSX"}, {"label": "Tasks Sync", "file": "docs/WANT_Tasks_Sync.csv", "description": "Export das tarefas para sincronização e portabilidade.", "type": "CSV"}, {"label": "README", "file": "docs/README_WANT_Project_Control.md", "description": "Guia do Project Control.", "type": "MD"}, {"label": "Deploy Checklist", "file": "docs/WANT_DEPLOY_CHECKLIST.md", "description": "Checklist de publicação e verificação.", "type": "MD"}, {"label": "Plano Mestre • Google Doc", "file": "https://docs.google.com/document/d/16Sf0lHGY7FLZtJQhAEenpzAqneGKaUu9MDOwlQZol0A/edit", "description": "Versão nativa no Google Drive.", "type": "LINK"}, {"label": "Project Control • Google Sheets", "file": "https://docs.google.com/spreadsheets/d/1Au44gyw_mYwzwRx--TsyOatkWCGwywhtU2n8D1eKXz0/edit", "description": "Fonte operacional canônica das tarefas.", "type": "LINK"}]};
+const LS_SIDEBAR="want_sidebar_collapsed_v1";
+
+const LS_TASKS="want_tasks_online_v2", LS_API="want_sheet_api_v1";
+let tasks=JSON.parse(localStorage.getItem(LS_TASKS)||"null")||structuredClone(BASE), completions=JSON.parse(localStorage.getItem(LS_COMPLETIONS)||"{}"), experiments=[], editId=null, editExperimentId=null, view="overview";
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+const fmt=d=>d?new Date(d+"T12:00:00").toLocaleDateString("pt-BR",{day:"2-digit",month:"short"}):"";
+const today=new Date("2026-10-01T12:00:00");
+const initials=s=>(String(s||"").split(/[ /]/).filter(Boolean).slice(0,2).map(x=>x[0]).join("").toUpperCase()||"?");
+const cfg=()=>JSON.parse(localStorage.getItem(LS_API)||"{}");
+function toast(msg,type="good"){const t=$("#toast");t.textContent=msg;t.className="toast "+type;setTimeout(()=>t.classList.add("hidden"),2600)}
+function saveLocal(){localStorage.setItem(LS_TASKS,JSON.stringify(tasks))}
+function isOver(t){return t.status!=="Done"&&t.due&&new Date(t.due+"T23:59:59")<today}
+function setSync(mode,label,note){$("#syncDot").className="dot "+(mode||"");$("#syncLabel").textContent=label;if(note)$("#syncHelp").textContent=note}
+function filtered(){const q=$("#search").value.toLowerCase(),p=$("#phaseFilter").value,o=$("#ownerFilter").value,r=$("#priorityFilter").value;return tasks.filter(t=>(!q||[t.id,t.title,t.phase,t.owner,t.gate,t.next,TASK_BRIEFS[t.id]?.objective,TASK_BRIEFS[t.id]?.acceptance].join(" ").toLowerCase().includes(q))&&(!p||t.phase===p)&&(!o||t.owner===o)&&(!r||t.priority===r))}
+function renderFilters(){const ph=[...new Set(tasks.map(t=>t.phase))],ow=[...new Set(tasks.map(t=>t.owner))],pv=$("#phaseFilter").value,ov=$("#ownerFilter").value;$("#phaseFilter").innerHTML='<option value="">Todas as fases</option>'+ph.map(x=>`<option>${esc(x)}</option>`).join("");$("#ownerFilter").innerHTML='<option value="">Todos os owners</option>'+ow.map(x=>`<option>${esc(x)}</option>`).join("");$("#phaseFilter").value=pv;$("#ownerFilter").value=ov}
+function renderKpis(){const vals=[
+["Tarefas",tasks.length,"escopo operacional"],
+["Em execução",tasks.filter(t=>t.status==="In Progress").length,"WIP ativo"],
+["Bloqueadas",tasks.filter(t=>t.status==="Blocked").length,"exigem decisão"],
+["Críticas",tasks.filter(t=>t.priority==="Critical"&&t.status!=="Done").length,"ainda abertas"],
+["Concluídas",tasks.filter(t=>t.status==="Done").length,`${Math.round(tasks.filter(t=>t.status==="Done").length/Math.max(1,tasks.length)*100)}% do total`]
+];$("#kpis").innerHTML=vals.map(([a,b,c],i)=>`<article class="kpi"><div class="kpi-label">${a}</div><div class="kpi-value">${b}</div><div class="kpi-foot"><i class="mini-dot" style="background:${i===2?'var(--red)':i===3?'var(--amber)':'var(--accent)'}"></i>${c}</div></article>`).join("");$("#navTaskCount").textContent=tasks.length}
+function stateClass(st){return st.toLowerCase().replaceAll(" ","")}
+
+function depIds(t){return String(t?.depends||"").split(",").map(x=>x.trim()).filter(Boolean)}
+function dependencyReport(t){
+  const ids=depIds(t); return ids.map(id=>{const d=tasks.find(x=>x.id===id);return{id,task:d,done:!!d&&d.status==="Done"}})
+}
+function dependencyLocked(t){const d=dependencyReport(t);return d.length>0&&d.some(x=>!x.done)}
+function dependencyMessage(t){const open=dependencyReport(t).filter(x=>!x.done);return open.length?`Bloqueada por ${open.map(x=>x.id).join(", ")}`:"Dependências concluídas"}
+function canEnterStatus(t,target){
+  if(["Ready","In Progress","Review","Done"].includes(target)&&dependencyLocked(t))return{ok:false,reason:dependencyMessage(t)};
+  return{ok:true}
+}
+function saveCompletions(){localStorage.setItem(LS_COMPLETIONS,JSON.stringify(completions))}
+function eligibleForAutoReady(t){
+  if(t.status!=="Backlog"||!depIds(t).length||dependencyLocked(t))return false;
+  const start=t.start?new Date(t.start+"T12:00:00"):null;
+  return !start||start<=today;
+}
+function runAutomation(sourceId=""){
+  const events=[];
+  tasks.forEach(t=>{
+    if(eligibleForAutoReady(t)){t.status="Ready";events.push(`${t.id} ficou Ready: dependências concluídas.`)}
+  });
+  if(events.length){saveLocal();window.__automationEvents=(window.__automationEvents||[]).concat(events).slice(-20)}
+  return events
+}
+function automationRulesFor(t){
+  const rules=[];
+  if(depIds(t).length)rules.push({trigger:"Dependências",action:"Ready/In Progress/Review/Done ficam bloqueados até todas as dependências estarem Done."});
+  if(depIds(t).length)rules.push({trigger:"Desbloqueio",action:"Quando todas as dependências terminarem e a data de início tiver chegado, Backlog muda automaticamente para Ready."});
+  rules.push({trigger:"Conclusão",action:"Done exige resultado, evidência e confirmação do critério de aceite."});
+  rules.push({trigger:"Done",action:"Progresso passa a 100% e a conclusão é registrada com data, ator e evidência."});
+  if(/^BR-\d+/.test(String(t.gate||""))||/^BR-\d+/.test(String(TASK_BRIEFS[t.id]?.gate||"")))rules.push({trigger:"Gate",action:"Com autorização explícita, a conclusão pode fechar o requisito BR relacionado."});
+  if(/experimento|E0\d/i.test(t.title+" "+t.gate))rules.push({trigger:"Experimento",action:"Resultado e aprendizado devem ser registrados antes do fechamento para preservar a decisão experimental."});
+  return rules
+}
+function renderTaskContext(t){
+  const b=TASK_BRIEFS[t.id]||{};
+  const deps=dependencyReport(t);
+  $("#taskLockBanner").classList.toggle("show",dependencyLocked(t));
+  $("#taskLockBanner").textContent=dependencyLocked(t)?dependencyMessage(t):"";
+  $("#taskDependencies").innerHTML=deps.length?deps.map(d=>`<div class="dependency-item"><span><b>${esc(d.id)}</b> · ${esc(d.task?.title||"Tarefa não encontrada")}</span><strong class="${d.done?"dep-ok":"dep-lock"}">${d.done?"Concluída":"Pendente"}</strong></div>`).join(""):'<p>Esta tarefa não possui dependências anteriores.</p>';
+  $("#taskBriefContent").innerHTML=`
+    <div class="brief-card"><div class="brief-title">Objetivo</div><h4>${esc(b.objective||t.title)}</h4><p>${esc(b.context||"")}</p></div>
+    <div class="brief-card"><div class="brief-title">Como executar</div><ul>${(b.steps||[]).map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>
+    <div class="brief-grid">
+      <div class="brief-card"><div class="brief-title">Critério de aceite</div><p>${esc(b.acceptance||t.gate||"")}</p></div>
+      <div class="brief-card"><div class="brief-title">Evidência esperada</div><p>${esc(b.evidence||"Registro verificável do resultado.")}</p></div>
+    </div>
+    <div class="knowledge-link-card"><span>Contexto relacionado: <b>${esc(b.knowledge||t.phase)}</b></span><button class="link-button" type="button" onclick="openKnowledgeForTask('${esc(t.id)}')">Abrir no Knowledge →</button></div><div class="task-experiment-link"><button class="btn" type="button" onclick="newExperimentForTask('${esc(t.id)}')">+ Criar experimento vinculado a esta tarefa</button></div>
+    <div class="meta-row"><span class="meta-pill">${esc(t.milestone)}</span><span class="meta-pill">${esc(b.gate||t.gate)}</span><span class="meta-pill">${esc(t.owner)}</span></div>`;
+  $("#taskAutomationRules").innerHTML=automationRulesFor(t).map(r=>`<div class="rule-line"><b>${esc(r.trigger)}</b><span>${esc(r.action)}</span></div>`).join("");
+  const ev=(window.__automationEvents||[]).slice(-8).reverse();
+  $("#taskAutomationEvents").innerHTML=ev.length?ev.map(x=>`<div class="automation-event"><i></i><span>${esc(x)}</span></div>`).join(""):'<p>Nenhum evento automático nesta sessão.</p>';
+  const c=completions[t.id]||{};
+  ["outcome","evidence_title","evidence_url","evidence_note","learning","decision","gate","next"].forEach(k=>{const el=$("#c_"+k);if(el)el.value=c[k]??(k==="gate"?(b.gate||String(t.gate||"").match(/BR-\d+/)?.[0]||""):k==="next"?(t.next||""):"")});
+  $("#c_acceptance").checked=!!c.acceptance;
+  $("#c_close_gate").checked=false;
+}
+function openKnowledgeForTask(id){
+  const b=TASK_BRIEFS[id]||{}; closeTask();setView("docs");
+  $("#kbSearch").value=b.knowledge||id;renderKnowledge();
+  setTimeout(()=>$("#kbSearch").focus(),60)
+}
+function setTaskPane(name){
+  $$(".task-tab").forEach(b=>b.classList.toggle("active",b.dataset.taskPane===name));
+  $$(".task-pane").forEach(p=>p.classList.toggle("active",p.id==="taskPane"+name[0].toUpperCase()+name.slice(1)));
+}
+
+function renderBoard(){const list=filtered();$("#board").innerHTML=STATUSES.map(st=>{const items=list.filter(t=>t.status===st);return `<section class="column" data-status="${st}"><header class="colhead"><div class="col-title"><i class="state-dot ${stateClass(st)}"></i>${st}</div><span class="countpill">${items.length}</span></header>${items.map(t=>`<article class="card status-${stateClass(t.status)}" draggable="true" data-id="${t.id}" tabindex="0"><div class="card-top"><div class="card-top-left"><span class="task-id">${esc(t.id)}</span><span class="status-badge">${esc(t.status)}</span></div><button class="more" aria-label="Abrir tarefa">•••</button></div><h4>${esc(t.title)}</h4><div class="tags"><span class="tag ${t.priority.toLowerCase()}">${esc(t.priority)}</span><span class="tag">${esc(t.phase.replace(/^\d+\s*•\s*/,""))}</span></div><div class="card-owner"><span class="avatar">${initials(t.owner)}</span>${esc(t.owner)}</div><div class="card-bottom"><span class="due ${isOver(t)?"over":""}">${fmt(t.start)} → ${fmt(t.due)}</span><span>${Number(t.progress||0)}%</span></div><div class="progress"><i style="width:${Number(t.progress||0)}%"></i></div>${dependencyLocked(t)?`<div class="card-lock-overlay">Locked · ${esc(dependencyMessage(t))}</div>`:(eligibleForAutoReady(t)?`<div class="task-card-ready">Ready para iniciar</div>`:"")}</article>`).join("")||'<div class="empty">Nenhuma tarefa neste estado</div>'}</section>`}).join("");wireCards()}
+function wireCards(){
+  $$(".card").forEach(c=>{
+    c.onclick=()=>openTask(c.dataset.id);
+    c.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openTask(c.dataset.id)}};
+    c.ondragstart=e=>{c.classList.add("dragging");e.dataTransfer.setData("text/plain",c.dataset.id)};
+    c.ondragend=()=>c.classList.remove("dragging")
+  });
+  $$(".column").forEach(col=>{
+    col.ondragover=e=>{e.preventDefault();col.classList.add("drop-target")};
+    col.ondragleave=()=>col.classList.remove("drop-target");
+    col.ondrop=e=>{
+      e.preventDefault();col.classList.remove("drop-target");
+      const t=tasks.find(x=>x.id===e.dataTransfer.getData("text/plain"));if(!t)return;
+      const target=col.dataset.status;
+      const check=canEnterStatus(t,target);
+      if(!check.ok){toast(check.reason,"bad");return}
+      if(target==="Done"){openTask(t.id);setTaskPane("completion");toast("Registre a evidência para concluir.","bad");return}
+      t.status=target;saveLocal();runAutomation(t.id);renderAll();toast(`Movida para ${t.status}`)
+    }
+  })
+}
+function renderTable(){$("#tbody").innerHTML=filtered().map(t=>`<tr tabindex="0" data-id="${t.id}"><td><span class="task-id">${esc(t.id)}</span></td><td class="td-main">${esc(t.title)}</td><td>${esc(t.phase)}</td><td>${esc(t.owner)}</td><td><span class="tag ${t.priority.toLowerCase()}">${esc(t.priority)}</span></td><td>${fmt(t.start)}</td><td class="${isOver(t)?"due over":""}">${fmt(t.due)}</td><td><span class="statuspill"><i class="state-dot ${stateClass(t.status)}"></i>${esc(t.status)}</span></td><td>${t.progress||0}%</td><td>${esc(t.depends)}</td><td>${esc(t.gate)}</td><td>${esc(t.next)}</td></tr>`).join("");$$("#tbody tr").forEach(r=>{r.onclick=()=>openTask(r.dataset.id);r.onkeydown=e=>{if(e.key==="Enter")openTask(r.dataset.id)}})}
+function week(i){const d=new Date("2026-10-01T12:00:00");d.setDate(d.getDate()+i*7);return d}
+function renderGantt(){let h=`<div class="ghead taskname">Tarefa</div>`+Array.from({length:13},(_,i)=>`<div class="ghead">S${i+1}<br><small>${week(i).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit"})}</small></div>`).join("");filtered().forEach(t=>{h+=`<div class="taskname"><b>${esc(t.id)}</b> · ${esc(t.title)}<br><small style="color:#69778c">${esc(t.owner)}</small></div>`;const s=new Date(t.start+"T12:00:00"),e=new Date(t.due+"T12:00:00");for(let i=0;i<13;i++){const ws=week(i),we=new Date(ws);we.setDate(we.getDate()+6);h+=`<div>${s<=we&&e>=ws?`<span class="bar ${t.status==="Blocked"?"blocked":""}" title="${esc(t.title)}"></span>`:""}</div>`}});$("#gantt").innerHTML=h}
+function renderOverview(){const critical=tasks.filter(t=>t.priority==="Critical"&&t.status!=="Done").slice(0,7);$("#gateList").innerHTML=critical.map(t=>`<div class="gate-row" tabindex="0" data-id="${t.id}"><span class="gate-code">${esc(t.gate||t.id)}</span><div><b style="font-size:11px">${esc(t.title)}</b><br><small>${esc(t.next||"Próxima ação pendente")}</small></div><span class="gate-state">${esc(t.status)}</span></div>`).join("");$$(".gate-row").forEach(r=>r.onclick=()=>openTask(r.dataset.id));const phases=[...new Set(tasks.map(t=>t.phase))];$("#phaseList").innerHTML=phases.map(p=>{const a=tasks.filter(t=>t.phase===p),avg=Math.round(a.reduce((s,t)=>s+Number(t.progress||0),0)/Math.max(1,a.length));return `<div class="phase-row"><div class="phase-name">${esc(p)}</div><div class="phase-progress"><i style="width:${avg}%"></i></div><div class="phase-meta"><span>${a.length} tarefas</span><span>${avg}%</span></div></div>`}).join("")}
+
+let historyRows=[];
+function formatDateTime(s){
+  if(!s)return "";
+  const d=new Date(s);
+  return isNaN(d)?String(s):d.toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"2-digit",hour:"2-digit",minute:"2-digit"});
+}
+function renderHistory(){
+  const body=$("#historyBody");
+  if(!body)return;
+  if(!historyRows.length){
+    body.innerHTML='<tr><td colspan="8" style="color:#69778c;padding:22px">Histórico ainda não carregado. Abra Activity para buscar as alterações.</td></tr>';
+    return;
+  }
+  body.innerHTML=historyRows.map(r=>`<tr>
+    <td>${esc(formatDateTime(r.timestamp))}</td><td><span class="task-id">${esc(r.taskId)}</span></td>
+    <td><span class="statuspill">${esc(r.action)}</span></td><td>${esc(r.field)}</td>
+    <td>${esc(r.previous)}</td><td class="td-main">${esc(r.next)}</td><td>${esc(r.actor)}</td><td>${esc(r.source)}</td>
+  </tr>`).join("");
+}
+async function loadHistory(){
+  try{
+    const d=await api("history");
+    historyRows=d.history||[];
+    renderHistory();
+  }catch(e){
+    historyRows=[];
+    renderHistory();
+    toast(e.message,"bad");
+  }
+}
+
+
+function normalizeText(s){return String(s||"").normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase()}
+function renderKnowledge(){
+  const q=$("#kbSearch")?.value?.trim()||"";
+  const nq=normalizeText(q);
+  const matched=KNOWLEDGE.sections.filter(s=>!nq||normalizeText([s.number,s.title,...s.content].join(" ")).includes(nq));
+  $("#kbResultCount").textContent=nq?`${matched.length} seção(ões) encontrada(s)`:`${KNOWLEDGE.sections.length} seções indexadas`;
+  $("#kbIndex").innerHTML=KNOWLEDGE.sections.map(s=>`<button class="kb-index-btn" data-kb="${esc(s.id)}"><span class="kb-index-num">${esc(s.number||"•")}</span><span>${esc(s.title)}</span></button>`).join("");
+  $("#kbSources").innerHTML=KNOWLEDGE.attachments.map(a=>`<a class="kb-source" href="${esc(a.file)}" ${/^https?:/.test(a.file)?'target="_blank" rel="noopener"':'download'}><span class="kb-file-icon">${esc(a.type)}</span><span><b>${esc(a.label)}</b><small>${esc(a.description)}</small></span></a>`).join("");
+  $("#kbSections").innerHTML=matched.map(s=>`<details class="kb-card" id="${esc(s.id)}" ${nq?'open':''}><summary><span class="kb-num">${esc(s.number||"•")}</span><span>${esc(s.title)}</span></summary><div class="kb-content">${s.content.map(p=>`<p>${highlightKb(p,q)}</p>`).join("")}</div></details>`).join("")||'<div class="kb-empty">Nenhum trecho encontrado. Tente outro termo.</div>';
+  $$(".kb-index-btn").forEach(b=>b.onclick=()=>{const target=document.getElementById(b.dataset.kb);if(target){target.open=true;target.scrollIntoView({behavior:"smooth",block:"start"})}});
+}
+function highlightKb(text,q){
+  const safe=esc(text);
+  if(!q)return safe;
+  const tokens=q.trim().split(/\s+/).filter(Boolean).sort((a,b)=>b.length-a.length);
+  let out=safe;
+  tokens.forEach(t=>{const escaped=t.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");out=out.replace(new RegExp(`(${escaped})`,"gi"),'<mark class="kb-match">$1</mark>')});
+  return out;
+}
+function initSidebar(){
+  const collapsed=localStorage.getItem(LS_SIDEBAR)==="1";
+  $(".app").classList.toggle("sidebar-collapsed",collapsed);
+  updateSidebarToggle(collapsed);
+}
+function updateSidebarToggle(collapsed){
+  const b=$("#sidebarToggle"); if(!b)return;
+  b.setAttribute("aria-label",collapsed?"Expandir barra lateral":"Minimizar barra lateral");
+  b.title=collapsed?"Expandir barra lateral":"Minimizar barra lateral";
+}
+function toggleSidebar(){
+  const app=$(".app"),collapsed=!app.classList.contains("sidebar-collapsed");
+  app.classList.toggle("sidebar-collapsed",collapsed);
+  localStorage.setItem(LS_SIDEBAR,collapsed?"1":"0");
+  updateSidebarToggle(collapsed);
+}
+
+function renderAll(){renderFilters();renderKpis();renderOverview();renderBoard();renderTable();renderGantt();renderHistory();renderKnowledge();renderExperiments();setSync("ok","Proxy Vercel","Google Sheet protegida por API server-side.")}
+
+function expStatusClass(s){return String(s||"").toLowerCase().replaceAll(" ","-")}
+function nextExperimentId(){
+  const nums=experiments.map(e=>Number(String(e.id||"").replace(/\D/g,""))||0);
+  return "E"+String(Math.max(0,...nums)+1).padStart(2,"0");
+}
+function renderExperiments(){
+  const total=experiments.length,running=experiments.filter(e=>e.status==="Running").length,completed=experiments.filter(e=>e.status==="Complete").length,missing=experiments.filter(e=>!String(e.rule||"").trim()).length;
+  $("#expTotal").textContent=total;$("#expRunning").textContent=running;$("#expCompleted").textContent=completed;$("#expMissingRule").textContent=missing;$("#navExpCount").textContent=total;
+  $("#experimentGrid").innerHTML=experiments.length?experiments.map(e=>`
+    <article class="exp-card" data-exp="${esc(e.id)}">
+      <div class="exp-head"><span class="exp-code">${esc(e.id)}</span><span class="exp-status ${expStatusClass(e.status)}">${esc(e.status||"Not Started")}</span></div>
+      <h4>${esc(e.hypothesis)}</h4>
+      <p>${esc(e.test)}</p>
+      <div class="exp-metric"><small>Métrica primária</small><b>${esc(e.metric||"Não definida")}</b></div>
+      ${e.result?`<div class="exp-result"><b>Resultado:</b> ${esc(e.result)}</div>`:""}
+      <div class="exp-meta">${e.task?`<span>${esc(e.task)}</span>`:""}${e.gate?`<span>${esc(e.gate)}</span>`:""}${e.owner?`<span>${esc(e.owner)}</span>`:""}</div>
+    </article>`).join(""):'<div class="experiment-empty">Nenhum experimento cadastrado.</div>';
+  $$(".exp-card").forEach(c=>c.onclick=()=>openExperiment(c.dataset.exp));
+}
+function openExperiment(id){
+  editExperimentId=id;const e=experiments.find(x=>x.id===id);if(!e)return;
+  $("#experimentEyebrow").textContent=id;$("#experimentTitle").textContent="Editar experimento";
+  ["id","status","hypothesis","test","metric","rule","owner","task","gate","evidence","result","decision"].forEach(k=>$("#e_"+k).value=e[k]??"");
+  $("#deleteExperimentBtn").classList.remove("hidden");$("#experimentOverlay").classList.remove("hidden")
+}
+function newExperiment(prefill={}){
+  editExperimentId=null;$("#experimentEyebrow").textContent="NEW EXPERIMENT";$("#experimentTitle").textContent="Novo experimento";
+  $$("#experimentOverlay input,#experimentOverlay textarea").forEach(x=>x.value="");
+  $("#e_id").value=nextExperimentId();$("#e_status").value="Not Started";$("#e_owner").value="Founder";
+  Object.entries(prefill).forEach(([k,v])=>{const el=$("#e_"+k);if(el)el.value=v??""});
+  $("#deleteExperimentBtn").classList.add("hidden");$("#experimentOverlay").classList.remove("hidden")
+}
+function newExperimentForTask(taskId){
+  const t=tasks.find(x=>x.id===taskId);if(!t)return;
+  closeTask();
+  newExperiment({task:taskId,gate:(String(t.gate||"").match(/BR-\d+/)||[])[0]||t.gate||"",owner:t.owner||"Founder"});
+}
+function closeExperiment(){$("#experimentOverlay").classList.add("hidden")}
+async function saveExperiment(){
+  const e={};
+  ["id","status","hypothesis","test","metric","rule","owner","task","gate","evidence","result","decision"].forEach(k=>e[k]=$("#e_"+k).value.trim());
+  if(!e.id||!e.hypothesis||!e.test||!e.metric||!e.rule)return toast("ID, hipótese, teste, métrica e regra de decisão são obrigatórios.","bad");
+  const c=cfg();
+  try{
+    const d=await api("experiment",{experiment:e,actor:c.actor||"Dashboard user",source:"WANT Web"});
+    if(d.experiments)experiments=d.experiments;
+    closeExperiment();renderExperiments();toast("Experimento salvo na Google Sheet")
+  }catch(err){toast(err.message,"bad")}
+}
+async function deleteExperiment(){
+  if(!editExperimentId||!confirm(`Excluir ${editExperimentId}?`))return;
+  const c=cfg();
+  try{
+    const d=await api("deleteExperiment",{experimentId:editExperimentId,actor:c.actor||"Dashboard user",source:"WANT Web"});
+    experiments=d.experiments||experiments.filter(e=>e.id!==editExperimentId);
+    closeExperiment();renderExperiments();toast("Experimento excluído")
+  }catch(err){toast(err.message,"bad")}
+}
+async function loadExperiments(){
+  try{const d=await api("experiments");experiments=d.experiments||[];renderExperiments()}catch(err){renderExperiments()}
+}
+
+function setView(v){view=v;document.body.dataset.view=v;$$(".navbtn").forEach(b=>b.classList.toggle("active",b.dataset.view===v));$$(".view").forEach(x=>x.classList.toggle("active",x.id===v));$("#viewLabel").textContent=({overview:"Overview",kanban:"Kanban",timeline:"Timeline",tasks:"Tarefas",history:"Activity",docs:"Knowledge",experiments:"Experiments"})[v]||v;if(v==="history")loadHistory();if(v==="docs")renderKnowledge();if(v==="experiments")loadExperiments()}
+window.openTask=id=>{
+  editId=id;const t=tasks.find(x=>x.id===id);if(!t)return;
+  $("#drawerEyebrow").textContent=id;$("#drawerTitle").textContent=t.title;
+  ["id","title","phase","owner","priority","status","start","due","progress","depends","milestone","gate","next"].forEach(k=>$("#f_"+k).value=t[k]??"");
+  $("#deleteBtn").classList.remove("hidden");setTaskPane("execution");renderTaskContext(t);$("#taskOverlay").classList.remove("hidden");
+}
+function newTask(){
+  editId=null;$("#drawerEyebrow").textContent="NEW TASK";$("#drawerTitle").textContent="Nova tarefa";
+  $$("#taskOverlay input,#taskOverlay textarea").forEach(x=>{if(x.type!=="checkbox")x.value="";else x.checked=false});
+  $("#f_priority").value="High";$("#f_status").value="Backlog";$("#f_progress").value=0;
+  $("#deleteBtn").classList.add("hidden");setTaskPane("execution");$("#taskDependencies").innerHTML="<p>Defina as dependências para ativar as regras automáticas.</p>";$("#taskBriefContent").innerHTML="<div class='brief-card'><p>Task Brief automático disponível para tarefas do plano mestre. Novas tarefas podem usar o campo Próximo passo + Gate como contexto.</p></div>";$("#taskOverlay").classList.remove("hidden")
+}
+function closeTask(){$("#taskOverlay").classList.add("hidden")}
+function saveTask(){
+  const o={};["id","title","phase","owner","priority","status","start","due","depends","milestone","gate","next"].forEach(k=>o[k]=$("#f_"+k).value.trim());
+  o.progress=Math.min(100,Math.max(0,Number($("#f_progress").value||0)));
+  if(!o.id||!o.title)return toast("ID e tarefa são obrigatórios.","bad");
+  const existing=editId?tasks.find(x=>x.id===editId):null;
+  const candidate={...(existing||{}),...o};
+  const check=canEnterStatus(candidate,o.status);
+  if(!check.ok)return toast(check.reason,"bad");
+  if(o.status==="Done"){if(editId){setTaskPane("completion");toast("Use Concluir tarefa com evidência para entrar em Done.","bad")}return}
+  if(editId)tasks[tasks.findIndex(x=>x.id===editId)]=candidate;
+  else{if(tasks.some(x=>x.id===o.id))return toast("Este ID já existe.","bad");tasks.push(candidate)}
+  saveLocal();runAutomation(o.id);closeTask();renderAll();toast("Tarefa salva")
+}
+async function completeTask(){
+  if(!editId)return;
+  const t=tasks.find(x=>x.id===editId);if(!t)return;
+  const check=canEnterStatus(t,"Done");if(!check.ok)return toast(check.reason,"bad");
+  const record={
+    outcome:$("#c_outcome").value.trim(),
+    evidence_title:$("#c_evidence_title").value.trim(),
+    evidence_url:$("#c_evidence_url").value.trim(),
+    evidence_note:$("#c_evidence_note").value.trim(),
+    learning:$("#c_learning").value.trim(),
+    decision:$("#c_decision").value.trim(),
+    gate:$("#c_gate").value.trim(),
+    next:$("#c_next").value.trim(),
+    acceptance:$("#c_acceptance").checked,
+    close_gate:$("#c_close_gate").checked,
+    completedAt:new Date().toISOString()
+  };
+  if(!record.outcome)return toast("Descreva o resultado entregue.","bad");
+  if(!record.evidence_url&&!record.evidence_note&&!record.evidence_title)return toast("Inclua pelo menos uma evidência ou nota verificável.","bad");
+  if(!record.acceptance)return toast("Confirme o critério de aceite antes de concluir.","bad");
+  const c=cfg();
+  try{
+    const d=await api("complete",{taskId:t.id,completion:record,actor:c.actor||"Dashboard user",source:"WANT Web"});
+    if(d.tasks)tasks=d.tasks; else {t.status="Done";t.progress=100;t.next=record.next||t.next}
+    completions[t.id]=record;saveCompletions();saveLocal();runAutomation(t.id);closeTask();renderAll();toast("Tarefa concluída, evidência registrada e dependências recalculadas.")
+  }catch(e){
+    /* v2 compatibility: preserve evidence locally and still block unsafe completion */
+    completions[t.id]=record;saveCompletions();t.status="Done";t.progress=100;t.next=record.next||t.next;saveLocal();runAutomation(t.id);renderAll();closeTask();
+    toast("Concluída localmente. Publique o Apps Script v3 para sincronizar evidências e gates.","bad")
+  }
+}
+async function api(action,payload={}){
+  const method=(action==="get"||action==="history"||action==="workspace"||action==="experiments")?"GET":"POST";
+  const url=new URL("/api/sheets",location.origin);
+  url.searchParams.set("action",action);
+  if(action==="history")url.searchParams.set("limit","150");
+  const opt={method,headers:{"Accept":"application/json"}};
+  if(method==="POST"){
+    opt.headers["Content-Type"]="application/json";
+    opt.body=JSON.stringify({action,...payload});
+  }
+  const r=await fetch(url,opt);
+  let d;
+  try{ d=await r.json(); }catch(e){ throw new Error(`Resposta inválida do servidor (${r.status}).`); }
+  if(!r.ok||!d.ok)throw new Error(d.error||`Falha na sincronização (${r.status})`);
+  return d;
+}
+async function pull(){
+  try{
+    setSync("","Sincronizando…","Buscando estado mais recente.");
+    const d=await api("get");tasks=d.tasks;
+    try{const w=await api("workspace");if(w.completions)completions=w.completions;saveCompletions()}catch(_){}
+    try{const x=await api("experiments");experiments=x.experiments||[]}catch(_){}
+    saveLocal();runAutomation();renderAll();toast("Atualizado da Google Sheet")
+  }catch(e){setSync("err","Erro",e.message);toast(e.message,"bad")}
+}
+async function push(){try{if(!confirm("Salvar o estado atual do painel na aba Tasks da Google Sheet?"))return;setSync("","Salvando…","Enviando tarefas.");const c=cfg();await api("replace",{tasks,actor:c.actor||"Dashboard user",source:"WANT Web"});renderAll();toast("Salvo na Google Sheet")}catch(e){setSync("err","Erro",e.message);toast(e.message,"bad")}}
+function openCommand(){$("#commandOverlay").classList.remove("hidden");$("#commandInput").value="";renderCommands();setTimeout(()=>$("#commandInput").focus(),20)}
+function closeCommand(){$("#commandOverlay").classList.add("hidden")}
+function renderCommands(){const q=$("#commandInput").value.toLowerCase();const list=tasks.filter(t=>!q||[t.id,t.title,t.owner,t.gate].join(" ").toLowerCase().includes(q)).slice(0,10);$("#commandItems").innerHTML=list.map(t=>`<button class="cmd" data-id="${t.id}"><span><b>${esc(t.id)}</b> · ${esc(t.title)}</span><small>${esc(t.owner)}</small></button>`).join("")||'<div style="padding:16px;color:#69778c">Nenhum resultado</div>';$$(".cmd").forEach(b=>b.onclick=()=>{closeCommand();openTask(b.dataset.id)})}
+$$(".navbtn").forEach(b=>b.onclick=()=>setView(b.dataset.view));$("#sidebarToggle").onclick=toggleSidebar;$("#kbSearch").addEventListener("input",renderKnowledge);["search","phaseFilter","ownerFilter","priorityFilter"].forEach(id=>$("#"+id).addEventListener(id==="search"?"input":"change",renderAll));
+$("#clearFilters").onclick=()=>{$("#search").value="";$("#phaseFilter").value="";$("#ownerFilter").value="";$("#priorityFilter").value="";renderAll()}
+$("#newBtn").onclick=newTask;$("#newExperimentBtn").onclick=()=>newExperiment();$("#experimentClose").onclick=closeExperiment;$("#experimentCancel").onclick=closeExperiment;$("#experimentSave").onclick=saveExperiment;$("#deleteExperimentBtn").onclick=deleteExperiment;$("#taskClose").onclick=closeTask;$("#taskCancel").onclick=closeTask;$("#taskSave").onclick=saveTask;$("#completeTaskBtn").onclick=completeTask;$$(".task-tab").forEach(b=>b.onclick=()=>setTaskPane(b.dataset.taskPane));$("#deleteBtn").onclick=()=>{if(editId&&confirm("Excluir esta tarefa?")){tasks=tasks.filter(x=>x.id!==editId);saveLocal();closeTask();renderAll();toast("Tarefa excluída")}}
+$("#settingsBtn").onclick=()=>{const c=cfg();$("#apiActor").value=c.actor||"";$("#settingsOverlay").classList.remove("hidden")};$("#settingsClose").onclick=$("#settingsCancel").onclick=()=>$("#settingsOverlay").classList.add("hidden");$("#settingsSave").onclick=()=>{localStorage.setItem(LS_API,JSON.stringify({actor:$("#apiActor").value.trim()}));$("#settingsOverlay").classList.add("hidden");renderAll();toast("Integração configurada")}
+$("#pullBtn").onclick=pull;$("#pushBtn").onclick=push;$("#commandBtn").onclick=openCommand;$("#commandOverlay").onclick=e=>{if(e.target===$("#commandOverlay"))closeCommand()};$("#commandInput").oninput=renderCommands;
+document.addEventListener("keydown",e=>{if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==="k"){e.preventDefault();openCommand()}if(e.key==="Escape"){closeCommand();closeTask();$("#settingsOverlay").classList.add("hidden")}});
+initSidebar();document.body.dataset.view=view;runAutomation();renderAll();
+</script>
+</body>
+</html>

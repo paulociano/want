@@ -1,0 +1,82 @@
+{
+  "version": "5.2",
+  "generatedAt": "2026-10-01T18:35:37.321338+00:00",
+  "files": [
+    {
+      "file": "MIGRATION_v5.md",
+      "sha256": "6b5746a632ccef919fac1b0d7bff4b445ba282778cb5d6673b4c8148e790af29"
+    },
+    {
+      "file": "PATCH_v5.1.md",
+      "sha256": "806230d97b8d3f5a5002b811bdd12cf9f2a27c3791a36bf58f44e4a1bbe6223a"
+    },
+    {
+      "file": "PATCH_v5.2.md",
+      "sha256": "9687926825e93d051a9b9cc6e703d63b055faf1bc405239c0f7f636c3022c043"
+    },
+    {
+      "file": "README.md",
+      "sha256": "6cb5d74311b8dc149099fac455561bea7ccb90b8f1e8479c3c8912af8b8cb74a"
+    },
+    {
+      "file": "api/sheets.js",
+      "sha256": "61d20558c9e3a46c6b16e6abd9af3a32ea529ad6c3c4d82bbf14f90ac599bfdc"
+    },
+    {
+      "file": "apps-script-v5.2.gs",
+      "sha256": "062e3201ebcf8fccdc4855480f5c157323fd6d3084c4149285216603fb72d0df"
+    },
+    {
+      "file": "docs/AUTOMATION_RULES.md",
+      "sha256": "601e9822d540a2cc1359a22125d972379204f850ad6ff34249103c5fb6dea1b4"
+    },
+    {
+      "file": "docs/README_WANT_Project_Control.md",
+      "sha256": "69cb0bc79d563c556d7e6ddca384f68cc0f314a6c90d8be6e165576e904e7749"
+    },
+    {
+      "file": "docs/WANT_DEPLOY_CHECKLIST.md",
+      "sha256": "1241ae9f828a998a37f3dcbdd5b25b34a76f7643832019f1236f4266e76e2b46"
+    },
+    {
+      "file": "docs/WANT_Pipeline_Gestao.xlsx",
+      "sha256": "3fe700dc3340b37e821d7472eb0e23d867d6eda7de64f448f21b4cf0848f6dff"
+    },
+    {
+      "file": "docs/WANT_Plano_Mestre_e_Verificacao_de_Escopo.docx",
+      "sha256": "dde6b6168541ed539b341c62315bf0a849b228730b9bb5f1721f68f170951c13"
+    },
+    {
+      "file": "docs/WANT_Project_Control.xlsx",
+      "sha256": "e7698aae3836ba175c33151d54dd89975bd10fef8848cb84b06b42cbd564550f"
+    },
+    {
+      "file": "docs/WANT_Tasks_Sync.csv",
+      "sha256": "39bb2c9337c60983249751def408d84c54140b3615cc8ba38b013902c68aed3e"
+    },
+    {
+      "file": "docs/knowledge-index.json",
+      "sha256": "7c902e4a4aadd613b5451ec4559ce6efba255b89f59937c9d2b830af552f81ff"
+    },
+    {
+      "file": "docs/task-briefs.json",
+      "sha256": "daacf6b02637fb0dfeef0cf03b6eb7b72360485b07e0b414974395e459ce40a0"
+    },
+    {
+      "file": "index.html",
+      "sha256": "a9fb73531e7d8765da853af561f4fc0fd1b07f6b72d9088b9ec183644f96c337"
+    },
+    {
+      "file": "landing/app.js",
+      "sha256": "2b8d85d715b5d61cfbb2962c920b0ccad6f3291014989033420a8a4aa5abe4d7"
+    },
+    {
+      "file": "landing/index.html",
+      "sha256": "28df0d9c3a36786915dd2ad63285bf3a99dd527eccdfc0c2b0f1af1aeef8a2b1"
+    },
+    {
+      "file": "vercel.json",
+      "sha256": "4c098d635b03af007fe5a59acc05506b82ed08bfe6aae26c2be45c7020bd4d4f"
+    }
+  ]
+}

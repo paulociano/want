@@ -1,0 +1,6 @@
+WANT_Public_v6_8.zip
+WANT_Internal_v6_8.zip
+.env
+.env.*
+!.env.example
+.DS_Store
